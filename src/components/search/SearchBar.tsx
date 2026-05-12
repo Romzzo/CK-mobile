@@ -1,22 +1,28 @@
 "use client";
 
 import { Search, X, ArrowLeft } from "lucide-react";
-import { useRef, useEffect } from "react";
+import { useState, useRef, useEffect, type FormEvent } from "react";
 import { useRouter } from "next/navigation";
 
 interface SearchBarProps {
-  value: string;
-  onChange: (v: string) => void;
-  onClear: () => void;
+  initialQuery: string;
+  onSubmit: (q: string) => void;
 }
 
-export default function SearchBar({ value, onChange, onClear }: SearchBarProps) {
-  const inputRef = useRef<HTMLInputElement>(null);
+export default function SearchBar({ initialQuery, onSubmit }: SearchBarProps) {
   const router = useRouter();
+  const inputRef = useRef<HTMLInputElement>(null);
+  const [text, setText] = useState(initialQuery);
 
   useEffect(() => {
-    inputRef.current?.focus();
-  }, []);
+    if (!initialQuery) inputRef.current?.focus();
+  }, [initialQuery]);
+
+  const submit = (e: FormEvent) => {
+    e.preventDefault();
+    onSubmit(text.trim());
+    inputRef.current?.blur();
+  };
 
   return (
     <div
@@ -24,6 +30,7 @@ export default function SearchBar({ value, onChange, onClear }: SearchBarProps) 
       style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
     >
       <button
+        type="button"
         aria-label="뒤로"
         onClick={() => router.back()}
         className="-ml-1 shrink-0 p-1 text-ink-soft"
@@ -31,22 +38,35 @@ export default function SearchBar({ value, onChange, onClear }: SearchBarProps) 
         <ArrowLeft size={22} />
       </button>
 
-      <div className="flex h-11 flex-1 items-center gap-2 rounded-full bg-surface-muted px-4">
+      <form
+        onSubmit={submit}
+        className="flex h-11 flex-1 items-center gap-2 rounded-full bg-surface-muted px-4"
+      >
         <Search size={16} className="shrink-0 text-ink-mute" />
         <input
           ref={inputRef}
           type="search"
-          value={value}
-          onChange={(e) => onChange(e.target.value)}
+          enterKeyHint="search"
+          value={text}
+          onChange={(e) => setText(e.target.value)}
           placeholder="이미지, 아이콘, 폰트 검색"
-          className="flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-ink-mute"
+          className="min-w-0 flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-ink-mute"
         />
-        {value ? (
-          <button aria-label="지우기" onClick={onClear} className="shrink-0 p-0.5 text-ink-mute">
+        {text ? (
+          <button
+            type="button"
+            aria-label="지우기"
+            onClick={() => {
+              setText("");
+              onSubmit("");
+              inputRef.current?.focus();
+            }}
+            className="shrink-0 p-0.5 text-ink-mute"
+          >
             <X size={15} />
           </button>
         ) : null}
-      </div>
+      </form>
     </div>
   );
 }

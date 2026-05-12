@@ -1,7 +1,7 @@
 "use client";
 
-import { useState, useEffect, Suspense } from "react";
-import { useSearchParams } from "next/navigation";
+import { Suspense } from "react";
+import { useRouter, useSearchParams } from "next/navigation";
 import SearchBar from "@/components/search/SearchBar";
 import FilterBar from "@/components/search/FilterBar";
 import RecentSearches from "@/components/search/RecentSearches";
@@ -9,18 +9,19 @@ import PinGrid from "@/components/home/PinGrid";
 import BottomNav from "@/components/layout/BottomNav";
 
 function SearchContent() {
+  const router = useRouter();
   const searchParams = useSearchParams();
-  const [query, setQuery] = useState(searchParams.get("q") ?? "");
+  const query = (searchParams.get("q") ?? "").trim();
+  const hasQuery = query.length > 0;
 
-  useEffect(() => {
-    setQuery(searchParams.get("q") ?? "");
-  }, [searchParams]);
-
-  const hasQuery = query.trim().length > 0;
+  const go = (q: string) => {
+    const t = q.trim();
+    router.replace(t ? `/search?q=${encodeURIComponent(t)}` : "/search");
+  };
 
   return (
     <div className="min-h-screen bg-surface-muted">
-      <SearchBar value={query} onChange={setQuery} onClear={() => setQuery("")} />
+      <SearchBar key={query} initialQuery={query} onSubmit={go} />
 
       {hasQuery ? (
         <>
@@ -28,15 +29,15 @@ function SearchContent() {
           <div className="px-3 pb-28">
             <div className="px-1 py-3.5">
               <span className="text-[13px] text-ink-mute">
-                <span className="font-bold text-ink">&ldquo;{query}&rdquo;</span> 검색 결과 1,234개
+                <span className="font-bold text-ink">&ldquo;{query}&rdquo;</span> 검색 결과
               </span>
             </div>
-            <PinGrid />
+            <PinGrid key={query} query={query} />
           </div>
         </>
       ) : (
         <div className="pb-28">
-          <RecentSearches onSelect={(kw) => setQuery(kw)} />
+          <RecentSearches onSelect={(kw) => go(kw)} />
         </div>
       )}
 
