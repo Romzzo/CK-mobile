@@ -1,5 +1,6 @@
 import PageHeader from "@/components/layout/PageHeader";
 import PinGrid from "@/components/home/PinGrid";
+import ScrollRestore from "@/components/common/ScrollRestore";
 import BottomNav from "@/components/layout/BottomNav";
 
 const categoryMeta: Record<string, { label: string; desc: string }> = {
@@ -21,6 +22,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ type:
       <PageHeader title={meta.label} subtitle={meta.desc} fallbackHref="/category" />
 
       <main className="px-3 pb-28 pt-4">
+        <ScrollRestore />
         <div className="px-1 pb-3">
           <span className="text-[13px] text-ink-mute">
             <span className="font-bold text-ink">{meta.label}</span> 1,234개

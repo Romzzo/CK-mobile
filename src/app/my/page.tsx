@@ -1,7 +1,7 @@
 "use client";
 
 import {
-  Crown, Download, Heart, Clock, Settings, ChevronRight,
+  Crown, Download, Heart, Settings, ChevronRight,
   Bell, HelpCircle, LogOut, FileText, Gift, Star,
 } from "lucide-react";
 import type React from "react";
@@ -12,7 +12,6 @@ import { useRouter } from "next/navigation";
 const stats = [
   { label: "다운로드", value: "47", icon: Download, path: "/my/downloads" },
   { label: "찜 목록", value: "128", icon: Heart, path: "/like" },
-  { label: "최근 본", value: "23", icon: Clock, path: "/my/recent" },
 ];
 
 type MenuItem = { icon: React.ElementType; label: string; badge: string | null; danger?: boolean; path: string | null };
@@ -22,7 +21,6 @@ const menuGroups: { items: MenuItem[] }[] = [
     items: [
       { icon: Download, label: "다운로드 이력", badge: null, path: "/my/downloads" },
       { icon: Heart, label: "찜한 콘텐츠", badge: "128", path: "/like" },
-      { icon: Clock, label: "최근 본 콘텐츠", badge: null, path: "/my/recent" },
       { icon: Gift, label: "쿠폰 / 포인트", badge: "2", path: "/my/coupons" },
     ],
   },
