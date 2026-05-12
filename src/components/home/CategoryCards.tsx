@@ -1,17 +1,27 @@
 "use client";
 
 import Link from "next/link";
+import { useState, useEffect } from "react";
 
-const items = [
-  { label: "일러스트", type: "illust", seed: "ck-cat-illust" },
-  { label: "사진", type: "photo", seed: "ck-cat-photo" },
-  { label: "아이콘", type: "icon", seed: "ck-cat-icon" },
-  { label: "AI 이미지", type: "ai", seed: "ck-cat-ai" },
-  { label: "PPT 템플릿", type: "ppt", seed: "ck-cat-ppt" },
-  { label: "폰트", type: "font", seed: "ck-cat-font" },
+const CATEGORIES = [
+  { label: "일러스트", type: "illust" },
+  { label: "사진", type: "photo" },
+  { label: "아이콘", type: "icon" },
+  { label: "AI 이미지", type: "ai" },
+  { label: "PPT 템플릿", type: "ppt" },
+  { label: "폰트", type: "font" },
 ];
 
 export default function CategoryCards() {
+  const [imgs, setImgs] = useState<Record<string, string | null>>({});
+
+  useEffect(() => {
+    fetch("/api/pexels?type=categories")
+      .then((r) => r.json())
+      .then((data) => setImgs(data))
+      .catch(() => {});
+  }, []);
+
   return (
     <section className="px-4 pt-7">
       <div className="flex items-baseline justify-between">
@@ -22,18 +32,22 @@ export default function CategoryCards() {
       </div>
 
       <div className="mt-3 grid grid-cols-3 gap-2.5">
-        {items.map((c) => (
+        {CATEGORIES.map((c) => (
           <Link
             key={c.type}
             href={`/category/${c.type}`}
             className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-surface-muted"
           >
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={`https://picsum.photos/seed/${c.seed}/240/300`}
-              alt=""
-              className="absolute inset-0 h-full w-full object-cover"
-            />
+            {imgs[c.type] ? (
+              // eslint-disable-next-line @next/next/no-img-element
+              <img
+                src={imgs[c.type]!}
+                alt=""
+                className="absolute inset-0 h-full w-full object-cover"
+              />
+            ) : (
+              <div className="absolute inset-0 animate-pulse bg-surface-muted" />
+            )}
             <div
               className="absolute inset-0"
               style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0) 55%)" }}

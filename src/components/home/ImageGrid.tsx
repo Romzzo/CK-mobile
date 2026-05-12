@@ -1,42 +1,58 @@
 "use client";
 
 import { Heart, Lock } from "lucide-react";
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import Link from "next/link";
-import { mockItems, type ContentItem } from "@/lib/mockData";
 
-const ratioClass: Record<ContentItem["aspectRatio"], string> = {
+interface PexelsPhoto {
+  id: number;
+  width: number;
+  height: number;
+  alt: string;
+  src: { portrait: string; landscape: string; medium: string; small: string };
+}
+
+function getAspectRatio(w: number, h: number): "tall" | "square" | "wide" {
+  if (h > w * 1.15) return "tall";
+  if (w > h * 1.15) return "wide";
+  return "square";
+}
+
+const ratioClass = {
   tall: "aspect-[3/4]",
   square: "aspect-square",
   wide: "aspect-[3/2]",
 };
 
-function PinCard({ item }: { item: ContentItem }) {
+function PinCard({ photo, index }: { photo: PexelsPhoto; index: number }) {
   const [liked, setLiked] = useState(false);
+  const ratio = getAspectRatio(photo.width, photo.height);
+  const isPremium = index === 4 || index === 7;
+  const isNew = index < 3;
 
   return (
     <Link
-      href={`/content/${item.id}`}
+      href={`/content/${photo.id}`}
       className="relative block overflow-hidden rounded-xl bg-surface-muted"
     >
-      <div className={`${ratioClass[item.aspectRatio]} w-full`}>
+      <div className={`${ratioClass[ratio]} w-full`}>
         {/* eslint-disable-next-line @next/next/no-img-element */}
         <img
-          src={item.imageUrl}
-          alt={item.title}
+          src={photo.src.medium}
+          alt={photo.alt || ""}
           loading="lazy"
           className="h-full w-full object-cover"
         />
       </div>
 
-      {item.isPremium ? (
+      {isPremium ? (
         <span
           className="absolute left-2 top-2 flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-semibold text-white"
           style={{ backgroundColor: "rgba(0,0,0,0.55)" }}
         >
           <Lock size={9} /> PRO
         </span>
-      ) : item.isNew ? (
+      ) : isNew ? (
         <span className="absolute left-2 top-2 rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-bold text-white">
           NEW
         </span>
@@ -64,9 +80,18 @@ function PinCard({ item }: { item: ContentItem }) {
 }
 
 export default function ImageGrid() {
+  const [photos, setPhotos] = useState<PexelsPhoto[]>([]);
+
+  useEffect(() => {
+    fetch("/api/pexels?per_page=12")
+      .then((r) => r.json())
+      .then((data) => { if (data.photos) setPhotos(data.photos); })
+      .catch(() => {});
+  }, []);
+
   const cols = [
-    mockItems.filter((_, i) => i % 2 === 0),
-    mockItems.filter((_, i) => i % 2 === 1),
+    photos.filter((_, i) => i % 2 === 0),
+    photos.filter((_, i) => i % 2 === 1),
   ];
 
   return (
@@ -79,13 +104,23 @@ export default function ImageGrid() {
       </div>
 
       <div className="mt-3 flex gap-2">
-        {cols.map((col, i) => (
-          <div key={i} className="flex flex-1 flex-col gap-2">
-            {col.map((item) => (
-              <PinCard key={item.id} item={item} />
-            ))}
-          </div>
-        ))}
+        {photos.length === 0 ? (
+          [0, 1].map((col) => (
+            <div key={col} className="flex flex-1 flex-col gap-2">
+              {[0, 1, 2, 3, 4, 5].map((i) => (
+                <div key={i} className="aspect-[3/4] w-full animate-pulse rounded-xl bg-surface-muted" />
+              ))}
+            </div>
+          ))
+        ) : (
+          cols.map((col, i) => (
+            <div key={i} className="flex flex-1 flex-col gap-2">
+              {col.map((photo, idx) => (
+                <PinCard key={photo.id} photo={photo} index={i * 6 + idx} />
+              ))}
+            </div>
+          ))
+        )}
       </div>
     </section>
   );
