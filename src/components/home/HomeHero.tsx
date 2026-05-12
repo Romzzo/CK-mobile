@@ -28,12 +28,12 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
       </div>
 
       <div className="relative px-5 pb-7 pt-20">
-        <h1 className="text-[24px] font-bold leading-snug tracking-tight text-white">
+        <h1 className="text-[26px] font-bold leading-[1.25] tracking-tight text-white">
           찾던 이미지,
           <br />
           여기 다 있어요
         </h1>
-        <p className="mt-1.5 text-[13px] text-white/75">
+        <p className="mt-2 text-[13px] text-white/75">
           일러스트 · 사진 · 아이콘 · AI 이미지 · 폰트 1,500만+
         </p>
 

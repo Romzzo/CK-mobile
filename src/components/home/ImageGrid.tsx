@@ -1,9 +1,10 @@
 "use client";
 
-import { Heart, Lock } from "lucide-react";
+import { Heart, Lock, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import Link from "next/link";
 import { mockItems, type ContentItem } from "@/lib/mockData";
+import SectionHeader from "@/components/home/SectionHeader";
 
 const ratioClass: Record<ContentItem["aspectRatio"], string> = {
   tall: "aspect-[3/4]",
@@ -70,12 +71,9 @@ export default function ImageGrid() {
   ];
 
   return (
-    <section className="px-3 pt-7">
-      <div className="flex items-baseline justify-between px-1">
-        <h2 className="text-[16px] font-bold text-ink">추천 콘텐츠</h2>
-        <Link href="/search" className="text-[13px] font-medium text-ink-mute">
-          더 보기
-        </Link>
+    <section className="px-3 pt-8">
+      <div className="px-1">
+        <SectionHeader title="추천 콘텐츠" subtitle="지금 많이 다운로드되는 소스" href="/search" />
       </div>
 
       <div className="mt-3 flex gap-2">
@@ -87,6 +85,14 @@ export default function ImageGrid() {
           </div>
         ))}
       </div>
+
+      <Link
+        href="/search"
+        className="mx-1 mt-3 flex items-center justify-center gap-1 rounded-xl border border-line bg-surface py-3.5 text-[14px] font-semibold text-ink-soft"
+      >
+        추천 콘텐츠 더 보기
+        <ChevronRight size={15} />
+      </Link>
     </section>
   );
 }

@@ -11,22 +11,23 @@ const stats = [
 
 export default function BrandStats() {
   return (
-    <section className="px-4 pt-7">
+    <section className="px-4 pb-2 pt-8">
       <div className="rounded-2xl border border-line bg-surface p-5">
-        <p className="text-[13px] font-medium text-ink-soft">국내 최대 스톡 이미지 플랫폼</p>
+        <p className="text-[14px] font-bold text-ink">국내 최대 스톡 이미지 플랫폼</p>
+        <p className="mt-0.5 text-[12px] text-ink-mute">디자이너·마케터·크리에이터가 20년째 함께해요</p>
 
-        <div className="mt-3 grid grid-cols-3 gap-2">
+        <div className="mt-4 grid grid-cols-3 gap-2">
           {stats.map((s) => (
             <div key={s.label}>
-              <p className="text-[18px] font-bold leading-none text-ink">{s.value}</p>
-              <p className="mt-1 text-[12px] text-ink-mute">{s.label}</p>
+              <p className="text-[19px] font-bold leading-none text-ink">{s.value}</p>
+              <p className="mt-1.5 text-[12px] text-ink-mute">{s.label}</p>
             </div>
           ))}
         </div>
 
         <Link
           href="/membership"
-          className="mt-4 flex items-center justify-center gap-1.5 rounded-xl bg-brand py-3 text-[14px] font-semibold text-white"
+          className="mt-4 flex items-center justify-center gap-1.5 rounded-xl bg-brand py-3.5 text-[14px] font-semibold text-white"
         >
           무료로 시작하기 <ArrowRight size={15} />
         </Link>
