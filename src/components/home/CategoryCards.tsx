@@ -25,7 +25,7 @@ export default function CategoryCards() {
 
   return (
     <section className="px-4 pt-8">
-      <SectionHeader title="카테고리" subtitle="원하는 분야부터 골라보세요" href="/search" action="전체 보기" />
+      <SectionHeader title="카테고리" subtitle="원하는 분야부터 골라보세요" href="/category" action="전체 보기" />
 
       <div className="mt-3 grid grid-cols-3 gap-2.5">
         {CATEGORIES.map((c) => (
