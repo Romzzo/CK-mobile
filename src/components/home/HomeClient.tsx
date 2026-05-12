@@ -5,7 +5,7 @@ import StickyHeader from "@/components/layout/StickyHeader";
 import HomeHero from "@/components/home/HomeHero";
 import ToolCards from "@/components/home/ToolCards";
 import CategoryCards from "@/components/home/CategoryCards";
-import ImageGrid from "@/components/home/ImageGrid";
+import OriginalCollections from "@/components/home/OriginalCollections";
 import TrendingKeywords from "@/components/home/TrendingKeywords";
 import EventCarousel from "@/components/home/EventCarousel";
 import BrandStats from "@/components/home/BrandStats";
@@ -34,7 +34,7 @@ export default function HomeClient() {
         <HomeHero searchRef={heroSearchRef} />
         <ToolCards />
         <CategoryCards />
-        <ImageGrid />
+        <OriginalCollections />
         <TrendingKeywords />
         <EventCarousel />
         <BrandStats />
