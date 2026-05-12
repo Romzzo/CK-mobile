@@ -107,6 +107,7 @@
   html {
     @apply h-full;
     -webkit-text-size-adjust: 100%;
+    scrollbar-gutter: stable;
   }
   body {
     color: var(--ink);
