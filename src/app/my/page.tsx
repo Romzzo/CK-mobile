@@ -1,159 +1,173 @@
 "use client";
 
 import {
-  Crown, Download, Heart, Settings, ChevronRight,
-  Bell, HelpCircle, LogOut, FileText, Gift, Star,
+  ChevronLeft, ChevronRight, Crown, Zap, Pencil, CreditCard, Receipt, Heart, HelpCircle, LogOut,
 } from "lucide-react";
 import type React from "react";
-import BottomNav from "@/components/layout/BottomNav";
-import { mockItems } from "@/lib/mockData";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
+import BottomNav from "@/components/layout/BottomNav";
 
-const stats = [
-  { label: "다운로드", value: "47", icon: Download, path: "/my/downloads" },
-  { label: "찜 목록", value: "128", icon: Heart, path: "/like" },
-];
-
-type MenuItem = { icon: React.ElementType; label: string; badge: string | null; danger?: boolean; path: string | null };
+type MenuItem = { icon: React.ElementType; label: string; danger?: boolean; path: string | null };
 
 const menuGroups: { items: MenuItem[] }[] = [
+  // 유료 전용
   {
     items: [
-      { icon: Download, label: "다운로드 이력", badge: null, path: "/my/downloads" },
-      { icon: Heart, label: "찜한 콘텐츠", badge: "128", path: "/like" },
-      { icon: Gift, label: "쿠폰 / 포인트", badge: "2", path: "/my/coupons" },
+      { icon: CreditCard, label: "멤버십 관리", path: "/my/membership" },
+      { icon: Receipt, label: "결제 내역", path: "/my/billing" },
+    ],
+  },
+  // 공통
+  {
+    items: [
+      { icon: Heart, label: "좋아요한 콘텐츠", path: "/like" },
+      { icon: Pencil, label: "회원정보 수정", path: "/my/settings" },
+      { icon: HelpCircle, label: "고객센터", path: null }, // 추후 채널톡 연동
     ],
   },
   {
-    items: [
-      { icon: Bell, label: "알림 설정", badge: null, path: "/my/settings" },
-      { icon: Settings, label: "계정 설정", badge: null, path: "/my/settings" },
-      { icon: FileText, label: "이용약관 / 개인정보", badge: null, path: null },
-      { icon: HelpCircle, label: "고객센터", badge: null, path: null },
-    ],
-  },
-  {
-    items: [
-      { icon: LogOut, label: "로그아웃", badge: null, danger: true, path: null },
-    ],
+    items: [{ icon: LogOut, label: "로그아웃", danger: true, path: null }],
   },
 ];
 
-const likedItems = mockItems.filter((_, i) => i % 3 === 0).slice(0, 4);
+const licenseScopes = [
+  { type: "무료 회원", scope: "이미지 탐색 · 찜하기 가능" },
+  { type: "크리에이터", scope: "이미지 월 500컷 · 모션·음원 150개/월" },
+  { type: "스탠다드", scope: "무제한 다운로드 · 모션·음원 150개/월" },
+  { type: "특약", scope: "계약 범위에 따른 사용 (담당자 문의)" },
+];
+
+function CreditBlock({ children }: { children: React.ReactNode }) {
+  return (
+    <div className="mx-4 mt-3 flex gap-3 rounded-2xl border border-line bg-surface px-5 py-4">
+      <div className="flex h-8 w-8 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: "var(--brand-soft)" }}>
+        <Zap size={16} style={{ color: "var(--brand)" }} />
+      </div>
+      <div className="min-w-0 flex-1">{children}</div>
+    </div>
+  );
+}
+
+const ChargeLink = () => (
+  <Link href="/free" className="mt-2 inline-block text-[13px] font-semibold text-brand">
+    크레딧 충전하기 →
+  </Link>
+);
 
 export default function MyPage() {
   const router = useRouter();
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
+      {/* 헤더 */}
       <header
         className="pt-safe sticky top-0 z-40 border-b border-line"
         style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
       >
-        <div className="flex h-14 items-center justify-between px-4">
-          <h1 className="text-[16px] font-bold text-ink">MY</h1>
-          <button aria-label="설정" onClick={() => router.push("/my/settings")} className="-mr-2 p-2.5 text-ink-soft">
-            <Settings size={20} />
+        <div className="relative flex h-14 items-center px-2">
+          <button aria-label="뒤로" onClick={() => router.back()} className="absolute left-1 p-2.5 text-ink-soft">
+            <ChevronLeft size={22} />
           </button>
+          <h1 className="mx-auto text-[16px] font-bold text-ink">MY</h1>
         </div>
       </header>
 
-      {/* 프로필 */}
-      <div className="mx-4 mt-4 rounded-2xl border border-line bg-surface p-5">
-        <div className="flex items-center gap-4">
-          <div
-            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-[20px] font-bold text-white"
-            style={{ backgroundColor: "var(--brand)" }}
-          >
-            박
+      {/* 프로필 카드 */}
+      <div className="mx-4 mt-4 flex gap-4 rounded-2xl border border-line bg-surface p-5">
+        <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-[20px] font-bold text-white" style={{ backgroundColor: "var(--brand)" }}>
+          박
+        </div>
+        <div className="min-w-0 flex-1">
+          <div className="flex items-center gap-1.5">
+            <p className="truncate text-[16px] font-bold text-ink">박초롬</p>
+            <span className="text-[12px] text-ink-mute">|</span>
+            <span className="shrink-0 text-[12px] font-semibold text-ink-soft">무료 회원</span>
           </div>
-          <div className="min-w-0 flex-1">
-            <p className="text-[16px] font-bold text-ink">박초롬님</p>
-            <p className="truncate text-[12px] text-ink-mute">example@email.com</p>
-          </div>
+          <p className="mt-0.5 truncate text-[12px] text-ink-mute">example@email.com</p>
           <button
-            className="shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-semibold"
+            className="mt-2 inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-semibold"
             style={{ borderColor: "var(--brand)", color: "var(--brand)" }}
           >
-            프로필 편집
+            <Pencil size={12} />
+            정보 수정
           </button>
         </div>
+      </div>
 
-        <button
-          onClick={() => router.push("/membership")}
-          className="mt-4 flex w-full items-center justify-between rounded-xl p-3.5"
-          style={{ backgroundColor: "var(--brand-soft)" }}
-        >
-          <div className="flex items-center gap-2.5">
-            <div
-              className="flex h-8 w-8 items-center justify-center rounded-xl"
-              style={{ backgroundColor: "var(--brand)" }}
-            >
-              <Crown size={15} fill="white" className="text-white" />
-            </div>
-            <div className="text-left">
-              <p className="text-[12px] font-bold" style={{ color: "var(--brand-strong)" }}>무료 회원</p>
-              <p className="text-[11px]" style={{ color: "var(--brand)" }}>멤버십 시작하고 무제한 이용하기 →</p>
-            </div>
+      {/* 멤버십 배너 */}
+      {/* 무료 회원 */}
+      <Link
+        href="/membership"
+        className="mx-4 mt-3 flex items-center gap-3 rounded-2xl px-5 py-4"
+        style={{ backgroundColor: "var(--brand-soft)" }}
+      >
+        <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: "var(--brand)" }}>
+          <Crown size={16} fill="white" className="text-white" />
+        </div>
+        <div className="min-w-0">
+          <p className="text-[12px] font-bold" style={{ color: "var(--brand-strong)" }}>무료 회원</p>
+          <p className="mt-0.5 text-[12px]" style={{ color: "var(--brand)" }}>멤버십 시작하고 무제한 이용하기 →</p>
+        </div>
+      </Link>
+
+      {/* 유료 회원 */}
+      <Link
+        href="/my/membership"
+        className="mx-4 mt-3 flex items-center justify-between gap-3 rounded-2xl px-5 py-4 text-white"
+        style={{ backgroundImage: "linear-gradient(135deg, #7C3AED, #4F46E5)" }}
+      >
+        <div className="flex min-w-0 items-center gap-3">
+          <div className="flex h-9 w-9 shrink-0 items-center justify-center rounded-xl" style={{ backgroundColor: "rgba(255,255,255,0.2)" }}>
+            <Crown size={16} fill="white" className="text-white" />
           </div>
-          <Star size={16} style={{ color: "var(--brand)" }} />
-        </button>
-      </div>
-
-      {/* 활동 통계 */}
-      <div className="mx-4 mt-3 rounded-2xl border border-line bg-surface px-5 py-4">
-        <div className="flex items-center justify-around">
-          {stats.map(({ label, value, icon: Icon, path }) => (
-            <button key={label} onClick={() => router.push(path)} className="flex flex-col items-center gap-1">
-              <div
-                className="mb-0.5 flex h-10 w-10 items-center justify-center rounded-2xl"
-                style={{ backgroundColor: "var(--brand-soft)" }}
-              >
-                <Icon size={18} style={{ color: "var(--brand)" }} />
-              </div>
-              <span className="text-[16px] font-bold text-ink">{value}</span>
-              <span className="text-[11px] text-ink-mute">{label}</span>
-            </button>
-          ))}
+          <div className="min-w-0">
+            <p className="truncate text-[14px] font-bold">스탠다드 55</p>
+            <p className="mt-0.5 text-[11px] text-white/80">2026.08.31 만료 · D-80</p>
+          </div>
         </div>
-      </div>
+        <span className="shrink-0 text-[12px] font-semibold">멤버십 관리 →</span>
+      </Link>
 
-      {/* 찜한 콘텐츠 미리보기 */}
+      {/* AI 스튜디오 크레딧 — mock 3종 */}
+      {/* 크레딧 있음 (무료/유료 공통) */}
+      <CreditBlock>
+        <p className="text-[14px] font-bold text-ink">AI 스튜디오 크레딧</p>
+        <p className="mt-0.5 text-[12px] text-ink-soft">잔여 2,450 C</p>
+        <ChargeLink />
+      </CreditBlock>
+      {/* 크레딧 없음 */}
+      <CreditBlock>
+        <p className="text-[14px] font-bold text-ink">AI 스튜디오 크레딧</p>
+        <p className="mt-0.5 text-[12px] text-ink-mute">잔여 크레딧이 없습니다.</p>
+        <ChargeLink />
+      </CreditBlock>
+      {/* 유료 회원 (자동 지급) */}
+      <CreditBlock>
+        <p className="text-[14px] font-bold text-ink">AI 스튜디오 크레딧</p>
+        <p className="mt-0.5 text-[12px] text-ink-soft">잔여 2,450 C</p>
+        <p className="mt-0.5 text-[11px] text-ink-mute">매월 3,000C 자동 지급 · 다음 지급일 06.01</p>
+        <ChargeLink />
+      </CreditBlock>
+
+      {/* 라이선스 사용범위 */}
       <div className="mx-4 mt-3 rounded-2xl border border-line bg-surface px-5 py-4">
-        <div className="mb-3 flex items-center justify-between">
-          <p className="text-[14px] font-bold text-ink">찜한 콘텐츠</p>
-          <button onClick={() => router.push("/like")} className="text-[13px] font-medium text-ink-mute">전체 보기</button>
-        </div>
-        <div className="no-scrollbar flex gap-2 overflow-x-auto">
-          {likedItems.map((item) => (
-            <button
-              key={item.id}
-              onClick={() => router.push(`/content/${item.id}`)}
-              className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface-muted"
-            >
-              {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
-              {item.isPremium && (
-                <div className="absolute right-1 top-1 rounded-full bg-black/55 px-1 py-0.5">
-                  <span className="text-[8px] font-bold text-white">PRO</span>
-                </div>
-              )}
-            </button>
+        <p className="text-[14px] font-bold text-ink">라이선스 사용범위</p>
+        <div className="mt-3 flex flex-col gap-2">
+          {licenseScopes.map(({ type, scope }) => (
+            <div key={type} className="flex gap-2 text-[12px]">
+              <span className="w-16 shrink-0 font-bold text-ink">{type}</span>
+              <span className="min-w-0 flex-1 text-ink-soft">{scope}</span>
+            </div>
           ))}
-          <button
-            onClick={() => router.push("/like")}
-            className="flex h-20 w-20 shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl bg-surface-muted"
-          >
-            <span className="text-[11px] font-semibold text-ink-soft">+124</span>
-            <span className="text-[10px] text-ink-mute">더보기</span>
-          </button>
         </div>
       </div>
 
       {/* 메뉴 그룹 */}
+      {/* 유료 전용 그룹 */}
       {menuGroups.map((group, gi) => (
         <div key={gi} className="mx-4 mt-3 overflow-hidden rounded-2xl border border-line bg-surface">
-          {group.items.map(({ icon: Icon, label, badge, danger, path }, i) => (
+          {group.items.map(({ icon: Icon, label, danger, path }, i) => (
             <button
               key={label}
               onClick={() => path && router.push(path)}
@@ -161,11 +175,6 @@ export default function MyPage() {
             >
               <Icon size={18} className={danger ? "text-danger" : "text-ink-mute"} />
               <span className={`flex-1 text-left text-[14px] ${danger ? "text-danger" : "text-ink-soft"}`}>{label}</span>
-              {badge && (
-                <span className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white" style={{ backgroundColor: "var(--brand)" }}>
-                  {badge}
-                </span>
-              )}
               {!danger && <ChevronRight size={15} className="text-ink-mute" />}
             </button>
           ))}

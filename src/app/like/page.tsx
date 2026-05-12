@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Trash2 } from "lucide-react";
+import { Heart, Trash2, ChevronLeft } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { mockItems } from "@/lib/mockData";
@@ -25,12 +25,17 @@ export default function LikePage() {
         className="pt-safe sticky top-0 z-40 border-b border-line"
         style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
       >
-        <div className="flex h-14 items-center justify-between gap-3 px-4">
-          <div className="flex items-baseline gap-2">
-            <h1 className="text-[16px] font-bold text-ink">찜 목록</h1>
-            <span className="text-[12px] font-medium text-ink-mute">{items.length}개</span>
+        <div className="flex h-14 items-center justify-between gap-3 px-2">
+          <div className="flex min-w-0 items-center gap-1">
+            <button aria-label="뒤로" onClick={() => router.back()} className="shrink-0 p-2.5 text-ink-soft">
+              <ChevronLeft size={22} />
+            </button>
+            <div className="flex items-baseline gap-2">
+              <h1 className="text-[16px] font-bold text-ink">찜 목록</h1>
+              <span className="text-[12px] font-medium text-ink-mute">{items.length}개</span>
+            </div>
           </div>
-          <button className="-mr-2 flex items-center gap-1 p-2 text-[12px] text-ink-mute">
+          <button className="-mr-2 flex shrink-0 items-center gap-1 p-2 text-[12px] text-ink-mute">
             <Trash2 size={14} />
             전체 삭제
           </button>
