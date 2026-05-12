@@ -1,28 +1,22 @@
 "use client";
 
-import { useEffect, useState } from "react";
 import Link from "next/link";
 import { X } from "lucide-react";
 
 export default function OnboardingBanner({ onClose }: { onClose: () => void }) {
-  const [shown, setShown] = useState(false);
-
-  useEffect(() => {
-    const raf = requestAnimationFrame(() => setShown(true));
-    return () => cancelAnimationFrame(raf);
-  }, []);
-
   return (
     <div
       className="fixed bottom-0 left-1/2 z-40 w-full max-w-[480px] -translate-x-1/2 px-3"
-      style={{ paddingBottom: "calc(58px + env(safe-area-inset-bottom) + 8px)", pointerEvents: "none" }}
+      style={{
+        paddingBottom: "calc(58px + env(safe-area-inset-bottom, 0px) + 8px)",
+        pointerEvents: "none",
+      }}
     >
       <div
         className="flex items-center gap-2.5 rounded-2xl px-4 py-3 shadow-lg"
         style={{
           backgroundColor: "var(--brand)",
-          transform: shown ? "translateY(0)" : "translateY(160%)",
-          transition: "transform 0.32s cubic-bezier(0.16,1,0.3,1)",
+          animation: "ck-slide-up 0.34s cubic-bezier(0.16,1,0.3,1) both",
           pointerEvents: "auto",
         }}
       >
