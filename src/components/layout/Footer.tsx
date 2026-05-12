@@ -27,12 +27,15 @@ export default function Footer() {
   const [openInfo, setOpenInfo] = useState(false);
 
   return (
-    <footer className="border-t border-line bg-surface-muted px-5 pb-28 pt-6">
-      <div className="flex flex-col gap-5">
+    <footer
+      className="border-t border-line bg-surface-muted px-5 pt-7"
+      style={{ paddingBottom: "calc(58px + env(safe-area-inset-bottom, 0px) + 16px)" }}
+    >
+      <div className="flex flex-col gap-4">
         {linkGroups.map((g) => (
           <dl key={g.title}>
-            <dt className="text-[12px] font-bold text-ink-mute">{g.title}</dt>
-            <dd className="mt-2 flex flex-col gap-1.5">
+            <dt className="mb-2 text-[12px] font-bold text-ink-mute">{g.title}</dt>
+            <dd className="grid grid-cols-2 gap-x-3 gap-y-1.5">
               {g.links.map((l) => (
                 <a key={l} href="#" className="text-[12px] text-ink-soft">
                   {l}
@@ -45,7 +48,7 @@ export default function Footer() {
 
       <button
         onClick={() => setOpenInfo((v) => !v)}
-        className="mt-5 flex w-full items-center justify-between border-t border-line pt-5"
+        className="mt-4 flex w-full items-center justify-between border-t border-line pt-4"
       >
         <span className="text-[12px] font-semibold text-ink-soft">통로이미지(주)</span>
         <ChevronDown
@@ -62,7 +65,7 @@ export default function Footer() {
         </div>
       ) : null}
 
-      <div className="mt-5 flex flex-wrap gap-x-3 gap-y-1.5">
+      <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5">
         {sns.map((s) => (
           <a key={s} href="#" className="text-[11px] text-ink-mute">
             {s}
@@ -70,7 +73,7 @@ export default function Footer() {
         ))}
       </div>
 
-      <p className="mt-5 text-center text-[10px] text-ink-mute">
+      <p className="mt-4 text-center text-[10px] text-ink-mute">
         Copyright © TongRo Images Inc. All Rights Reserved.
       </p>
     </footer>
