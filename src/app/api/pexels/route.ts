@@ -7,6 +7,9 @@ const CATEGORY_QUERIES: Record<string, string> = {
   ai: "digital art fantasy",
   ppt: "business presentation",
   font: "typography lettering",
+  composite: "digital composite web design",
+  "3d": "3d render object",
+  png: "transparent cutout product",
 };
 
 export async function GET(request: NextRequest) {

@@ -11,6 +11,9 @@ const CATEGORIES = [
   { label: "AI 이미지", type: "ai" },
   { label: "PPT 템플릿", type: "ppt" },
   { label: "폰트", type: "font" },
+  { label: "합성·웹", type: "composite" },
+  { label: "3D", type: "3d" },
+  { label: "PNG", type: "png" },
 ];
 
 export default function CategoryCards() {
