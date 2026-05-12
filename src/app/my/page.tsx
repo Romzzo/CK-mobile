@@ -47,13 +47,15 @@ export default function MyPage() {
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
       <header
-        className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-line px-4"
+        className="pt-safe sticky top-0 z-40 border-b border-line"
         style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
       >
-        <h1 className="text-[16px] font-bold text-ink">MY</h1>
-        <button onClick={() => router.push("/my/settings")} className="p-1 text-ink-soft">
-          <Settings size={20} />
-        </button>
+        <div className="flex h-14 items-center justify-between px-4">
+          <h1 className="text-[16px] font-bold text-ink">MY</h1>
+          <button aria-label="설정" onClick={() => router.push("/my/settings")} className="-mr-2 p-2.5 text-ink-soft">
+            <Settings size={20} />
+          </button>
+        </div>
       </header>
 
       {/* 프로필 */}

@@ -22,17 +22,19 @@ export default function LikePage() {
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
       <header
-        className="sticky top-0 z-40 flex h-14 items-center justify-between gap-3 border-b border-line px-4"
+        className="pt-safe sticky top-0 z-40 border-b border-line"
         style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
       >
-        <div className="flex items-baseline gap-2">
-          <h1 className="text-[16px] font-bold text-ink">찜 목록</h1>
-          <span className="text-[12px] font-medium text-ink-mute">{items.length}개</span>
+        <div className="flex h-14 items-center justify-between gap-3 px-4">
+          <div className="flex items-baseline gap-2">
+            <h1 className="text-[16px] font-bold text-ink">찜 목록</h1>
+            <span className="text-[12px] font-medium text-ink-mute">{items.length}개</span>
+          </div>
+          <button className="-mr-2 flex items-center gap-1 p-2 text-[12px] text-ink-mute">
+            <Trash2 size={14} />
+            전체 삭제
+          </button>
         </div>
-        <button className="flex items-center gap-1 p-1 text-[12px] text-ink-mute">
-          <Trash2 size={14} />
-          전체 삭제
-        </button>
       </header>
 
       {/* 유형 필터 */}
@@ -83,10 +85,11 @@ export default function LikePage() {
                       <img src={item.imageUrl} alt={item.title} className="h-40 w-full object-cover" />
                     </button>
                     <button
+                      aria-label="찜 해제"
                       onClick={() => remove(item.id)}
-                      className="absolute right-2 top-2 flex h-7 w-7 items-center justify-center rounded-full bg-white/90 shadow-sm"
+                      className="absolute right-1.5 top-1.5 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm"
                     >
-                      <Heart size={14} style={{ color: "var(--danger)" }} fill="var(--danger)" />
+                      <Heart size={15} style={{ color: "var(--danger)" }} fill="var(--danger)" />
                     </button>
                     <div className="p-2">
                       <p className="truncate text-[12px] font-medium text-ink-soft">{item.title}</p>

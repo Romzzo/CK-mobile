@@ -21,15 +21,17 @@ export default function PageHeader({
 
   return (
     <header
-      className="sticky top-0 z-40 flex h-14 items-center gap-3 border-b border-line px-4"
+      className="pt-safe sticky top-0 z-40 border-b border-line"
       style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
     >
-      <button aria-label="뒤로" onClick={goBack} className="-ml-1 shrink-0 p-1 text-ink-soft">
-        <ArrowLeft size={22} />
-      </button>
-      <div className="min-w-0">
-        <h1 className="truncate text-[16px] font-bold leading-tight tracking-tight text-ink">{title}</h1>
-        {subtitle ? <p className="truncate text-[11px] text-ink-mute">{subtitle}</p> : null}
+      <div className="flex h-14 items-center gap-2 px-2">
+        <button aria-label="뒤로" onClick={goBack} className="shrink-0 p-2.5 text-ink-soft">
+          <ArrowLeft size={22} />
+        </button>
+        <div className="min-w-0">
+          <h1 className="truncate text-[16px] font-bold leading-tight tracking-tight text-ink">{title}</h1>
+          {subtitle ? <p className="truncate text-[11px] text-ink-mute">{subtitle}</p> : null}
+        </div>
       </div>
     </header>
   );

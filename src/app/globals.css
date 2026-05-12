@@ -122,6 +122,10 @@
   .no-scrollbar::-webkit-scrollbar {
     display: none;
   }
+  /* iOS 노치/상태바 안전영역 — 상단 헤더에 사용 */
+  .pt-safe {
+    padding-top: env(safe-area-inset-top, 0px);
+  }
 }
 
 @keyframes ck-slide-up {
