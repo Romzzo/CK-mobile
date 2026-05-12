@@ -1,75 +1,61 @@
 "use client";
 
-import { useState } from "react";
-import { ChevronDown } from "lucide-react";
+import { Youtube, Instagram, Facebook } from "lucide-react";
 
-const linkGroups = [
-  { title: "회사", links: ["회사소개", "채용문의", "작가입점", "사업제휴"] },
-  {
-    title: "서비스",
-    links: ["클립아트코리아 소개", "공지사항", "자주묻는질문", "라이선스구매/견적", "이벤트", "콘텐츠 유의사항"],
-  },
-  { title: "정책 및 법률", links: ["이용약관", "라이선스 규정", "개인정보처리방침", "청소년보호정책"] },
-];
-
-const sns = ["유튜브", "인스타그램", "페이스북", "핀터레스트", "블로그"];
-
-const companyInfo = [
+const companyLines = [
   "사업자등록번호: 201-86-24458 | 대표: 이철집",
   "04553 서울특별시 중구 수표로 3-6",
   "통신판매신고: 제 2012-서울중구-0016",
   "개인정보보호책임자: 금석룡",
-  "02-2270-1730 | 평일 09:00-18:00 | 점심 12:00~13:00",
-  "clipartkorea@tongro.co.kr | FAX: 02-2277-0816",
 ];
 
-export default function Footer() {
-  const [openInfo, setOpenInfo] = useState(false);
+const policyLinks = ["이용약관", "라이선스 규정", "개인정보처리방침", "청소년보호정책"];
 
+export default function Footer() {
   return (
     <footer className="border-t border-line bg-surface-muted px-5 pb-28 pt-6">
-      <div className="flex flex-col gap-3">
-        {linkGroups.map((g) => (
-          <dl key={g.title} className="flex flex-wrap items-baseline gap-x-1 gap-y-0.5">
-            <dt className="mr-1 text-[11px] font-bold text-ink-mute">{g.title}</dt>
-            {g.links.map((l, i) => (
-              <dd key={l} className="flex items-center">
-                {i > 0 && <span className="mr-1 text-[11px] text-ink-mute">·</span>}
-                <a href="#" className="text-[11px] text-ink-soft">{l}</a>
-              </dd>
-            ))}
-          </dl>
-        ))}
-      </div>
-
-      <button
-        onClick={() => setOpenInfo((v) => !v)}
-        className="mt-5 flex w-full items-center justify-between border-t border-line pt-5"
-      >
-        <span className="text-[12px] font-semibold text-ink-soft">통로이미지(주)</span>
-        <ChevronDown
-          size={15}
-          className="text-ink-mute"
-          style={{ transform: openInfo ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}
-        />
-      </button>
-      {openInfo ? (
-        <div className="mt-3 flex flex-col gap-0.5 text-[11px] leading-relaxed text-ink-mute">
-          {companyInfo.map((line) => (
-            <p key={line}>{line}</p>
-          ))}
-        </div>
-      ) : null}
-
-      <div className="mt-5 flex flex-wrap gap-x-3 gap-y-1.5">
-        {sns.map((s) => (
-          <a key={s} href="#" className="text-[11px] text-ink-mute">
-            {s}
+      {/* 정책 링크 */}
+      <div className="flex flex-wrap gap-x-3 gap-y-1 mb-5">
+        {policyLinks.map((l) => (
+          <a key={l} href="#" className="text-[11px] text-ink-soft">
+            {l}
           </a>
         ))}
       </div>
 
-      <p className="mt-5 text-center text-[10px] text-ink-mute">
+      {/* TongRo 로고 텍스트 */}
+      <p className="text-[13px] font-bold text-ink mb-1">TongRo Images</p>
+      <p className="text-[12px] font-semibold text-ink-soft mb-3">통로이미지(주)</p>
+
+      {/* 회사 정보 */}
+      <div className="flex flex-col gap-0.5 mb-3">
+        {companyLines.map((l) => (
+          <p key={l} className="text-[11px] text-ink-mute leading-relaxed">{l}</p>
+        ))}
+      </div>
+
+      {/* 전화번호 */}
+      <p className="text-[18px] font-bold text-ink mb-0.5">02-2270-1730</p>
+      <p className="text-[11px] text-ink-mute mb-1">평일 09:00-18:00 | 점심 12:00~13:00</p>
+      <p className="text-[11px] text-ink-mute mb-4">clipartkorea@tongro.co.kr | FAX: 02-2277-0816</p>
+
+      {/* SNS */}
+      <div className="flex gap-3 mb-5">
+        <a href="#" aria-label="유튜브" className="text-ink-mute"><Youtube size={18} /></a>
+        <a href="#" aria-label="인스타그램" className="text-ink-mute"><Instagram size={18} /></a>
+        <a href="#" aria-label="페이스북" className="text-ink-mute"><Facebook size={18} /></a>
+        <a href="#" className="text-[11px] text-ink-mute self-center">핀터레스트</a>
+        <a href="#" className="text-[11px] text-ink-mute self-center">블로그</a>
+      </div>
+
+      {/* 인증 배지 텍스트 */}
+      <div className="flex flex-wrap gap-x-3 gap-y-1 mb-4">
+        {["디지털연구소 인가", "굿콘텐츠", "CEPIC"].map((b) => (
+          <span key={b} className="text-[10px] text-ink-mute border border-line rounded px-1.5 py-0.5">{b}</span>
+        ))}
+      </div>
+
+      <p className="text-[10px] text-ink-mute">
         Copyright © TongRo Images Inc. All Rights Reserved.
       </p>
     </footer>
