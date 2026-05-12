@@ -10,6 +10,7 @@ import TrendingKeywords from "@/components/home/TrendingKeywords";
 import EventCarousel from "@/components/home/EventCarousel";
 import BrandStats from "@/components/home/BrandStats";
 import OnboardingBanner from "@/components/home/OnboardingBanner";
+import Footer from "@/components/layout/Footer";
 import BottomNav from "@/components/layout/BottomNav";
 
 const ONBOARDING_KEY = "ck-onboarding-dismissed";
@@ -45,7 +46,7 @@ export default function HomeClient() {
     <div className="min-h-screen bg-surface-muted">
       <StickyHeader solid={solidHeader} />
 
-      <main className={showOnboarding ? "pb-40" : "pb-28"}>
+      <main className="pb-8">
         <HomeHero searchRef={heroSearchRef} />
         <ToolCards />
         <CategoryCards />
@@ -54,6 +55,8 @@ export default function HomeClient() {
         <TrendingKeywords />
         <BrandStats />
       </main>
+
+      <Footer />
 
       {showOnboarding ? <OnboardingBanner onClose={dismissOnboarding} /> : null}
       <BottomNav />
