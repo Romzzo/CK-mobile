@@ -2,6 +2,7 @@
 
 import Link from "next/link";
 import { useState, useEffect } from "react";
+import SectionHeader from "@/components/home/SectionHeader";
 
 const CATEGORIES = [
   { label: "일러스트", type: "illust" },
@@ -23,13 +24,8 @@ export default function CategoryCards() {
   }, []);
 
   return (
-    <section className="px-4 pt-7">
-      <div className="flex items-baseline justify-between">
-        <h2 className="text-[16px] font-bold text-ink">카테고리</h2>
-        <Link href="/search" className="text-[13px] font-medium text-ink-mute">
-          전체 보기
-        </Link>
-      </div>
+    <section className="px-4 pt-8">
+      <SectionHeader title="카테고리" subtitle="원하는 분야부터 골라보세요" href="/search" action="전체 보기" />
 
       <div className="mt-3 grid grid-cols-3 gap-2.5">
         {CATEGORIES.map((c) => (
@@ -50,7 +46,7 @@ export default function CategoryCards() {
             )}
             <div
               className="absolute inset-0"
-              style={{ background: "linear-gradient(to top, rgba(0,0,0,0.55), rgba(0,0,0,0) 55%)" }}
+              style={{ background: "linear-gradient(to top, rgba(0,0,0,0.58), rgba(0,0,0,0) 56%)" }}
             />
             <span className="absolute bottom-2.5 left-3 text-[13px] font-semibold text-white">
               {c.label}

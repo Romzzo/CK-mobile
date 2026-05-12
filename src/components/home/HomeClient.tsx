@@ -1,5 +1,8 @@
+"use client";
+
+import { useEffect, useRef, useState } from "react";
 import StickyHeader from "@/components/layout/StickyHeader";
-import PromoBanner from "@/components/home/PromoBanner";
+import HomeHero from "@/components/home/HomeHero";
 import CategoryCards from "@/components/home/CategoryCards";
 import ImageGrid from "@/components/home/ImageGrid";
 import TrendingKeywords from "@/components/home/TrendingKeywords";
@@ -8,12 +11,26 @@ import BrandStats from "@/components/home/BrandStats";
 import BottomNav from "@/components/layout/BottomNav";
 
 export default function HomeClient() {
+  const heroSearchRef = useRef<HTMLDivElement>(null);
+  const [solidHeader, setSolidHeader] = useState(false);
+
+  useEffect(() => {
+    const el = heroSearchRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => setSolidHeader(!entry.isIntersecting),
+      { threshold: 0, rootMargin: "-56px 0px 0px 0px" }
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, []);
+
   return (
     <div className="min-h-screen bg-surface-muted">
-      <StickyHeader />
+      <StickyHeader solid={solidHeader} />
 
       <main className="pb-28">
-        <PromoBanner />
+        <HomeHero searchRef={heroSearchRef} />
         <CategoryCards />
         <ImageGrid />
         <TrendingKeywords />
