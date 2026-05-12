@@ -3,6 +3,7 @@
 import { useEffect, useRef, useState } from "react";
 import StickyHeader from "@/components/layout/StickyHeader";
 import HomeHero from "@/components/home/HomeHero";
+import ToolCards from "@/components/home/ToolCards";
 import CategoryCards from "@/components/home/CategoryCards";
 import ImageGrid from "@/components/home/ImageGrid";
 import TrendingKeywords from "@/components/home/TrendingKeywords";
@@ -31,6 +32,7 @@ export default function HomeClient() {
 
       <main className="pb-28">
         <HomeHero searchRef={heroSearchRef} />
+        <ToolCards />
         <CategoryCards />
         <ImageGrid />
         <TrendingKeywords />
