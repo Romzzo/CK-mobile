@@ -16,6 +16,7 @@ export default function LikePage() {
 
   const filtered = activeType === "전체" ? items : items.filter((i) => i.type === activeType);
   const remove = (id: number) => setItems((prev) => prev.filter((i) => i.id !== id));
+  const idsParam = filtered.map((i) => i.id).join(",");
   const cols = [filtered.filter((_, i) => i % 2 === 0), filtered.filter((_, i) => i % 2 === 1)];
 
   return (
@@ -74,7 +75,10 @@ export default function LikePage() {
               <div key={ci} className="flex flex-1 flex-col gap-2.5">
                 {col.map((item) => (
                   <div key={item.id} className="relative overflow-hidden rounded-xl bg-surface">
-                    <button onClick={() => router.push(`/content/${item.id}`)} className="block w-full">
+                    <button
+                      onClick={() => router.push(`/content/${item.id}?ids=${idsParam}&idx=${filtered.indexOf(item)}`)}
+                      className="block w-full"
+                    >
                       {/* eslint-disable-next-line @next/next/no-img-element */}
                       <img src={item.imageUrl} alt={item.title} className="h-40 w-full object-cover" />
                     </button>

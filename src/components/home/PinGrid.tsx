@@ -24,7 +24,7 @@ const ratioClass = {
   wide: "aspect-[3/2]",
 };
 
-function PinCard({ photo, index }: { photo: PexelsPhoto; index: number }) {
+function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number; idsParam: string }) {
   const [liked, setLiked] = useState(false);
   const ratio = getAspectRatio(photo.width, photo.height);
   const isPremium = index === 4 || index === 7;
@@ -32,7 +32,7 @@ function PinCard({ photo, index }: { photo: PexelsPhoto; index: number }) {
 
   return (
     <Link
-      href={`/content/${photo.id}`}
+      href={`/content/${photo.id}?ids=${idsParam}&idx=${index}`}
       className="relative block overflow-hidden rounded-xl bg-surface-muted"
     >
       <div className={`${ratioClass[ratio]} w-full`}>
@@ -92,10 +92,9 @@ export default function PinGrid({ query }: { query?: string }) {
       .catch(() => {});
   }, [query]);
 
-  const cols = [
-    photos.filter((_, i) => i % 2 === 0),
-    photos.filter((_, i) => i % 2 === 1),
-  ];
+  const idsParam = photos.map((p) => p.id).join(",");
+  const cols: [PexelsPhoto, number][][] = [[], []];
+  photos.forEach((photo, i) => cols[i % 2].push([photo, i]));
 
   return (
     <div className="flex gap-2">
@@ -108,10 +107,10 @@ export default function PinGrid({ query }: { query?: string }) {
           </div>
         ))
       ) : (
-        cols.map((col, i) => (
-          <div key={i} className="flex flex-1 flex-col gap-2">
-            {col.map((photo, idx) => (
-              <PinCard key={photo.id} photo={photo} index={i * 6 + idx} />
+        cols.map((col, ci) => (
+          <div key={ci} className="flex flex-1 flex-col gap-2">
+            {col.map(([photo, origIdx]) => (
+              <PinCard key={photo.id} photo={photo} index={origIdx} idsParam={idsParam} />
             ))}
           </div>
         ))

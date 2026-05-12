@@ -9,11 +9,15 @@ import OriginalCollections from "@/components/home/OriginalCollections";
 import TrendingKeywords from "@/components/home/TrendingKeywords";
 import EventCarousel from "@/components/home/EventCarousel";
 import BrandStats from "@/components/home/BrandStats";
+import OnboardingBanner from "@/components/home/OnboardingBanner";
 import BottomNav from "@/components/layout/BottomNav";
+
+const ONBOARDING_KEY = "ck-onboarding-dismissed";
 
 export default function HomeClient() {
   const heroSearchRef = useRef<HTMLDivElement>(null);
   const [solidHeader, setSolidHeader] = useState(false);
+  const [showOnboarding, setShowOnboarding] = useState(false);
 
   useEffect(() => {
     const el = heroSearchRef.current;
@@ -26,11 +30,22 @@ export default function HomeClient() {
     return () => observer.disconnect();
   }, []);
 
+  useEffect(() => {
+    // 클라이언트 전용(sessionStorage) — hydration 불일치 방지를 위해 마운트 후 설정
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    if (!sessionStorage.getItem(ONBOARDING_KEY)) setShowOnboarding(true);
+  }, []);
+
+  const dismissOnboarding = () => {
+    sessionStorage.setItem(ONBOARDING_KEY, "1");
+    setShowOnboarding(false);
+  };
+
   return (
     <div className="min-h-screen bg-surface-muted">
       <StickyHeader solid={solidHeader} />
 
-      <main className="pb-28">
+      <main className={showOnboarding ? "pb-40" : "pb-28"}>
         <HomeHero searchRef={heroSearchRef} />
         <ToolCards />
         <CategoryCards />
@@ -40,6 +55,7 @@ export default function HomeClient() {
         <BrandStats />
       </main>
 
+      {showOnboarding ? <OnboardingBanner onClose={dismissOnboarding} /> : null}
       <BottomNav />
     </div>
   );

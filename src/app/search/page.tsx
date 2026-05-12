@@ -6,6 +6,7 @@ import SearchBar from "@/components/search/SearchBar";
 import FilterBar from "@/components/search/FilterBar";
 import RecentSearches from "@/components/search/RecentSearches";
 import PinGrid from "@/components/home/PinGrid";
+import ScrollRestore from "@/components/common/ScrollRestore";
 import BottomNav from "@/components/layout/BottomNav";
 
 function SearchContent() {
@@ -21,6 +22,7 @@ function SearchContent() {
 
   return (
     <div className="min-h-screen bg-surface-muted">
+      <ScrollRestore />
       <SearchBar key={query} initialQuery={query} onSubmit={go} />
 
       {hasQuery ? (
