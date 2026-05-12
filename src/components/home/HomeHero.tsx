@@ -1,7 +1,6 @@
 "use client";
 
 import { Search, ChevronRight } from "lucide-react";
-import Link from "next/link";
 import { useRouter } from "next/navigation";
 import type { RefObject } from "react";
 
@@ -66,14 +65,41 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
           ))}
         </div>
 
-        <Link
-          href="/membership"
-          className="mt-4 flex items-center justify-between rounded-2xl px-4 py-3 text-white"
-          style={{ backgroundColor: "rgba(255,255,255,0.14)", backdropFilter: "blur(6px)" }}
-        >
-          <span className="text-[13px] font-semibold">첫 구매 94% 할인 · 5컷 9,000원</span>
-          <ChevronRight size={16} className="shrink-0 text-white/80" />
-        </Link>
+        <div className="mt-4 grid grid-cols-2 gap-2.5">
+          <a
+            href="https://editor.clipartkorea.co.kr/editor"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col rounded-2xl p-4 text-white"
+            style={{ backgroundColor: "rgba(255,255,255,0.14)", backdropFilter: "blur(6px)" }}
+          >
+            <p className="text-[15px] font-bold leading-snug">포토샵 없어도 돼요</p>
+            <p className="mt-1 text-[12px] leading-snug text-white/70">
+              설치 없이 웹에서 바로 · 무료 체험 가능
+            </p>
+            <span className="mt-auto inline-flex items-center gap-0.5 pt-3 text-[12px] font-semibold">
+              지금 만들어보기
+              <ChevronRight size={13} />
+            </span>
+          </a>
+
+          <a
+            href="https://www.clipartkorea.co.kr/aistudio"
+            target="_blank"
+            rel="noopener noreferrer"
+            className="flex flex-col rounded-2xl p-4 text-white"
+            style={{ backgroundColor: "rgba(255,255,255,0.14)", backdropFilter: "blur(6px)" }}
+          >
+            <p className="text-[15px] font-bold leading-snug">가입하면 1,000크레딧</p>
+            <p className="mt-1 text-[12px] leading-snug text-white/70">
+              초상권 걱정 없는 AI 이미지
+            </p>
+            <span className="mt-auto inline-flex items-center gap-0.5 pt-3 text-[12px] font-semibold">
+              무료로 시작하기
+              <ChevronRight size={13} />
+            </span>
+          </a>
+        </div>
       </div>
     </section>
   );
