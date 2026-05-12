@@ -60,7 +60,7 @@ export default async function ContentDetailPage({
   const relatedIds = relatedItems.map((r) => r.id).join(",");
 
   return (
-    <div className="min-h-screen bg-surface pb-24">
+    <div className="min-h-dvh bg-surface pb-24">
       <DetailHeader />
 
       <DetailSwiper key={String(id)} ids={ids} idx={idx} dir={dir}>

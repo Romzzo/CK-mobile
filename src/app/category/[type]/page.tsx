@@ -18,7 +18,7 @@ export default async function CategoryPage({ params }: { params: Promise<{ type:
   const meta = categoryMeta[type] ?? { label: type, desc: "" };
 
   return (
-    <div className="min-h-screen bg-surface-muted">
+    <div className="min-h-dvh bg-surface-muted">
       <PageHeader title={meta.label} subtitle={meta.desc} fallbackHref="/category" />
 
       <main className="px-3 pb-28 pt-4">

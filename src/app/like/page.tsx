@@ -20,7 +20,7 @@ export default function LikePage() {
   const cols = [filtered.filter((_, i) => i % 2 === 0), filtered.filter((_, i) => i % 2 === 1)];
 
   return (
-    <div className="min-h-screen bg-surface-muted pb-28">
+    <div className="min-h-dvh bg-surface-muted pb-28">
       <header
         className="sticky top-0 z-40 flex h-14 items-center justify-between gap-3 border-b border-line px-4"
         style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}

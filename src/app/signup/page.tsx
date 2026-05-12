@@ -65,7 +65,7 @@ export default function SignupPage() {
   const step2Valid = memberType === "기업" ? bizValid : personalValid;
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface">
+    <div className="flex min-h-dvh flex-col bg-surface">
       <header
         className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-3 border-b border-line px-4"
         style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}

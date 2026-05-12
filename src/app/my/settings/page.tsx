@@ -24,7 +24,7 @@ export default function SettingsPage() {
   const [emailOn, setEmailOn] = useState(false);
 
   return (
-    <div className="min-h-screen bg-surface-muted pb-8">
+    <div className="min-h-dvh bg-surface-muted pb-8">
       <PageHeader title="계정 설정" fallbackHref="/my" />
 
       {/* 계정 */}
