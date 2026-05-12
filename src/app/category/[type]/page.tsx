@@ -1,49 +1,34 @@
-import { ArrowLeft } from "lucide-react";
-import Link from "next/link";
-import ImageGrid from "@/components/home/ImageGrid";
+import PageHeader from "@/components/layout/PageHeader";
+import PinGrid from "@/components/home/PinGrid";
 import BottomNav from "@/components/layout/BottomNav";
 
-const categoryMeta: Record<string, { label: string; desc: string; color: string }> = {
-  illust:  { label: "일러스트", desc: "다양한 스타일의 벡터 일러스트", color: "#7A3DEA" },
-  photo:   { label: "사진", desc: "고퀄리티 스톡 포토", color: "#2563EB" },
-  icon:    { label: "아이콘", desc: "깔끔한 아이콘 세트", color: "#059669" },
-  ai:      { label: "AI이미지", desc: "AI로 생성된 창의적 이미지", color: "#DB2777" },
-  ppt:     { label: "PPT", desc: "업무용 프레젠테이션 템플릿", color: "#D97706" },
-  font:    { label: "폰트", desc: "한글·영문 다양한 폰트", color: "#7C3AED" },
-  video:   { label: "영상·모션", desc: "숏폼·영상 편집용 소스", color: "#DC2626" },
+const categoryMeta: Record<string, { label: string; desc: string }> = {
+  illust: { label: "일러스트", desc: "수채화·라인·캐릭터까지" },
+  photo: { label: "사진", desc: "인물·풍경·음식·비즈니스" },
+  icon: { label: "아이콘", desc: "라인·플랫·3D 아이콘 세트" },
+  ai: { label: "AI 이미지", desc: "AI로 생성한 무한 변형 소스" },
+  ppt: { label: "PPT 템플릿", desc: "발표 자료·인포그래픽" },
+  font: { label: "폰트", desc: "한글·영문 무료 폰트" },
+  video: { label: "영상·모션", desc: "배경 영상·모션 그래픽" },
 };
 
 export default async function CategoryPage({ params }: { params: Promise<{ type: string }> }) {
   const { type } = await params;
-  const meta = categoryMeta[type] ?? { label: type, desc: "", color: "#7A3DEA" };
+  const meta = categoryMeta[type] ?? { label: type, desc: "" };
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 h-14 flex items-center gap-3">
-        <Link href="/" className="p-1 -ml-1">
-          <ArrowLeft size={22} className="text-gray-700" />
-        </Link>
-        <div>
-          <h1 className="text-base font-bold text-gray-900">{meta.label}</h1>
-          {meta.desc && <p className="text-[11px] text-gray-400">{meta.desc}</p>}
-        </div>
-      </header>
+    <div className="min-h-screen bg-surface-muted">
+      <PageHeader title={meta.label} subtitle={meta.desc} fallbackHref="/category" />
 
-      {/* 카테고리 헤더 배너 */}
-      <div
-        className="px-5 py-6"
-        style={{ background: `linear-gradient(135deg, ${meta.color}22, ${meta.color}08)` }}
-      >
-        <div
-          className="inline-block text-xs font-bold px-3 py-1 rounded-full text-white mb-2"
-          style={{ backgroundColor: meta.color }}
-        >
-          {meta.label}
+      <main className="px-3 pb-28 pt-4">
+        <div className="px-1 pb-3">
+          <span className="text-[13px] text-ink-mute">
+            <span className="font-bold text-ink">{meta.label}</span> 1,234개
+          </span>
         </div>
-        <p className="text-sm text-gray-600">{meta.desc}</p>
-      </div>
+        <PinGrid />
+      </main>
 
-      <ImageGrid />
       <BottomNav />
     </div>
   );
