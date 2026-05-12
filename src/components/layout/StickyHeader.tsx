@@ -1,9 +1,11 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, Crown } from "lucide-react";
 import Link from "next/link";
 
 export default function StickyHeader({ solid }: { solid: boolean }) {
+  const fg = solid ? "var(--ink-soft)" : "#fff";
+  const divider = solid ? "var(--line)" : "rgba(255,255,255,0.35)";
   return (
     <header
       className="fixed left-1/2 top-0 z-40 w-full max-w-[480px] -translate-x-1/2 transition-colors duration-300"
@@ -37,13 +39,24 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
           <span className="truncate text-[13px]">이미지, 아이콘, 폰트 검색</span>
         </Link>
 
-        <Link
-          href="/login"
-          className="shrink-0 px-1 text-[13px] font-semibold transition-colors duration-300"
-          style={{ color: solid ? "var(--ink-soft)" : "#fff" }}
-        >
-          로그인
-        </Link>
+        <div className="flex shrink-0 items-center gap-2.5">
+          <Link
+            href="/membership"
+            className="flex items-center gap-1 text-[13px] font-semibold transition-colors duration-300"
+            style={{ color: fg }}
+          >
+            <Crown size={13} />
+            멤버십
+          </Link>
+          <span className="h-3 w-px" style={{ backgroundColor: divider }} />
+          <Link
+            href="/login"
+            className="text-[13px] font-semibold transition-colors duration-300"
+            style={{ color: fg }}
+          >
+            로그인
+          </Link>
+        </div>
       </div>
     </header>
   );
