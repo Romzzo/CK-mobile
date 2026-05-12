@@ -13,7 +13,7 @@ export default function DownloadsPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-surface">
+    <div className="min-h-dvh bg-surface">
       <PageHeader title="다운로드 이력" fallbackHref="/my" />
 
       <div className="px-4 py-2">

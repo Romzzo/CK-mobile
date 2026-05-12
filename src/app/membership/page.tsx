@@ -62,7 +62,7 @@ export default function MembershipPage() {
   const currentPlan = plans.find((p) => p.id === selected)!;
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface-muted">
+    <div className="flex min-h-dvh flex-col bg-surface-muted">
       <PageHeader title="멤버십 & 라이선스" />
 
       <div className="flex-1 overflow-y-auto pb-36">

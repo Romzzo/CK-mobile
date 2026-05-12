@@ -30,7 +30,7 @@ export default function OnboardingBanner({ onClose }: { onClose: () => void }) {
         >
           가입하기 →
         </Link>
-        <button onClick={onClose} aria-label="닫기" className="-mr-1 shrink-0 p-1 text-white/70">
+        <button onClick={onClose} aria-label="닫기" className="-mr-1.5 grid h-9 w-9 shrink-0 place-items-center text-white/70">
           <X size={16} />
         </button>
       </div>

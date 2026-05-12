@@ -43,7 +43,7 @@ export default function HomeClient() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-muted">
+    <div className="min-h-dvh bg-surface-muted">
       <StickyHeader solid={solidHeader} />
 
       <main className="pb-8">

@@ -8,7 +8,7 @@ export default function CouponsPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-surface-muted">
+    <div className="min-h-dvh bg-surface-muted">
       <PageHeader title="쿠폰 / 포인트" fallbackHref="/my" />
 
       <div className="flex flex-col items-center justify-center gap-4 px-8 py-32">

@@ -29,7 +29,7 @@ export default function CategoryIndexPage() {
   }, []);
 
   return (
-    <div className="min-h-screen bg-surface-muted">
+    <div className="min-h-dvh bg-surface-muted">
       <PageHeader title="카테고리" />
 
       <main className="px-4 pb-28 pt-5">

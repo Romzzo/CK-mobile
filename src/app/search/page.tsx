@@ -21,7 +21,7 @@ function SearchContent() {
   };
 
   return (
-    <div className="min-h-screen bg-surface-muted">
+    <div className="min-h-dvh bg-surface-muted">
       <ScrollRestore />
       <SearchBar key={query} initialQuery={query} onSubmit={go} />
 

@@ -12,7 +12,7 @@ export default function LoginPage() {
   const [showPw, setShowPw] = useState(false);
 
   return (
-    <div className="flex min-h-screen flex-col bg-surface">
+    <div className="flex min-h-dvh flex-col bg-surface">
       <PageHeader title="로그인" />
 
       <div className="flex flex-1 flex-col px-5 pb-8 pt-6">
