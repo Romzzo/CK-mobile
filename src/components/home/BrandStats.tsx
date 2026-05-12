@@ -1,49 +1,36 @@
 "use client";
 
-import { useRouter } from "next/navigation";
+import Link from "next/link";
+import { ArrowRight } from "lucide-react";
 
 const stats = [
-  { value: "1,500만+", label: "총 콘텐츠 수" },
-  { value: "300만+", label: "누적 회원" },
-  { value: "20년+", label: "서비스 운영" },
-  { value: "98%", label: "고객 만족도" },
+  { value: "1,500만+", label: "콘텐츠" },
+  { value: "300만+", label: "회원" },
+  { value: "20년+", label: "운영" },
 ];
 
 export default function BrandStats() {
-  const router = useRouter();
-
   return (
-    <div
-      className="mx-4 mt-6 rounded-3xl p-5 overflow-hidden relative"
-      style={{ background: "linear-gradient(135deg, #1E1B4B, #312E81)" }}
-    >
-      {/* 배경 장식 */}
-      <div className="absolute -top-10 -right-10 w-40 h-40 rounded-full bg-white/5" />
-      <div className="absolute -bottom-6 -left-6 w-28 h-28 rounded-full bg-white/5" />
+    <section className="px-4 pt-7">
+      <div className="rounded-2xl border border-line bg-surface p-5">
+        <p className="text-[13px] font-medium text-ink-soft">국내 최대 스톡 이미지 플랫폼</p>
 
-      <div className="relative z-10">
-        <p className="text-purple-300 text-xs font-semibold mb-1">클립아트코리아는</p>
-        <h3 className="text-white font-bold text-base mb-4 leading-snug">
-          국내 최대 스톡이미지<br />플랫폼입니다
-        </h3>
-
-        <div className="grid grid-cols-2 gap-3">
-          {stats.map(({ value, label }) => (
-            <div key={label} className="bg-white/10 rounded-2xl px-3 py-3">
-              <p className="text-white font-bold text-lg leading-none mb-1">{value}</p>
-              <p className="text-purple-300 text-xs">{label}</p>
+        <div className="mt-3 grid grid-cols-3 gap-2">
+          {stats.map((s) => (
+            <div key={s.label}>
+              <p className="text-[18px] font-bold leading-none text-ink">{s.value}</p>
+              <p className="mt-1 text-[12px] text-ink-mute">{s.label}</p>
             </div>
           ))}
         </div>
 
-        <button
-          onClick={() => router.push("/membership")}
-          className="mt-4 w-full py-3 rounded-2xl text-sm font-semibold"
-          style={{ backgroundColor: "var(--ck-primary)", color: "#fff" }}
+        <Link
+          href="/membership"
+          className="mt-4 flex items-center justify-center gap-1.5 rounded-xl bg-brand py-3 text-[14px] font-semibold text-white"
         >
-          지금 무료로 시작하기
-        </button>
+          무료로 시작하기 <ArrowRight size={15} />
+        </Link>
       </div>
-    </div>
+    </section>
   );
 }
