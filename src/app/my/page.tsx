@@ -4,6 +4,7 @@ import {
   Crown, Download, Heart, Clock, Settings, ChevronRight,
   Bell, HelpCircle, LogOut, FileText, Gift, Star,
 } from "lucide-react";
+import type React from "react";
 import BottomNav from "@/components/layout/BottomNav";
 import { mockItems } from "@/lib/mockData";
 import { useRouter } from "next/navigation";
@@ -15,7 +16,6 @@ const stats = [
 ];
 
 type MenuItem = { icon: React.ElementType; label: string; badge: string | null; danger?: boolean; path: string | null };
-import type React from "react";
 
 const menuGroups: { items: MenuItem[] }[] = [
   {
@@ -47,138 +47,132 @@ export default function MyPage() {
   const router = useRouter();
 
   return (
-    <div className="min-h-screen bg-gray-50 pb-24">
-      {/* 헤더 */}
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 h-14 flex items-center justify-between">
-        <h1 className="text-base font-bold text-gray-900">MY</h1>
-        <button className="p-1">
-          <Settings size={20} className="text-gray-600" />
+    <div className="min-h-screen bg-surface-muted pb-28">
+      <header
+        className="sticky top-0 z-40 flex h-14 items-center justify-between border-b border-line px-4"
+        style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
+      >
+        <h1 className="text-[16px] font-bold text-ink">MY</h1>
+        <button onClick={() => router.push("/my/settings")} className="p-1 text-ink-soft">
+          <Settings size={20} />
         </button>
       </header>
 
       {/* 프로필 */}
-      <div className="bg-white px-5 pt-5 pb-5 mb-3">
-        <div className="flex items-center gap-4 mb-5">
+      <div className="mx-4 mt-4 rounded-2xl border border-line bg-surface p-5">
+        <div className="flex items-center gap-4">
           <div
-            className="w-14 h-14 rounded-2xl flex items-center justify-center text-white text-xl font-bold flex-shrink-0"
-            style={{ background: "linear-gradient(135deg, var(--ck-primary), var(--ck-primary-dark))" }}
+            className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-[20px] font-bold text-white"
+            style={{ backgroundColor: "var(--brand)" }}
           >
             박
           </div>
-          <div className="flex-1 min-w-0">
-            <p className="text-base font-bold text-gray-900">박초롬님</p>
-            <p className="text-xs text-gray-400 truncate">example@email.com</p>
+          <div className="min-w-0 flex-1">
+            <p className="text-[16px] font-bold text-ink">박초롬님</p>
+            <p className="truncate text-[12px] text-ink-mute">example@email.com</p>
           </div>
           <button
-            className="text-xs font-semibold px-3 py-1.5 rounded-full border flex-shrink-0"
-            style={{ borderColor: "var(--ck-primary)", color: "var(--ck-primary)" }}
+            className="shrink-0 rounded-full border px-3 py-1.5 text-[12px] font-semibold"
+            style={{ borderColor: "var(--brand)", color: "var(--brand)" }}
           >
             프로필 편집
           </button>
         </div>
 
-        {/* 멤버십 뱃지 */}
         <button
           onClick={() => router.push("/membership")}
-          className="w-full rounded-2xl p-3.5 flex items-center justify-between"
-          style={{ background: "linear-gradient(135deg, #F1E9FD, #E9DAFB)" }}
+          className="mt-4 flex w-full items-center justify-between rounded-xl p-3.5"
+          style={{ backgroundColor: "var(--brand-soft)" }}
         >
           <div className="flex items-center gap-2.5">
             <div
-              className="w-8 h-8 rounded-xl flex items-center justify-center"
-              style={{ backgroundColor: "var(--ck-primary)" }}
+              className="flex h-8 w-8 items-center justify-center rounded-xl"
+              style={{ backgroundColor: "var(--brand)" }}
             >
               <Crown size={15} fill="white" className="text-white" />
             </div>
             <div className="text-left">
-              <p className="text-xs font-bold" style={{ color: "var(--ck-primary-dark)" }}>무료 회원</p>
-              <p className="text-[11px]" style={{ color: "var(--ck-primary)" }}>멤버십 시작하고 무제한 이용하기 →</p>
+              <p className="text-[12px] font-bold" style={{ color: "var(--brand-strong)" }}>무료 회원</p>
+              <p className="text-[11px]" style={{ color: "var(--brand)" }}>멤버십 시작하고 무제한 이용하기 →</p>
             </div>
           </div>
-          <Star size={16} style={{ color: "var(--ck-primary)" }} />
+          <Star size={16} style={{ color: "var(--brand)" }} />
         </button>
       </div>
 
       {/* 활동 통계 */}
-      <div className="bg-white mx-0 mb-3 px-5 py-4">
+      <div className="mx-4 mt-3 rounded-2xl border border-line bg-surface px-5 py-4">
         <div className="flex items-center justify-around">
           {stats.map(({ label, value, icon: Icon, path }) => (
             <button key={label} onClick={() => router.push(path)} className="flex flex-col items-center gap-1">
               <div
-                className="w-10 h-10 rounded-2xl flex items-center justify-center mb-0.5"
-                style={{ backgroundColor: "#F1E9FD" }}
+                className="mb-0.5 flex h-10 w-10 items-center justify-center rounded-2xl"
+                style={{ backgroundColor: "var(--brand-soft)" }}
               >
-                <Icon size={18} style={{ color: "var(--ck-primary)" }} />
+                <Icon size={18} style={{ color: "var(--brand)" }} />
               </div>
-              <span className="text-base font-bold text-gray-900">{value}</span>
-              <span className="text-[11px] text-gray-400">{label}</span>
+              <span className="text-[16px] font-bold text-ink">{value}</span>
+              <span className="text-[11px] text-ink-mute">{label}</span>
             </button>
           ))}
         </div>
       </div>
 
-      {/* 최근 찜한 콘텐츠 미리보기 */}
-      <div className="bg-white mb-3 px-5 py-4">
-        <div className="flex items-center justify-between mb-3">
-          <p className="text-sm font-bold text-gray-800">찜한 콘텐츠</p>
-          <button onClick={() => router.push("/like")} className="text-xs font-medium" style={{ color: "var(--ck-primary)" }}>전체보기</button>
+      {/* 찜한 콘텐츠 미리보기 */}
+      <div className="mx-4 mt-3 rounded-2xl border border-line bg-surface px-5 py-4">
+        <div className="mb-3 flex items-center justify-between">
+          <p className="text-[14px] font-bold text-ink">찜한 콘텐츠</p>
+          <button onClick={() => router.push("/like")} className="text-[13px] font-medium text-ink-mute">전체 보기</button>
         </div>
-        <div className="flex gap-2 overflow-x-auto scrollbar-none" style={{ scrollbarWidth: "none" }}>
+        <div className="no-scrollbar flex gap-2 overflow-x-auto">
           {likedItems.map((item) => (
             <button
               key={item.id}
               onClick={() => router.push(`/content/${item.id}`)}
-              className="relative flex-shrink-0 w-20 h-20 rounded-xl overflow-hidden bg-gray-100"
+              className="relative h-20 w-20 shrink-0 overflow-hidden rounded-xl bg-surface-muted"
             >
               {/* eslint-disable-next-line @next/next/no-img-element */}
-              <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+              <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
               {item.isPremium && (
-                <div className="absolute top-1 right-1 bg-black/60 rounded-full px-1 py-0.5">
-                  <span className="text-[8px] text-white font-bold">PRO</span>
+                <div className="absolute right-1 top-1 rounded-full bg-black/55 px-1 py-0.5">
+                  <span className="text-[8px] font-bold text-white">PRO</span>
                 </div>
               )}
             </button>
           ))}
-          <button className="flex-shrink-0 w-20 h-20 rounded-xl bg-gray-100 flex flex-col items-center justify-center gap-1">
-            <span className="text-[11px] text-gray-400 font-medium">+124</span>
-            <span className="text-[10px] text-gray-400">더보기</span>
+          <button
+            onClick={() => router.push("/like")}
+            className="flex h-20 w-20 shrink-0 flex-col items-center justify-center gap-0.5 rounded-xl bg-surface-muted"
+          >
+            <span className="text-[11px] font-semibold text-ink-soft">+124</span>
+            <span className="text-[10px] text-ink-mute">더보기</span>
           </button>
         </div>
       </div>
 
       {/* 메뉴 그룹 */}
       {menuGroups.map((group, gi) => (
-        <div key={gi} className="bg-white mb-3">
+        <div key={gi} className="mx-4 mt-3 overflow-hidden rounded-2xl border border-line bg-surface">
           {group.items.map(({ icon: Icon, label, badge, danger, path }, i) => (
             <button
               key={label}
               onClick={() => path && router.push(path)}
-              className={`w-full flex items-center gap-3 px-5 py-4 ${
-                i < group.items.length - 1 ? "border-b border-gray-50" : ""
-              }`}
+              className={`flex w-full items-center gap-3 px-5 py-4 ${i < group.items.length - 1 ? "border-b border-line" : ""}`}
             >
-              <Icon
-                size={18}
-                className={danger ? "text-red-400" : "text-gray-500"}
-              />
-              <span className={`flex-1 text-sm text-left ${danger ? "text-red-400" : "text-gray-700"}`}>
-                {label}
-              </span>
+              <Icon size={18} className={danger ? "text-danger" : "text-ink-mute"} />
+              <span className={`flex-1 text-left text-[14px] ${danger ? "text-danger" : "text-ink-soft"}`}>{label}</span>
               {badge && (
-                <span
-                  className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white"
-                  style={{ backgroundColor: "var(--ck-primary)" }}
-                >
+                <span className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white" style={{ backgroundColor: "var(--brand)" }}>
                   {badge}
                 </span>
               )}
-              {!danger && <ChevronRight size={15} className="text-gray-300" />}
+              {!danger && <ChevronRight size={15} className="text-ink-mute" />}
             </button>
           ))}
         </div>
       ))}
 
-      <p className="text-center text-[11px] text-gray-300 py-4">v1.0.0 · 클립아트코리아</p>
+      <p className="py-5 text-center text-[11px] text-ink-mute">v1.0.0 · 클립아트코리아</p>
 
       <BottomNav />
     </div>

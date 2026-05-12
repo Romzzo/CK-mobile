@@ -12,19 +12,19 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
   const tags = ["일러스트", "여름", "자연", "풍경", "배경", "수채화", "무료"];
 
   return (
-    <div className="min-h-screen bg-white">
+    <div className="min-h-screen bg-surface">
       <DetailHeader />
 
       {/* 이미지 */}
-      <div className="relative bg-gray-100 w-full aspect-square">
+      <div className="relative aspect-square w-full bg-surface-muted">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={item.imageUrl} alt={item.title} className="w-full h-full object-cover" />
+        <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
 
         {item.isPremium && (
-          <div className="absolute inset-0 flex items-center justify-center bg-black/20">
-            <div className="bg-white/90 backdrop-blur-sm rounded-2xl px-5 py-3 text-center">
-              <p className="text-xs text-gray-500 mb-0.5">멤버십 전용 콘텐츠</p>
-              <p className="text-sm font-bold" style={{ color: "var(--ck-primary)" }}>미리보기만 가능해요</p>
+          <div className="absolute inset-0 flex items-center justify-center" style={{ backgroundColor: "rgba(0,0,0,0.2)" }}>
+            <div className="rounded-2xl bg-white/90 px-5 py-3 text-center backdrop-blur-sm">
+              <p className="mb-0.5 text-[12px] text-ink-soft">멤버십 전용 콘텐츠</p>
+              <p className="text-[14px] font-bold text-brand">미리보기만 가능해요</p>
             </div>
           </div>
         )}
@@ -32,60 +32,57 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
       {/* 콘텐츠 정보 */}
       <div className="px-5 py-4">
-        {/* 타입 뱃지 + 제목 */}
-        <div className="flex items-start justify-between gap-3 mb-3">
-          <div>
-            <span
-              className="inline-block text-xs font-semibold px-2.5 py-1 rounded-full mb-2"
-              style={{ backgroundColor: "#F1E9FD", color: "var(--ck-primary)" }}
-            >
-              {item.type}
-            </span>
-            <h1 className="text-base font-bold text-gray-900 leading-snug">{item.title}</h1>
-          </div>
+        <div className="mb-3">
+          <span
+            className="mb-2 inline-block rounded-full px-2.5 py-1 text-[12px] font-semibold"
+            style={{ backgroundColor: "var(--brand-soft)", color: "var(--brand)" }}
+          >
+            {item.type}
+          </span>
+          <h1 className="text-[17px] font-bold leading-snug text-ink">{item.title}</h1>
         </div>
 
         {/* 작가 */}
-        <div className="flex items-center gap-2 mb-4">
-          <div className="w-8 h-8 rounded-full bg-gradient-to-br from-purple-400 to-indigo-500 flex items-center justify-center text-white text-xs font-bold">
+        <div className="mb-4 flex items-center gap-2">
+          <div className="flex h-8 w-8 items-center justify-center rounded-full text-[12px] font-bold text-white" style={{ backgroundColor: "var(--brand)" }}>
             {item.author.charAt(0).toUpperCase()}
           </div>
           <div>
-            <p className="text-xs font-medium text-gray-800">@{item.author}</p>
-            <p className="text-[10px] text-gray-400">크리에이터</p>
+            <p className="text-[12px] font-medium text-ink">@{item.author}</p>
+            <p className="text-[10px] text-ink-mute">크리에이터</p>
           </div>
           <button
-            className="ml-auto text-xs font-semibold px-3 py-1.5 rounded-full border"
-            style={{ borderColor: "var(--ck-primary)", color: "var(--ck-primary)" }}
+            className="ml-auto rounded-full border px-3 py-1.5 text-[12px] font-semibold"
+            style={{ borderColor: "var(--brand)", color: "var(--brand)" }}
           >
             팔로우
           </button>
         </div>
 
         {/* 통계 */}
-        <div className="flex items-center gap-5 py-3 border-y border-gray-100 mb-4">
+        <div className="mb-4 flex items-center gap-5 border-y border-line py-3">
           {[
             { icon: Eye, label: "조회", value: "12.4K" },
             { icon: Download, label: "다운로드", value: "3.2K" },
             { icon: Heart, label: "찜", value: "891" },
           ].map(({ icon: Icon, label, value }) => (
             <div key={label} className="flex items-center gap-1.5">
-              <Icon size={14} className="text-gray-400" />
-              <span className="text-xs text-gray-500">{label}</span>
-              <span className="text-xs font-semibold text-gray-700">{value}</span>
+              <Icon size={14} className="text-ink-mute" />
+              <span className="text-[12px] text-ink-mute">{label}</span>
+              <span className="text-[12px] font-semibold text-ink-soft">{value}</span>
             </div>
           ))}
         </div>
 
         {/* 태그 */}
         <div className="mb-6">
-          <div className="flex items-center gap-1.5 mb-2">
-            <Tag size={12} className="text-gray-400" />
-            <span className="text-xs font-semibold text-gray-500">태그</span>
+          <div className="mb-2 flex items-center gap-1.5">
+            <Tag size={12} className="text-ink-mute" />
+            <span className="text-[12px] font-semibold text-ink-soft">태그</span>
           </div>
           <div className="flex flex-wrap gap-1.5">
             {tags.map((tag) => (
-              <span key={tag} className="text-xs px-2.5 py-1 bg-gray-100 rounded-full text-gray-600">
+              <span key={tag} className="rounded-full bg-surface-muted px-2.5 py-1 text-[12px] text-ink-soft">
                 #{tag}
               </span>
             ))}
@@ -94,15 +91,15 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
 
         {/* 관련 콘텐츠 */}
         <div>
-          <h2 className="text-sm font-bold text-gray-800 mb-3">관련 콘텐츠</h2>
+          <h2 className="mb-3 text-[15px] font-bold text-ink">관련 콘텐츠</h2>
           <div className="grid grid-cols-3 gap-1.5">
             {relatedItems.map((rel) => (
-              <a key={rel.id} href={`/content/${rel.id}`} className="relative aspect-square rounded-xl overflow-hidden bg-gray-100">
+              <a key={rel.id} href={`/content/${rel.id}`} className="relative aspect-square overflow-hidden rounded-xl bg-surface-muted">
                 {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img src={rel.imageUrl} alt={rel.title} className="w-full h-full object-cover" />
+                <img src={rel.imageUrl} alt={rel.title} className="h-full w-full object-cover" />
                 {rel.isPremium && (
-                  <div className="absolute top-1 right-1 bg-black/60 rounded-full px-1.5 py-0.5">
-                    <span className="text-[9px] text-white font-bold">PRO</span>
+                  <div className="absolute right-1 top-1 rounded-full bg-black/55 px-1.5 py-0.5">
+                    <span className="text-[9px] font-bold text-white">PRO</span>
                   </div>
                 )}
               </a>
@@ -111,7 +108,6 @@ export default async function ContentDetailPage({ params }: { params: Promise<{ 
         </div>
       </div>
 
-      {/* 하단 여백 (DetailActions 높이) */}
       <div className="h-24" />
 
       <DetailActions isPremium={item.isPremium} />
