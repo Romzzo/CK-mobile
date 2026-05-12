@@ -7,7 +7,7 @@ import { useEffect, useState, type FormEvent, type RefObject } from "react";
 // Pexels 미연결(키 없음)·로딩 중 폴백
 const HERO_FALLBACK = "https://picsum.photos/seed/ck-hero-studio/1200/720";
 
-const hotKeywords = ["여름 배경", "꽃 일러스트", "비즈니스 아이콘", "AI 이미지"];
+const hotKeywords = ["어버이날", "여름 배경", "AI 이미지", "비즈니스 아이콘", "꽃 일러스트"];
 
 export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivElement | null> }) {
   const router = useRouter();
@@ -50,13 +50,10 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
 
       <div className="relative px-5 pb-7 pt-20">
         <h1 className="text-[26px] font-bold leading-[1.25] tracking-tight text-white">
-          찾던 이미지,
+          일잘러 디자이너의 필수 사이트
           <br />
-          여기 다 있어요
+          <span className="font-normal text-white/85">클립아트코리아</span>
         </h1>
-        <p className="mt-2 text-[13px] text-white/75">
-          일러스트 · 사진 · 아이콘 · AI 이미지 · 폰트 1,500만+
-        </p>
 
         <div ref={searchRef} className="mt-5">
           <form
@@ -69,7 +66,7 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
               enterKeyHint="search"
               value={q}
               onChange={(e) => setQ(e.target.value)}
-              placeholder="이미지, 아이콘, 폰트 검색"
+              placeholder="한글, 영문, 콘텐츠번호로 검색"
               className="min-w-0 flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-ink-mute"
             />
             <button
