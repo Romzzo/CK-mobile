@@ -13,6 +13,9 @@ const CATEGORIES: { type: string; label: string; desc: string; count?: string; b
   { type: "ai", label: "AI 이미지", desc: "AI로 생성한 무한 변형 소스", badge: "NEW" },
   { type: "ppt", label: "PPT 템플릿", desc: "발표 자료·인포그래픽", count: "12만+" },
   { type: "font", label: "폰트", desc: "한글·영문 무료 폰트", count: "3,000+" },
+  { type: "composite", label: "합성·웹", desc: "웹 배너·상세페이지용 합성 소스", count: "5만+" },
+  { type: "3d", label: "3D", desc: "리얼한 3D 렌더 오브젝트", badge: "NEW" },
+  { type: "png", label: "PNG", desc: "배경 없는 누끼 PNG 소스", count: "30만+" },
 ];
 
 export default function CategoryIndexPage() {
