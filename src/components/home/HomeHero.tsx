@@ -2,16 +2,27 @@
 
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useState, type FormEvent, type RefObject } from "react";
+import { useEffect, useState, type FormEvent, type RefObject } from "react";
 
-// 임시 히어로 배경 — Pexels API 연동 시 큐레이션 이미지로 교체 예정
-const HERO_IMAGE = "https://picsum.photos/seed/ck-hero-studio/960/760";
+// Pexels 미연결(키 없음)·로딩 중 폴백
+const HERO_FALLBACK = "https://picsum.photos/seed/ck-hero-studio/1200/720";
 
 const hotKeywords = ["여름 배경", "꽃 일러스트", "비즈니스 아이콘", "AI 이미지"];
 
 export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivElement | null> }) {
   const router = useRouter();
   const [q, setQ] = useState("");
+  const [heroImg, setHeroImg] = useState<string>(HERO_FALLBACK);
+
+  useEffect(() => {
+    fetch("/api/pexels?query=colorful%20creative%20studio&per_page=1")
+      .then((r) => r.json())
+      .then((d) => {
+        const url = d?.photos?.[0]?.src?.landscape;
+        if (url) setHeroImg(url);
+      })
+      .catch(() => {});
+  }, []);
 
   const goSearch = (term: string) => {
     const t = term.trim();
@@ -24,15 +35,15 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
   };
 
   return (
-    <section className="relative overflow-hidden">
+    <section className="relative overflow-hidden" style={{ backgroundColor: "#16101F" }}>
       <div className="absolute inset-0">
         {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img src={HERO_IMAGE} alt="" className="h-full w-full object-cover" />
+        <img src={heroImg} alt="" className="h-full w-full object-cover" />
         <div
           className="absolute inset-0"
           style={{
             background:
-              "linear-gradient(180deg, rgba(12,9,22,0.6) 0%, rgba(12,9,22,0.28) 32%, rgba(12,9,22,0.62) 100%)",
+              "linear-gradient(180deg, rgba(12,9,22,0.62) 0%, rgba(12,9,22,0.3) 32%, rgba(12,9,22,0.64) 100%)",
           }}
         />
       </div>
