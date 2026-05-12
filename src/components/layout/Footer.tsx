@@ -28,16 +28,17 @@ export default function Footer() {
 
   return (
     <footer className="border-t border-line bg-surface-muted px-5 pb-28 pt-6">
-      <div className="flex flex-col gap-3">
+      <div className="flex flex-col gap-5">
         {linkGroups.map((g) => (
-          <dl key={g.title} className="flex flex-wrap items-baseline gap-x-1 gap-y-0.5">
-            <dt className="mr-1 text-[11px] font-bold text-ink-mute">{g.title}</dt>
-            {g.links.map((l, i) => (
-              <dd key={l} className="flex items-center">
-                {i > 0 && <span className="mr-1 text-[11px] text-ink-mute">·</span>}
-                <a href="#" className="text-[11px] text-ink-soft">{l}</a>
-              </dd>
-            ))}
+          <dl key={g.title}>
+            <dt className="text-[12px] font-bold text-ink-mute">{g.title}</dt>
+            <dd className="mt-2 flex flex-col gap-1.5">
+              {g.links.map((l) => (
+                <a key={l} href="#" className="text-[12px] text-ink-soft">
+                  {l}
+                </a>
+              ))}
+            </dd>
           </dl>
         ))}
       </div>
