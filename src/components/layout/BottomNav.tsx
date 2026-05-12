@@ -1,14 +1,14 @@
 "use client";
 
-import { Home, Search, Heart, Crown, User } from "lucide-react";
+import { Home, Search, Heart, LayoutGrid, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
 const navItems = [
   { label: "홈", icon: Home, path: "/" },
+  { label: "카테고리", icon: LayoutGrid, path: "/category" },
   { label: "검색", icon: Search, path: "/search" },
   { label: "찜", icon: Heart, path: "/like" },
-  { label: "멤버십", icon: Crown, path: "/membership" },
   { label: "MY", icon: User, path: "/my" },
 ];
 
