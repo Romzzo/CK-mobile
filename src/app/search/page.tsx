@@ -5,7 +5,7 @@ import { useSearchParams } from "next/navigation";
 import SearchBar from "@/components/search/SearchBar";
 import FilterBar from "@/components/search/FilterBar";
 import RecentSearches from "@/components/search/RecentSearches";
-import ImageGrid from "@/components/home/ImageGrid";
+import PinGrid from "@/components/home/PinGrid";
 import BottomNav from "@/components/layout/BottomNav";
 
 function SearchContent() {
@@ -19,27 +19,23 @@ function SearchContent() {
   const hasQuery = query.trim().length > 0;
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <SearchBar
-        value={query}
-        onChange={setQuery}
-        onClear={() => setQuery("")}
-      />
+    <div className="min-h-screen bg-surface-muted">
+      <SearchBar value={query} onChange={setQuery} onClear={() => setQuery("")} />
 
       {hasQuery ? (
         <>
           <FilterBar />
-          <div className="pb-24">
-            <div className="px-4 py-3">
-              <span className="text-xs text-gray-500">
-                <span className="font-semibold text-gray-800">&ldquo;{query}&rdquo;</span> 검색 결과 1,234개
+          <div className="px-3 pb-28">
+            <div className="px-1 py-3.5">
+              <span className="text-[13px] text-ink-mute">
+                <span className="font-bold text-ink">&ldquo;{query}&rdquo;</span> 검색 결과 1,234개
               </span>
             </div>
-            <ImageGrid />
+            <PinGrid />
           </div>
         </>
       ) : (
-        <div className="pb-24">
+        <div className="pb-28">
           <RecentSearches onSelect={(kw) => setQuery(kw)} />
         </div>
       )}
