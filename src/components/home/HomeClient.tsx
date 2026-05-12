@@ -34,9 +34,9 @@ export default function HomeClient() {
         <HomeHero searchRef={heroSearchRef} />
         <ToolCards />
         <CategoryCards />
+        <EventCarousel />
         <OriginalCollections />
         <TrendingKeywords />
-        <EventCarousel />
         <BrandStats />
       </main>
 

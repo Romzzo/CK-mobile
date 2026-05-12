@@ -13,41 +13,41 @@ export default function DetailActions({ isPremium }: DetailActionsProps) {
 
   return (
     <>
-      <div className="fixed bottom-0 left-0 right-0 z-50 bg-white border-t border-gray-100 px-4 py-3 safe-area-pb">
+      <div
+        className="fixed bottom-0 left-1/2 z-40 w-full max-w-[480px] -translate-x-1/2 border-t border-line bg-surface px-4 py-3"
+        style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
+      >
         <div className="flex items-center gap-2">
-          {/* 찜 버튼 */}
           <button
             onClick={() => setLiked(!liked)}
-            className="w-12 h-12 rounded-2xl border border-gray-200 flex items-center justify-center flex-shrink-0"
+            className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-line"
           >
             <Heart
               size={20}
-              style={liked ? { color: "var(--ck-danger)" } : undefined}
-              className={liked ? "" : "text-gray-400"}
-              fill={liked ? "var(--ck-danger)" : "none"}
+              style={liked ? { color: "var(--danger)" } : undefined}
+              className={liked ? "" : "text-ink-mute"}
+              fill={liked ? "var(--danger)" : "none"}
             />
           </button>
 
           {isPremium ? (
-            /* 유료 콘텐츠 */
             <>
               <button
                 onClick={() => setShowPlanSheet(true)}
-                className="flex-1 h-12 rounded-2xl flex items-center justify-center gap-2 font-semibold text-sm text-white"
-                style={{ background: "linear-gradient(135deg, var(--ck-primary), var(--ck-primary-dark))" }}
+                className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl text-[15px] font-semibold text-white"
+                style={{ backgroundColor: "var(--brand)" }}
               >
                 <Crown size={16} fill="currentColor" />
                 멤버십으로 다운로드
               </button>
-              <button className="w-12 h-12 rounded-2xl border border-gray-200 flex items-center justify-center flex-shrink-0">
-                <ShoppingCart size={20} className="text-gray-600" />
+              <button className="flex h-12 w-12 shrink-0 items-center justify-center rounded-xl border border-line text-ink-soft">
+                <ShoppingCart size={20} />
               </button>
             </>
           ) : (
-            /* 무료 콘텐츠 */
             <button
-              className="flex-1 h-12 rounded-2xl flex items-center justify-center gap-2 font-semibold text-sm text-white"
-              style={{ backgroundColor: "var(--ck-primary)" }}
+              className="flex h-12 flex-1 items-center justify-center gap-2 rounded-xl text-[15px] font-semibold text-white"
+              style={{ backgroundColor: "var(--brand)" }}
             >
               <Download size={18} />
               무료 다운로드
@@ -56,46 +56,49 @@ export default function DetailActions({ isPremium }: DetailActionsProps) {
         </div>
       </div>
 
-      {/* 멤버십 플랜 바텀시트 */}
       {showPlanSheet && (
         <>
-          <div className="fixed inset-0 bg-black/50 z-50" onClick={() => setShowPlanSheet(false)} />
-          <div className="fixed bottom-0 left-0 right-0 z-50 bg-white rounded-t-3xl px-5 pt-5 pb-10">
-            <div className="w-10 h-1 bg-gray-200 rounded-full mx-auto mb-5" />
-            <h3 className="text-base font-bold text-gray-900 mb-1">무제한 다운로드</h3>
-            <p className="text-sm text-gray-500 mb-5">멤버십 가입 후 이용해보세요</p>
+          <div
+            className="fixed inset-0 z-50"
+            style={{ backgroundColor: "rgba(0,0,0,0.5)" }}
+            onClick={() => setShowPlanSheet(false)}
+          />
+          <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl bg-surface px-5 pb-10 pt-5">
+            <div className="mx-auto mb-5 h-1 w-10 rounded-full bg-line" />
+            <h3 className="mb-1 text-[16px] font-bold text-ink">무제한 다운로드</h3>
+            <p className="mb-5 text-[14px] text-ink-soft">멤버십 가입 후 이용해보세요</p>
 
             {[
-              { name: "1개월", price: "19,900원", sub: "/월", badge: null },
+              { name: "1개월", price: "19,900원", sub: "/월", badge: null as string | null, monthly: undefined as string | undefined },
               { name: "6개월", price: "14,900원", sub: "/월", badge: "25% 할인", monthly: "89,400원 결제" },
               { name: "12개월", price: "9,900원", sub: "/월", badge: "50% 할인", monthly: "118,800원 결제" },
             ].map((plan) => (
               <button
                 key={plan.name}
-                className="w-full flex items-center justify-between p-4 rounded-2xl border-2 mb-2.5 last:mb-0 transition-all"
-                style={{ borderColor: plan.badge ? "var(--ck-primary)" : "#E5E7EB" }}
+                className="mb-2.5 flex w-full items-center justify-between rounded-2xl border-2 p-4 transition-colors last:mb-0"
+                style={{ borderColor: plan.badge ? "var(--brand)" : "var(--line)" }}
               >
                 <div className="text-left">
                   <div className="flex items-center gap-2">
-                    <span className="text-sm font-semibold text-gray-800">{plan.name}</span>
+                    <span className="text-[14px] font-semibold text-ink">{plan.name}</span>
                     {plan.badge && (
-                      <span className="text-[10px] font-bold px-2 py-0.5 rounded-full text-white" style={{ backgroundColor: "var(--ck-primary)" }}>
+                      <span className="rounded-full px-2 py-0.5 text-[10px] font-bold text-white" style={{ backgroundColor: "var(--brand)" }}>
                         {plan.badge}
                       </span>
                     )}
                   </div>
-                  {plan.monthly && <p className="text-xs text-gray-400 mt-0.5">{plan.monthly}</p>}
+                  {plan.monthly && <p className="mt-0.5 text-[12px] text-ink-mute">{plan.monthly}</p>}
                 </div>
                 <div className="text-right">
-                  <span className="text-base font-bold" style={{ color: "var(--ck-primary)" }}>{plan.price}</span>
-                  <span className="text-xs text-gray-400">{plan.sub}</span>
+                  <span className="text-[16px] font-bold" style={{ color: "var(--brand)" }}>{plan.price}</span>
+                  <span className="text-[12px] text-ink-mute">{plan.sub}</span>
                 </div>
               </button>
             ))}
 
             <button
-              className="w-full h-12 rounded-2xl mt-4 font-semibold text-sm text-white"
-              style={{ background: "linear-gradient(135deg, var(--ck-primary), var(--ck-primary-dark))" }}
+              className="mt-4 h-12 w-full rounded-xl text-[15px] font-semibold text-white"
+              style={{ backgroundColor: "var(--brand)" }}
             >
               멤버십 시작하기
             </button>

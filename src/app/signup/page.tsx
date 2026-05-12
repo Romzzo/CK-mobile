@@ -65,91 +65,98 @@ export default function SignupPage() {
   const step2Valid = memberType === "기업" ? bizValid : personalValid;
 
   return (
-    <div className="min-h-screen bg-white flex flex-col">
-      {/* 헤더 */}
-      <header className="px-4 h-14 flex items-center gap-3 border-b border-gray-100 flex-shrink-0">
-        <button onClick={() => (step === 2 ? setStep(1) : router.back())} className="p-1 -ml-1">
-          <ArrowLeft size={22} className="text-gray-700" />
+    <div className="flex min-h-screen flex-col bg-surface">
+      <header
+        className="sticky top-0 z-40 flex h-14 shrink-0 items-center gap-3 border-b border-line px-4"
+        style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
+      >
+        <button onClick={() => (step === 2 ? setStep(1) : router.back())} className="-ml-1 shrink-0 p-1 text-ink-soft">
+          <ArrowLeft size={22} />
         </button>
-        <h1 className="text-base font-bold text-gray-900">회원가입</h1>
+        <h1 className="text-[16px] font-bold text-ink">회원가입</h1>
         <div className="ml-auto flex items-center gap-1.5">
           {[1, 2].map((s) => (
-            <div key={s} className="w-5 h-1.5 rounded-full transition-colors"
-              style={{ backgroundColor: step >= s ? "var(--ck-primary)" : "#E5E7EB" }} />
+            <div
+              key={s}
+              className="h-1.5 w-5 rounded-full transition-colors"
+              style={{ backgroundColor: step >= s ? "var(--brand)" : "var(--line)" }}
+            />
           ))}
         </div>
       </header>
 
       {/* ── STEP 1: 약관동의 ── */}
       {step === 1 && (
-        <div className="flex-1 px-5 pt-6 pb-10 flex flex-col">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Step 1</p>
-          <h2 className="text-lg font-bold text-gray-900 mb-6">약관 동의</h2>
+        <div className="flex flex-1 flex-col px-5 pb-10 pt-6">
+          <p className="mb-1 text-[12px] font-semibold uppercase tracking-widest text-ink-mute">Step 1</p>
+          <h2 className="mb-6 text-[20px] font-bold text-ink">약관 동의</h2>
 
-          <button className="w-full flex items-center justify-center gap-3 h-12 rounded-2xl border border-gray-200 bg-white mb-5 text-sm font-medium text-gray-700 shadow-sm">
+          <button className="mb-5 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-line bg-surface text-[14px] font-semibold text-ink shadow-sm">
             <GoogleIcon />
             Google로 간편 가입하기
           </button>
 
-          <div className="flex items-center gap-3 mb-5">
-            <div className="flex-1 h-px bg-gray-100" />
-            <span className="text-xs text-gray-400 font-medium">또는 아이디로 가입</span>
-            <div className="flex-1 h-px bg-gray-100" />
+          <div className="mb-5 flex items-center gap-3">
+            <div className="h-px flex-1 bg-line" />
+            <span className="text-[12px] font-medium text-ink-mute">또는 아이디로 가입</span>
+            <div className="h-px flex-1 bg-line" />
           </div>
 
-          <button onClick={toggleAll}
-            className="w-full flex items-center gap-3 p-4 rounded-2xl border-2 mb-3 transition-colors"
-            style={{ borderColor: allChecked ? "var(--ck-primary)" : "#E5E7EB", backgroundColor: allChecked ? "#F1E9FD" : "#F9FAFB" }}
+          <button
+            onClick={toggleAll}
+            className="mb-3 flex w-full items-center gap-3 rounded-xl border p-4 transition-colors"
+            style={{
+              borderColor: allChecked ? "var(--brand)" : "var(--line)",
+              backgroundColor: allChecked ? "var(--brand-soft)" : "var(--surface-muted)",
+            }}
           >
             <CheckCircle checked={allChecked} size={20} />
-            <span className="text-sm font-bold text-gray-800">전체 동의</span>
-            <span className="text-xs text-gray-400 ml-auto">선택 포함</span>
+            <span className="text-[14px] font-bold text-ink">전체 동의</span>
+            <span className="ml-auto text-[12px] text-ink-mute">선택 포함</span>
           </button>
 
-          <div className="flex flex-col gap-1 bg-gray-50 rounded-2xl p-2 mb-6">
+          <div className="mb-6 flex flex-col gap-1 rounded-xl bg-surface-muted p-2">
             {terms.map((term) => (
               <div key={term.id} className="flex items-center gap-3 px-3 py-3">
                 <button onClick={() => setAgreed((prev) => ({ ...prev, [term.id]: !prev[term.id] }))}>
                   <CheckCircle checked={!!agreed[term.id]} size={18} />
                 </button>
-                <span className="flex-1 text-xs text-gray-700">
+                <span className="flex-1 text-[13px] text-ink-soft">
                   {term.label}
-                  {term.required ? <span className="text-red-400 ml-1">*</span> : <span className="text-gray-400 ml-1">(선택)</span>}
+                  {term.required ? <span className="ml-1 text-danger">*</span> : <span className="ml-1 text-ink-mute">(선택)</span>}
                 </span>
-                <ChevronRight size={14} className="text-gray-300 flex-shrink-0" />
+                <ChevronRight size={14} className="shrink-0 text-ink-mute" />
               </div>
             ))}
           </div>
 
-          <button onClick={() => allRequired && setStep(2)}
-            className="w-full h-12 rounded-2xl text-sm font-bold text-white transition-opacity"
-            style={{ backgroundColor: "var(--ck-primary)", opacity: allRequired ? 1 : 0.4 }}
+          <button
+            onClick={() => allRequired && setStep(2)}
+            className="h-12 w-full rounded-xl text-[15px] font-semibold text-white transition-opacity"
+            style={{ backgroundColor: "var(--brand)", opacity: allRequired ? 1 : 0.4 }}
           >
             다음 단계
           </button>
-          <p className="text-center text-xs text-gray-400 mt-3">
+          <p className="mt-3 text-center text-[13px] text-ink-mute">
             이미 계정이 있으신가요?{" "}
-            <button onClick={() => router.push("/login")} className="font-semibold" style={{ color: "var(--ck-primary)" }}>로그인</button>
+            <button onClick={() => router.push("/login")} className="font-semibold text-brand">로그인</button>
           </p>
         </div>
       )}
 
       {/* ── STEP 2: 정보입력 ── */}
       {step === 2 && (
-        <div className="flex-1 px-5 pt-6 pb-10 overflow-y-auto">
-          <p className="text-xs font-semibold text-gray-400 uppercase tracking-widest mb-1">Step 2</p>
-          <h2 className="text-lg font-bold text-gray-900 mb-6">정보 입력</h2>
+        <div className="flex-1 overflow-y-auto px-5 pb-10 pt-6">
+          <p className="mb-1 text-[12px] font-semibold uppercase tracking-widest text-ink-mute">Step 2</p>
+          <h2 className="mb-6 text-[20px] font-bold text-ink">정보 입력</h2>
 
           <div className="flex flex-col gap-4">
-
-            {/* 공통: 아이디 */}
             <Field label="아이디" required hint="영문·숫자 4~12자">
               <input type="text" value={userId}
                 onChange={(e) => setUserId(e.target.value.replace(/[^a-zA-Z0-9]/g, "").slice(0, 12))}
                 placeholder="영문, 숫자 조합 4~12자" className="input-base" />
             </Field>
 
-            {/* 공통: 비밀번호 */}
             <Field label="비밀번호" required hint="8자 이상">
               <div className="relative">
                 <input type={showPw ? "text" : "password"} value={pw}
@@ -159,36 +166,36 @@ export default function SignupPage() {
               </div>
             </Field>
 
-            {/* 공통: 비밀번호 확인 */}
             <Field label="비밀번호 확인" required>
               <div className="relative">
                 <input type={showPwC ? "text" : "password"} value={pwConfirm}
                   onChange={(e) => setPwConfirm(e.target.value)}
                   placeholder="비밀번호를 한 번 더 입력"
-                  className={`input-base pr-11 ${pwConfirm && pw !== pwConfirm ? "!border-red-300" : ""}`} />
+                  className={`input-base pr-11 ${pwConfirm && pw !== pwConfirm ? "input-error" : ""}`} />
                 <PwToggle show={showPwC} onToggle={() => setShowPwC(!showPwC)} />
               </div>
-              {pwConfirm && pw !== pwConfirm && <p className="text-xs text-red-400 mt-1 px-1">비밀번호가 일치하지 않아요</p>}
+              {pwConfirm && pw !== pwConfirm && <p className="mt-1 px-1 text-[12px] text-danger">비밀번호가 일치하지 않아요</p>}
             </Field>
 
-            {/* 공통: 이메일 */}
             <Field label="이메일 주소" required hint="결제·공지 안내에 사용돼요">
               <input type="email" value={emailInput}
                 onChange={(e) => setEmailInput(e.target.value)}
                 placeholder="example@email.com" className="input-base" />
             </Field>
 
-            {/* 공통: 가입경로 */}
             <Field label="가입경로">
-              <div className="flex flex-wrap gap-2 mt-0.5">
-                {joinRoutes.map((r) => (
-                  <button key={r} onClick={() => setJoinRoute(r)}
-                    className="px-3 py-1.5 rounded-full text-xs font-medium border transition-colors"
-                    style={joinRoute === r
-                      ? { backgroundColor: "var(--ck-primary)", borderColor: "var(--ck-primary)", color: "#fff" }
-                      : { backgroundColor: "#F9FAFB", borderColor: "#E5E7EB", color: "#6B7280" }}
-                  >{r}</button>
-                ))}
+              <div className="mt-0.5 flex flex-wrap gap-2">
+                {joinRoutes.map((r) => {
+                  const active = joinRoute === r;
+                  return (
+                    <button key={r} onClick={() => setJoinRoute(r)}
+                      className="rounded-full border px-3 py-1.5 text-[12px] font-medium transition-colors"
+                      style={active
+                        ? { backgroundColor: "var(--brand)", borderColor: "var(--brand)", color: "#fff" }
+                        : { backgroundColor: "var(--surface-muted)", borderColor: "var(--line)", color: "var(--ink-soft)" }}
+                    >{r}</button>
+                  );
+                })}
               </div>
               {joinRoute === "기타" && (
                 <input type="text" value={joinRouteEtc} onChange={(e) => setJoinRouteEtc(e.target.value)}
@@ -196,21 +203,22 @@ export default function SignupPage() {
               )}
             </Field>
 
-            {/* 기업 / 개인 토글 */}
-            <div className="flex justify-center mt-2">
-              <div className="flex bg-gray-100 rounded-full p-1 gap-1">
-                {(["기업", "개인"] as const).map((type) => (
-                  <button key={type} onClick={() => setMemberType(type)}
-                    className="px-8 py-2 rounded-full text-sm font-bold transition-all"
-                    style={memberType === type
-                      ? { backgroundColor: "#111", color: "#fff" }
-                      : { backgroundColor: "transparent", color: "#6B7280" }}
-                  >{type}</button>
-                ))}
+            <div className="mt-2 flex justify-center">
+              <div className="flex gap-1 rounded-full bg-surface-muted p-1">
+                {(["기업", "개인"] as const).map((type) => {
+                  const active = memberType === type;
+                  return (
+                    <button key={type} onClick={() => setMemberType(type)}
+                      className="rounded-full px-8 py-2 text-[14px] font-bold transition-all"
+                      style={active
+                        ? { backgroundColor: "var(--ink)", color: "#fff" }
+                        : { backgroundColor: "transparent", color: "var(--ink-mute)" }}
+                    >{type}</button>
+                  );
+                })}
               </div>
             </div>
 
-            {/* ── 기업 전용 ── */}
             {memberType === "기업" && (
               <>
                 <SelectField label="업종" required value={industry} onChange={setIndustry} options={industryOptions} placeholder="업종을 선택해주세요" />
@@ -221,7 +229,7 @@ export default function SignupPage() {
                     <input type="text" value={bizNo}
                       onChange={(e) => setBizNo(e.target.value.replace(/\D/g, "").slice(0, 10))}
                       placeholder="숫자만 입력 (10자리)" className="input-base flex-1" />
-                    <button className="flex-shrink-0 h-12 px-4 rounded-2xl border border-gray-300 text-xs font-semibold text-gray-600 bg-white">인증</button>
+                    <button className="h-12 shrink-0 rounded-xl border border-line bg-surface px-4 text-[13px] font-semibold text-ink-soft">인증</button>
                   </div>
                 </Field>
 
@@ -243,7 +251,6 @@ export default function SignupPage() {
               </>
             )}
 
-            {/* ── 개인 전용 ── */}
             {memberType === "개인" && (
               <>
                 <Field label="휴대폰번호" required hint="만 19세 이상만 가입 가능">
@@ -251,18 +258,17 @@ export default function SignupPage() {
                     <input type="tel" value={phone}
                       onChange={(e) => setPhone(e.target.value.replace(/\D/g, "").slice(0, 11))}
                       placeholder="01012345678" className="input-base flex-1" />
-                    <button className="flex-shrink-0 h-12 px-4 rounded-2xl border border-gray-300 text-xs font-semibold text-gray-600 bg-white">인증</button>
+                    <button className="h-12 shrink-0 rounded-xl border border-line bg-surface px-4 text-[13px] font-semibold text-ink-soft">인증</button>
                   </div>
                 </Field>
 
                 <SelectField label="직업/분야" required value={job} onChange={setJob} options={jobOptions} placeholder="직업/분야를 선택해주세요" />
               </>
             )}
-
           </div>
 
-          <button className="w-full h-12 rounded-2xl text-sm font-bold text-white mt-8 transition-opacity"
-            style={{ backgroundColor: "var(--ck-primary)", opacity: step2Valid ? 1 : 0.4 }}
+          <button className="mt-8 h-12 w-full rounded-xl text-[15px] font-semibold text-white transition-opacity"
+            style={{ backgroundColor: "var(--brand)", opacity: step2Valid ? 1 : 0.4 }}
           >
             가입 완료
           </button>
@@ -273,19 +279,19 @@ export default function SignupPage() {
         .input-base {
           width: 100%;
           height: 48px;
-          border-radius: 16px;
-          border: 1px solid #E5E7EB;
+          border-radius: 12px;
+          border: 1px solid var(--line);
           padding: 0 16px;
           font-size: 14px;
-          color: #1F2937;
+          color: var(--ink);
           outline: none;
           transition: border-color 0.15s;
-          background: white;
+          background: var(--surface);
         }
-        .input-base:focus { border-color: #A78BFA; }
-        .input-base::placeholder { color: #D1D5DB; }
+        .input-base:focus { border-color: var(--brand); }
+        .input-base::placeholder { color: var(--ink-mute); }
         .input-base.pr-11 { padding-right: 44px; }
-        .\\!border-red-300 { border-color: #FCA5A5 !important; }
+        .input-base.input-error { border-color: var(--danger); }
       `}</style>
     </div>
   );
@@ -296,10 +302,10 @@ export default function SignupPage() {
 function Field({ label, required, hint, children }: { label: string; required?: boolean; hint?: string; children: React.ReactNode }) {
   return (
     <div>
-      <div className="flex items-center gap-1 mb-1.5">
-        <label className="text-xs font-semibold text-gray-500">{label}</label>
-        {required && <span className="text-red-400 text-xs">*</span>}
-        {hint && <span className="text-[11px] text-gray-300 ml-1">{hint}</span>}
+      <div className="mb-1.5 flex items-center gap-1">
+        <label className="text-[12px] font-semibold text-ink-soft">{label}</label>
+        {required && <span className="text-[12px] text-danger">*</span>}
+        {hint && <span className="ml-1 text-[11px] text-ink-mute">{hint}</span>}
       </div>
       {children}
     </div>
@@ -316,18 +322,18 @@ function SelectField({ label, required, value, onChange, options, placeholder }:
       <div className="relative">
         <button type="button" onClick={() => setOpen(!open)}
           className="input-base flex items-center justify-between text-left"
-          style={{ color: value ? "#1F2937" : "#D1D5DB" }}
+          style={{ color: value ? "var(--ink)" : "var(--ink-mute)" }}
         >
           <span className="truncate">{value || placeholder}</span>
-          <ChevronDown size={16} className="flex-shrink-0 text-gray-400" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+          <ChevronDown size={16} className="shrink-0 text-ink-mute" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
         </button>
         {open && (
-          <div className="absolute top-full left-0 right-0 mt-1 bg-white border border-gray-200 rounded-2xl shadow-lg z-20 overflow-hidden max-h-52 overflow-y-auto">
+          <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-52 overflow-y-auto rounded-xl border border-line bg-surface shadow-lg">
             {options.map((opt) => (
               <button key={opt} type="button"
                 onClick={() => { onChange(opt); setOpen(false); }}
-                className="w-full text-left px-4 py-3 text-sm text-gray-700 hover:bg-gray-50 border-b border-gray-50 last:border-0"
-                style={value === opt ? { color: "var(--ck-primary)", fontWeight: 600 } : {}}
+                className="block w-full border-b border-line px-4 py-3 text-left text-[14px] text-ink-soft last:border-0"
+                style={value === opt ? { color: "var(--brand)", fontWeight: 600 } : {}}
               >{opt}</button>
             ))}
           </div>
@@ -339,8 +345,8 @@ function SelectField({ label, required, value, onChange, options, placeholder }:
 
 function CheckCircle({ checked, size }: { checked: boolean; size: number }) {
   return (
-    <div className="flex-shrink-0 rounded-full flex items-center justify-center transition-colors"
-      style={{ width: size, height: size, backgroundColor: checked ? "var(--ck-primary)" : "#D1D5DB" }}>
+    <div className="flex shrink-0 items-center justify-center rounded-full transition-colors"
+      style={{ width: size, height: size, backgroundColor: checked ? "var(--brand)" : "#D4D4D8" }}>
       <Check size={size * 0.55} className="text-white" strokeWidth={3} />
     </div>
   );
@@ -348,7 +354,7 @@ function CheckCircle({ checked, size }: { checked: boolean; size: number }) {
 
 function PwToggle({ show, onToggle }: { show: boolean; onToggle: () => void }) {
   return (
-    <button type="button" onClick={onToggle} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-gray-400">
+    <button type="button" onClick={onToggle} className="absolute right-3 top-1/2 -translate-y-1/2 p-1 text-ink-mute">
       {show ? <EyeOff size={16} /> : <Eye size={16} />}
     </button>
   );
@@ -357,10 +363,10 @@ function PwToggle({ show, onToggle }: { show: boolean; onToggle: () => void }) {
 function GoogleIcon() {
   return (
     <svg width="18" height="18" viewBox="0 0 18 18" fill="none">
-      <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4"/>
-      <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853"/>
-      <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05"/>
-      <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335"/>
+      <path d="M17.64 9.2c0-.637-.057-1.251-.164-1.84H9v3.481h4.844c-.209 1.125-.843 2.078-1.796 2.717v2.258h2.908c1.702-1.567 2.684-3.875 2.684-6.615z" fill="#4285F4" />
+      <path d="M9 18c2.43 0 4.467-.806 5.956-2.18l-2.908-2.259c-.806.54-1.837.86-3.048.86-2.344 0-4.328-1.584-5.036-3.711H.957v2.332C2.438 15.983 5.482 18 9 18z" fill="#34A853" />
+      <path d="M3.964 10.71A5.41 5.41 0 0 1 3.682 9c0-.593.102-1.17.282-1.71V4.958H.957A8.996 8.996 0 0 0 0 9c0 1.452.348 2.827.957 4.042l3.007-2.332z" fill="#FBBC05" />
+      <path d="M9 3.58c1.321 0 2.508.454 3.44 1.345l2.582-2.58C13.463.891 11.426 0 9 0 5.482 0 2.438 2.017.957 4.958L3.964 6.29C4.672 4.163 6.656 3.58 9 3.58z" fill="#EA4335" />
     </svg>
   );
 }

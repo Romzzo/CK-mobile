@@ -79,15 +79,18 @@ function PinCard({ photo, index }: { photo: PexelsPhoto; index: number }) {
   );
 }
 
-export default function PinGrid() {
+export default function PinGrid({ query }: { query?: string }) {
   const [photos, setPhotos] = useState<PexelsPhoto[]>([]);
 
   useEffect(() => {
-    fetch("/api/pexels?per_page=12")
+    const url = query
+      ? `/api/pexels?query=${encodeURIComponent(query)}&per_page=12`
+      : "/api/pexels?per_page=12";
+    fetch(url)
       .then((r) => r.json())
       .then((data) => { if (data.photos) setPhotos(data.photos); })
       .catch(() => {});
-  }, []);
+  }, [query]);
 
   const cols = [
     photos.filter((_, i) => i % 2 === 0),

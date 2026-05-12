@@ -1,91 +1,77 @@
 "use client";
 
-import { ArrowLeft, ChevronRight, Bell, Lock, Smartphone, Globe, Trash2 } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { ChevronRight, Bell, Lock, Smartphone, Globe, Trash2 } from "lucide-react";
 import { useState } from "react";
+import PageHeader from "@/components/layout/PageHeader";
+
+function Toggle({ on, onToggle }: { on: boolean; onToggle: () => void }) {
+  return (
+    <button
+      onClick={onToggle}
+      className="relative h-6 w-11 rounded-full transition-colors"
+      style={{ backgroundColor: on ? "var(--brand)" : "#D4D4D8" }}
+    >
+      <div
+        className="absolute top-0.5 h-5 w-5 rounded-full bg-white shadow-sm transition-transform"
+        style={{ transform: on ? "translateX(22px)" : "translateX(2px)" }}
+      />
+    </button>
+  );
+}
 
 export default function SettingsPage() {
-  const router = useRouter();
   const [pushOn, setPushOn] = useState(true);
   const [emailOn, setEmailOn] = useState(false);
 
   return (
-    <div className="min-h-screen bg-gray-50">
-      <header className="sticky top-0 z-50 bg-white border-b border-gray-100 px-4 h-14 flex items-center gap-3">
-        <button onClick={() => router.back()} className="p-1 -ml-1">
-          <ArrowLeft size={22} className="text-gray-700" />
-        </button>
-        <h1 className="text-base font-bold text-gray-900">계정 설정</h1>
-      </header>
+    <div className="min-h-screen bg-surface-muted pb-8">
+      <PageHeader title="계정 설정" fallbackHref="/my" />
 
-      {/* 계정 정보 */}
-      <div className="bg-white mt-3 mb-3">
-        <p className="px-5 pt-4 pb-2 text-xs font-bold text-gray-400 uppercase tracking-wider">계정</p>
-        <button className="w-full flex items-center justify-between px-5 py-3.5 border-b border-gray-50">
-          <div className="flex items-center gap-3">
-            <Lock size={16} className="text-gray-500" />
-            <span className="text-sm text-gray-700">비밀번호 변경</span>
-          </div>
-          <ChevronRight size={15} className="text-gray-300" />
-        </button>
-        <button className="w-full flex items-center justify-between px-5 py-3.5 border-b border-gray-50">
-          <div className="flex items-center gap-3">
-            <Smartphone size={16} className="text-gray-500" />
-            <span className="text-sm text-gray-700">휴대폰 번호 변경</span>
-          </div>
-          <ChevronRight size={15} className="text-gray-300" />
-        </button>
-        <button className="w-full flex items-center justify-between px-5 py-3.5">
-          <div className="flex items-center gap-3">
-            <Globe size={16} className="text-gray-500" />
-            <span className="text-sm text-gray-700">이메일 변경</span>
-          </div>
-          <ChevronRight size={15} className="text-gray-300" />
-        </button>
+      {/* 계정 */}
+      <p className="px-5 pb-2 pt-5 text-[11px] font-bold uppercase tracking-wider text-ink-mute">계정</p>
+      <div className="mx-4 overflow-hidden rounded-2xl border border-line bg-surface">
+        {[
+          { icon: Lock, label: "비밀번호 변경" },
+          { icon: Smartphone, label: "휴대폰 번호 변경" },
+          { icon: Globe, label: "이메일 변경" },
+        ].map(({ icon: Icon, label }, i, arr) => (
+          <button
+            key={label}
+            className={`flex w-full items-center justify-between px-5 py-3.5 ${i < arr.length - 1 ? "border-b border-line" : ""}`}
+          >
+            <div className="flex items-center gap-3">
+              <Icon size={16} className="text-ink-mute" />
+              <span className="text-[14px] text-ink-soft">{label}</span>
+            </div>
+            <ChevronRight size={15} className="text-ink-mute" />
+          </button>
+        ))}
       </div>
 
-      {/* 알림 설정 */}
-      <div className="bg-white mb-3">
-        <p className="px-5 pt-4 pb-2 text-xs font-bold text-gray-400 uppercase tracking-wider">알림</p>
-        <div className="flex items-center justify-between px-5 py-3.5 border-b border-gray-50">
+      {/* 알림 */}
+      <p className="px-5 pb-2 pt-5 text-[11px] font-bold uppercase tracking-wider text-ink-mute">알림</p>
+      <div className="mx-4 overflow-hidden rounded-2xl border border-line bg-surface">
+        <div className="flex items-center justify-between border-b border-line px-5 py-3.5">
           <div className="flex items-center gap-3">
-            <Bell size={16} className="text-gray-500" />
-            <span className="text-sm text-gray-700">푸시 알림</span>
+            <Bell size={16} className="text-ink-mute" />
+            <span className="text-[14px] text-ink-soft">푸시 알림</span>
           </div>
-          <button
-            onClick={() => setPushOn(!pushOn)}
-            className="relative w-11 h-6 rounded-full transition-colors"
-            style={{ backgroundColor: pushOn ? "var(--ck-primary)" : "#D1D5DB" }}
-          >
-            <div
-              className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform"
-              style={{ transform: pushOn ? "translateX(22px)" : "translateX(2px)" }}
-            />
-          </button>
+          <Toggle on={pushOn} onToggle={() => setPushOn(!pushOn)} />
         </div>
         <div className="flex items-center justify-between px-5 py-3.5">
           <div className="flex items-center gap-3">
-            <Bell size={16} className="text-gray-500" />
-            <span className="text-sm text-gray-700">이메일 수신</span>
+            <Bell size={16} className="text-ink-mute" />
+            <span className="text-[14px] text-ink-soft">이메일 수신</span>
           </div>
-          <button
-            onClick={() => setEmailOn(!emailOn)}
-            className="relative w-11 h-6 rounded-full transition-colors"
-            style={{ backgroundColor: emailOn ? "var(--ck-primary)" : "#D1D5DB" }}
-          >
-            <div
-              className="absolute top-0.5 w-5 h-5 rounded-full bg-white shadow-sm transition-transform"
-              style={{ transform: emailOn ? "translateX(22px)" : "translateX(2px)" }}
-            />
-          </button>
+          <Toggle on={emailOn} onToggle={() => setEmailOn(!emailOn)} />
         </div>
       </div>
 
       {/* 위험 구역 */}
-      <div className="bg-white mb-3">
-        <button className="w-full flex items-center gap-3 px-5 py-4">
-          <Trash2 size={16} className="text-red-400" />
-          <span className="text-sm text-red-400">회원 탈퇴</span>
+      <div className="mx-4 mt-5 overflow-hidden rounded-2xl border border-line bg-surface">
+        <button className="flex w-full items-center gap-3 px-5 py-4">
+          <Trash2 size={16} className="text-danger" />
+          <span className="text-[14px] text-danger">회원 탈퇴</span>
         </button>
       </div>
     </div>

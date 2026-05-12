@@ -2,7 +2,7 @@
 
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
-import type { RefObject } from "react";
+import { useState, type FormEvent, type RefObject } from "react";
 
 // 임시 히어로 배경 — Pexels API 연동 시 큐레이션 이미지로 교체 예정
 const HERO_IMAGE = "https://picsum.photos/seed/ck-hero-studio/960/760";
@@ -11,6 +11,17 @@ const hotKeywords = ["여름 배경", "꽃 일러스트", "비즈니스 아이�
 
 export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivElement | null> }) {
   const router = useRouter();
+  const [q, setQ] = useState("");
+
+  const goSearch = (term: string) => {
+    const t = term.trim();
+    router.push(t ? `/search?q=${encodeURIComponent(t)}` : "/search");
+  };
+
+  const onSubmit = (e: FormEvent) => {
+    e.preventDefault();
+    goSearch(q);
+  };
 
   return (
     <section className="relative overflow-hidden">
@@ -37,26 +48,34 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
         </p>
 
         <div ref={searchRef} className="mt-5">
-          <button
-            onClick={() => router.push("/search")}
-            className="flex h-[52px] w-full items-center gap-3 rounded-2xl bg-white px-4 text-left shadow-lg"
+          <form
+            onSubmit={onSubmit}
+            className="flex h-[52px] w-full items-center gap-3 rounded-2xl bg-white px-4 shadow-lg"
           >
             <Search size={18} className="shrink-0 text-ink-mute" />
-            <span className="flex-1 text-[14px] text-ink-mute">이미지, 아이콘, 폰트 검색</span>
-            <span
+            <input
+              type="search"
+              enterKeyHint="search"
+              value={q}
+              onChange={(e) => setQ(e.target.value)}
+              placeholder="이미지, 아이콘, 폰트 검색"
+              className="min-w-0 flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-ink-mute"
+            />
+            <button
+              type="submit"
               className="shrink-0 rounded-xl px-4 py-2 text-[13px] font-semibold text-white"
               style={{ backgroundColor: "var(--brand)" }}
             >
               검색
-            </span>
-          </button>
+            </button>
+          </form>
         </div>
 
         <div className="mt-3 flex flex-wrap gap-2">
           {hotKeywords.map((kw) => (
             <button
               key={kw}
-              onClick={() => router.push(`/search?q=${encodeURIComponent(kw)}`)}
+              onClick={() => goSearch(kw)}
               className="rounded-full px-3 py-1.5 text-[12px] font-medium text-white"
               style={{ backgroundColor: "rgba(255,255,255,0.18)", backdropFilter: "blur(4px)" }}
             >
