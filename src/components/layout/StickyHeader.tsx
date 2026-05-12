@@ -5,7 +5,6 @@ import Link from "next/link";
 
 export default function StickyHeader({ solid }: { solid: boolean }) {
   const fg = solid ? "var(--ink-soft)" : "#fff";
-  const divider = solid ? "var(--line)" : "rgba(255,255,255,0.35)";
   return (
     <header
       className="fixed left-1/2 top-0 z-40 w-full max-w-[480px] -translate-x-1/2 transition-colors duration-300"
@@ -27,7 +26,7 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
 
         <Link
           href="/search"
-          className="flex h-9 flex-1 items-center gap-2 rounded-full px-3.5 transition-opacity duration-300"
+          className="flex h-9 min-w-0 flex-1 items-center gap-2 rounded-full px-3.5 transition-opacity duration-300"
           style={{
             opacity: solid ? 1 : 0,
             pointerEvents: solid ? "auto" : "none",
@@ -39,20 +38,23 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
           <span className="truncate text-[13px]">이미지, 아이콘, 폰트 검색</span>
         </Link>
 
-        <div className="flex shrink-0 items-center gap-2.5">
+        <div className="flex shrink-0 items-center gap-2">
           <Link
             href="/membership"
-            className="flex items-center gap-1 text-[13px] font-semibold transition-colors duration-300"
+            className="flex shrink-0 items-center gap-1 text-[13px] font-semibold transition-colors duration-300"
             style={{ color: fg }}
           >
             <Crown size={13} />
             멤버십
           </Link>
-          <span className="h-3 w-px" style={{ backgroundColor: divider }} />
           <Link
             href="/login"
-            className="text-[13px] font-semibold transition-colors duration-300"
-            style={{ color: fg }}
+            className="shrink-0 rounded-full px-2.5 py-1.5 text-[12px] font-bold transition-colors duration-300"
+            style={
+              solid
+                ? { backgroundColor: "var(--surface-muted)", color: "var(--ink-soft)", border: "1px solid var(--line)" }
+                : { backgroundColor: "rgba(255,255,255,0.18)", color: "#fff", border: "1px solid rgba(255,255,255,0.32)" }
+            }
           >
             로그인
           </Link>
