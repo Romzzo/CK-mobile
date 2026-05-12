@@ -123,3 +123,8 @@
     display: none;
   }
 }
+
+@keyframes ck-slide-up {
+  from { transform: translateY(120%); opacity: 0.5; }
+  to { transform: translateY(0); opacity: 1; }
+}
