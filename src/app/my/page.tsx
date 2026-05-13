@@ -54,6 +54,7 @@ export default function MyPage() {
   const handleMenuClick = (item: MenuItem) => {
     if (item.label === "로그아웃") {
       logout();
+      router.push("/");
       return;
     }
     if (item.path) router.push(item.path);
