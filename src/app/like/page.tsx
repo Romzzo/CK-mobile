@@ -1,13 +1,16 @@
 "use client";
 
-import { Heart, Trash2, ChevronLeft } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { mockItems } from "@/lib/mockData";
+import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 
 const initialLiked = mockItems.filter((_, i) => i % 2 === 0);
 const typeFilters = ["전체", "일러스트", "사진", "아이콘", "AI이미지", "PPT"];
+
+const contentNo = (id: number) => `ta0225a${String(id).padStart(5, "0")}`;
 
 export default function LikePage() {
   const router = useRouter();
@@ -21,31 +24,14 @@ export default function LikePage() {
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
-      <header
-        className="pt-safe sticky top-0 z-40 border-b border-line"
-        style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
-      >
-        <div className="flex h-14 items-center justify-between gap-3 px-2">
-          <div className="flex min-w-0 items-center gap-1">
-            <button aria-label="뒤로" onClick={() => router.back()} className="shrink-0 p-2.5 text-ink-soft">
-              <ChevronLeft size={22} />
-            </button>
-            <div className="flex items-baseline gap-2">
-              <h1 className="text-[16px] font-bold text-ink">찜 목록</h1>
-              <span className="text-[12px] font-medium text-ink-mute">{items.length}개</span>
-            </div>
-          </div>
-          <button className="-mr-2 flex shrink-0 items-center gap-1 p-2 text-[12px] text-ink-mute">
-            <Trash2 size={14} />
-            전체 삭제
-          </button>
-        </div>
-      </header>
+      <PageHeader
+        title="좋아요한 콘텐츠"
+        subtitle={items.length > 0 ? `${items.length}개` : undefined}
+        fallbackHref="/"
+      />
 
       {/* 유형 필터 */}
-      <div
-        className="no-scrollbar flex gap-2 overflow-x-auto border-b border-line bg-surface px-4 py-3"
-      >
+      <div className="no-scrollbar flex gap-2 overflow-x-auto border-b border-line bg-surface px-4 py-3">
         {typeFilters.map((f) => {
           const active = activeType === f;
           return (
@@ -66,7 +52,7 @@ export default function LikePage() {
       {filtered.length === 0 ? (
         <div className="flex flex-col items-center justify-center gap-3 py-24">
           <Heart size={40} className="text-line" />
-          <p className="text-[14px] text-ink-mute">찜한 콘텐츠가 없어요</p>
+          <p className="text-[14px] text-ink-mute">좋아요한 콘텐츠가 없어요</p>
           <button
             onClick={() => router.push("/")}
             className="mt-1 rounded-full px-4 py-2 text-[14px] font-semibold text-white"
@@ -90,15 +76,14 @@ export default function LikePage() {
                       <img src={item.imageUrl} alt={item.title} className="h-40 w-full object-cover" />
                     </button>
                     <button
-                      aria-label="찜 해제"
+                      aria-label="좋아요 해제"
                       onClick={() => remove(item.id)}
                       className="absolute right-1.5 top-1.5 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm"
                     >
                       <Heart size={15} style={{ color: "var(--danger)" }} fill="var(--danger)" />
                     </button>
                     <div className="p-2">
-                      <p className="truncate text-[12px] font-medium text-ink-soft">{item.title}</p>
-                      <span className="text-[10px] text-ink-mute">{item.type}</span>
+                      <p className="truncate text-[12px] font-medium text-ink-soft">{contentNo(item.id)}</p>
                     </div>
                   </div>
                 ))}

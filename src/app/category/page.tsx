@@ -33,9 +33,7 @@ export default function CategoryIndexPage() {
       <PageHeader title="카테고리" />
 
       <main className="px-4 pb-28 pt-5">
-        <p className="text-[13px] text-ink-soft">원하는 분야부터 골라 더 빠르게 찾아보세요</p>
-
-        <div className="mt-4 flex flex-col gap-3">
+        <div className="flex flex-col gap-3">
           {CATEGORIES.map((c) => (
             <Link
               key={c.type}

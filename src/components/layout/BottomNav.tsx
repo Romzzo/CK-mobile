@@ -8,7 +8,7 @@ const navItems = [
   { label: "홈", icon: Home, path: "/" },
   { label: "카테고리", icon: LayoutGrid, path: "/category" },
   { label: "검색", icon: Search, path: "/search" },
-  { label: "찜", icon: Heart, path: "/like" },
+  { label: "좋아요", icon: Heart, path: "/like" },
   { label: "MY", icon: User, path: "/my" },
 ];
 
@@ -34,7 +34,7 @@ export default function BottomNav() {
                 strokeWidth={active ? 2.4 : 1.8}
                 className={active ? "" : "text-ink-mute"}
                 style={active ? { color: "var(--brand)" } : undefined}
-                fill={active && label === "찜" ? "var(--brand)" : "none"}
+                fill={active && label === "좋아요" ? "var(--brand)" : "none"}
               />
               <span
                 className="text-[10px] font-medium"

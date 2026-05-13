@@ -1,9 +1,10 @@
 "use client";
 
-import { ChevronLeft, ChevronRight, Crown, Zap, Pencil, Heart, HelpCircle, LogOut, User } from "lucide-react";
+import { ChevronRight, Crown, Zap, Pencil, Heart, HelpCircle, LogOut, User } from "lucide-react";
 import type React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
+import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 
 // 프로토타입 목업 — true 로 바꾸면 로그인 상태 화면 노출
@@ -53,18 +54,7 @@ export default function MyPage() {
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
-      {/* 헤더 */}
-      <header
-        className="pt-safe sticky top-0 z-40 border-b border-line"
-        style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
-      >
-        <div className="relative flex h-14 items-center px-2">
-          <button aria-label="뒤로" onClick={() => router.back()} className="absolute left-1 p-2.5 text-ink-soft">
-            <ChevronLeft size={22} />
-          </button>
-          <h1 className="mx-auto text-[16px] font-bold text-ink">MY</h1>
-        </div>
-      </header>
+      <PageHeader title="MY" fallbackHref="/" />
 
       {!IS_LOGGED_IN ? (
         /* ── 비로그인 상태 ── */
