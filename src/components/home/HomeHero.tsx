@@ -51,7 +51,7 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
           <span className="font-normal text-white/85">클립아트코리아</span>
         </h1>
 
-        <div ref={searchRef} className="mt-5">
+        <div ref={searchRef} className="mt-[30px]">
           <form
             onSubmit={onSubmit}
             className="flex h-[52px] w-full items-center gap-3 rounded-2xl bg-white px-4 shadow-lg"
