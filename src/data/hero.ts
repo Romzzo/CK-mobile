@@ -2,8 +2,8 @@
 // 사용법: 1) public/hero/ 에 jpg/png/webp 파일 업로드  2) 아래에 "/hero/파일명" 추가
 export const HERO_IMAGES: string[] = [
   "/hero/hero-01.jpg",
-  // "/hero/hero-02.jpg",
-  // ...
+  "/hero/hero-02.jpg",
+  "/hero/hero-03.jpg",
 ];
 
 // HERO_IMAGES가 비어 있거나 로딩(SSR) 시 사용되는 폴백
