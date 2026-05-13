@@ -10,11 +10,12 @@ const hotKeywords = ["어버이날", "여름 배경", "AI 이미지", "비즈니
 export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivElement | null> }) {
   const router = useRouter();
   const [q, setQ] = useState("");
-  // SSR/hydration 일관성을 위해 폴백으로 시작, 클라이언트 마운트 후 랜덤 픽
-  const [heroImg, setHeroImg] = useState<string>(HERO_FALLBACK);
+  // SSR/hydration 일관성: 결정적 초기값(첫 이미지)으로 시작 → 클라이언트 마운트 후 랜덤 픽.
+  // HERO_IMAGES 비어 있을 때만 picsum 폴백 사용.
+  const [heroImg, setHeroImg] = useState<string>(HERO_IMAGES[0] ?? HERO_FALLBACK);
 
   useEffect(() => {
-    if (HERO_IMAGES.length === 0) return;
+    if (HERO_IMAGES.length <= 1) return;
     const pick = HERO_IMAGES[Math.floor(Math.random() * HERO_IMAGES.length)];
     // eslint-disable-next-line react-hooks/set-state-in-effect
     setHeroImg(pick);
