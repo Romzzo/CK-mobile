@@ -1,8 +1,8 @@
 "use client";
 
-import { Search } from "lucide-react";
+import { Search, Camera } from "lucide-react";
 import { useRouter } from "next/navigation";
-import { useEffect, useState, type FormEvent, type RefObject } from "react";
+import { useEffect, useRef, useState, type FormEvent, type ChangeEvent, type RefObject } from "react";
 import { HERO_IMAGES, HERO_FALLBACK } from "@/data/hero";
 
 const hotKeywords = ["어버이날", "여름 배경", "AI 이미지", "비즈니스 아이콘", "꽃 일러스트"];
@@ -29,6 +29,15 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
     goSearch(q);
+  };
+
+  const fileRef = useRef<HTMLInputElement>(null);
+  const onImagePick = (e: ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    // 프로토타입: 실제 비전 검색 미연동 — 파일명만 안내
+    alert(`이미지로 검색 (프로토타입)\n${f.name}`);
+    e.target.value = "";
   };
 
   return (
@@ -65,6 +74,21 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
               onChange={(e) => setQ(e.target.value)}
               placeholder="한글, 영문, 콘텐츠번호로 검색"
               className="min-w-0 flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-ink-mute"
+            />
+            <button
+              type="button"
+              aria-label="이미지로 검색"
+              onClick={() => fileRef.current?.click()}
+              className="grid h-9 w-9 shrink-0 place-items-center text-ink-soft"
+            >
+              <Camera size={18} />
+            </button>
+            <input
+              ref={fileRef}
+              type="file"
+              accept="image/*"
+              className="hidden"
+              onChange={onImagePick}
             />
             <button
               type="submit"
