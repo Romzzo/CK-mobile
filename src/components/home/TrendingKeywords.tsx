@@ -7,7 +7,7 @@ import SectionHeader from "@/components/home/SectionHeader";
 export default function TrendingKeywords() {
   return (
     <section className="px-4 pt-8">
-      <SectionHeader title="인기 검색어" subtitle="지금 가장 많이 찾는 키워드 TOP 10" />
+      <SectionHeader title="인기 검색어" />
 
       <div className="mt-3 flex flex-wrap gap-2">
         {trendingKeywords.map((kw, i) => (

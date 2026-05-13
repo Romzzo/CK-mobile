@@ -35,7 +35,7 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
           }}
         >
           <Search size={15} className="shrink-0" />
-          <span className="truncate text-[13px]">이미지, 아이콘, 폰트 검색</span>
+          <span className="truncate text-[13px]">한글, 영문, 콘텐츠번호로 검색</span>
         </Link>
 
         <div className="flex shrink-0 items-center gap-2">

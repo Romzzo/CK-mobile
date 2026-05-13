@@ -1,8 +1,6 @@
 "use client";
 
-import {
-  ChevronLeft, ChevronRight, Crown, Zap, Pencil, CreditCard, Receipt, Heart, HelpCircle, LogOut,
-} from "lucide-react";
+import { ChevronLeft, ChevronRight, Crown, Zap, Pencil, Heart, HelpCircle, LogOut } from "lucide-react";
 import type React from "react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
@@ -11,14 +9,6 @@ import BottomNav from "@/components/layout/BottomNav";
 type MenuItem = { icon: React.ElementType; label: string; danger?: boolean; path: string | null };
 
 const menuGroups: { items: MenuItem[] }[] = [
-  // 유료 전용
-  {
-    items: [
-      { icon: CreditCard, label: "멤버십 관리", path: "/my/membership" },
-      { icon: Receipt, label: "결제 내역", path: "/my/billing" },
-    ],
-  },
-  // 공통
   {
     items: [
       { icon: Heart, label: "좋아요한 콘텐츠", path: "/like" },
@@ -113,7 +103,7 @@ export default function MyPage() {
 
       {/* 유료 회원 */}
       <Link
-        href="/my/membership"
+        href="/membership"
         className="mx-4 mt-3 flex items-center justify-between gap-3 rounded-2xl px-5 py-4 text-white"
         style={{ backgroundImage: "linear-gradient(135deg, #7C3AED, #4F46E5)" }}
       >
@@ -126,7 +116,7 @@ export default function MyPage() {
             <p className="mt-0.5 text-[11px] text-white/80">2026.08.31 만료 · D-80</p>
           </div>
         </div>
-        <span className="shrink-0 text-[12px] font-semibold">멤버십 관리 →</span>
+        <span className="shrink-0 text-[12px] font-semibold">멤버십 보기 →</span>
       </Link>
 
       {/* AI 스튜디오 크레딧 — mock 3종 */}
@@ -164,7 +154,6 @@ export default function MyPage() {
       </div>
 
       {/* 메뉴 그룹 */}
-      {/* 유료 전용 그룹 */}
       {menuGroups.map((group, gi) => (
         <div key={gi} className="mx-4 mt-3 overflow-hidden rounded-2xl border border-line bg-surface">
           {group.items.map(({ icon: Icon, label, danger, path }, i) => (

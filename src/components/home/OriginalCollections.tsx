@@ -29,10 +29,7 @@ export default function OriginalCollections() {
   return (
     <section className="pt-8">
       <div className="px-4">
-        <SectionHeader
-          title="클립아트코리아 오리지널"
-          subtitle="오직 여기서만 볼 수 있는 프리미엄 컬렉션"
-        />
+        <SectionHeader title="클립아트코리아 오리지널" />
       </div>
 
       <div className="no-scrollbar mt-3 flex gap-3 overflow-x-auto px-4 pb-1">

@@ -2,15 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import {
-  ChevronRight,
-  AlertTriangle,
-  Sparkles,
-  Image,
-  Type,
-  MapPin,
-  Pencil,
-} from "lucide-react";
+import { ChevronRight, AlertTriangle, Sparkles, Image, Type, MapPin } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 
