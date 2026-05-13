@@ -1,29 +1,38 @@
 "use client";
 
-import { useMemo, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Calendar, ChevronDown, Check, Square } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
-import { updates, UPDATE_CATEGORIES } from "@/data/updates";
+import { updates, UPDATE_CATEGORIES, type WeeklyUpdate } from "@/data/updates";
 
 type SheetKey = "week" | "category" | null;
+
+const labelOf = (w: WeeklyUpdate) =>
+  `${w.year}년 ${String(w.month).padStart(2, "0")}월 ${w.week}주차`;
 
 export default function UpdatePage() {
   const [weekId, setWeekId] = useState(updates[0].id);
   const [category, setCategory] = useState<string>("전체");
   const [sheet, setSheet] = useState<SheetKey>(null);
+  // 선택된 주차 이전으로 추가 로딩한 주차 수
+  const [extra, setExtra] = useState(0);
 
-  const week = useMemo(
-    () => updates.find((u) => u.id === weekId) ?? updates[0],
+  // 주차 변경 시 더보기 카운트 초기화
+  useEffect(() => {
+    setExtra(0);
+  }, [weekId]);
+
+  const selectedIdx = useMemo(
+    () => Math.max(0, updates.findIndex((u) => u.id === weekId)),
     [weekId],
   );
 
-  const themes =
-    category === "전체"
-      ? week.themes
-      : week.themes.filter((t) => t.category === category);
+  const visibleWeeks = updates.slice(selectedIdx, selectedIdx + 1 + extra);
+  const hasMore = selectedIdx + 1 + extra < updates.length;
 
-  const weekLabel = `${week.year}년 ${String(week.month).padStart(2, "0")}월 ${week.week}주차`;
+  const filterThemes = (w: WeeklyUpdate) =>
+    category === "전체" ? w.themes : w.themes.filter((t) => t.category === category);
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
@@ -37,7 +46,9 @@ export default function UpdatePage() {
         >
           <span className="flex min-w-0 items-center gap-2">
             <Calendar size={14} className="shrink-0 text-ink-mute" />
-            <span className="truncate text-[13px] font-semibold text-ink">{weekLabel}</span>
+            <span className="truncate text-[13px] font-semibold text-ink">
+              {labelOf(visibleWeeks[0])}
+            </span>
           </span>
           <ChevronDown size={15} className="shrink-0 text-ink-mute" />
         </button>
@@ -50,49 +61,71 @@ export default function UpdatePage() {
         </button>
       </div>
 
-      {/* ── 주차 헤딩 ── */}
-      <div className="px-4 pt-2">
-        <p className="text-[15px] font-bold text-ink">
-          {weekLabel}{" "}
-          <span className="text-[13px] font-medium text-ink-mute">{week.dateRange}</span>
-        </p>
-      </div>
+      {/* ── 주차 섹션들 ── */}
+      {visibleWeeks.map((w, i) => {
+        const themes = filterThemes(w);
+        return (
+          <section key={w.id} className={i === 0 ? "pt-2" : "pt-8"}>
+            <div className="px-4">
+              <p className="text-[15px] font-bold text-ink">
+                {labelOf(w)}{" "}
+                <span className="text-[13px] font-medium text-ink-mute">{w.dateRange}</span>
+              </p>
+            </div>
 
-      {/* ── 테마 카드 2열 그리드 ── */}
-      <div className="grid grid-cols-2 gap-x-3 gap-y-5 px-4 pt-4">
-        {themes.length === 0 ? (
-          <div className="col-span-2 rounded-2xl border border-line bg-surface px-5 py-12 text-center">
-            <p className="text-[14px] font-semibold text-ink">이 주차에는 해당 카테고리 업데이트가 없어요</p>
-            <p className="mt-1 text-[12px] text-ink-mute">다른 카테고리를 선택해 보세요.</p>
-          </div>
-        ) : (
-          themes.map((t) => (
-            <a
-              key={t.id}
-              href={t.pcUrl}
-              target="_blank"
-              rel="noopener noreferrer"
-              className="block"
-            >
-              <div className="overflow-hidden rounded-2xl bg-surface-muted">
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={t.cover}
-                  alt=""
-                  className="aspect-[4/3] w-full object-cover"
-                />
-              </div>
-              <div className="mt-2 flex items-center justify-between gap-2">
-                <p className="min-w-0 truncate text-[13px] font-bold text-ink">{t.title}</p>
-                <span className="flex shrink-0 items-center gap-1 text-[12px] text-ink-mute">
-                  <Square size={12} strokeWidth={2} />
-                  {t.count}
-                </span>
-              </div>
-            </a>
-          ))
-        )}
-      </div>
+            <div className="grid grid-cols-2 gap-x-3 gap-y-5 px-4 pt-4">
+              {themes.length === 0 ? (
+                <div className="col-span-2 rounded-2xl border border-line bg-surface px-5 py-10 text-center">
+                  <p className="text-[13px] font-semibold text-ink">이 주차에는 해당 카테고리 업데이트가 없어요</p>
+                </div>
+              ) : (
+                themes.map((t) => (
+                  <a
+                    key={t.id}
+                    href={t.pcUrl}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    className="block"
+                  >
+                    <div className="overflow-hidden rounded-2xl bg-surface-muted">
+                      {/* eslint-disable-next-line @next/next/no-img-element */}
+                      <img
+                        src={t.cover}
+                        alt=""
+                        className="aspect-[4/3] w-full object-cover"
+                      />
+                    </div>
+                    <div className="mt-2 flex items-center justify-between gap-2">
+                      <p className="min-w-0 truncate text-[13px] font-bold text-ink">{t.title}</p>
+                      <span className="flex shrink-0 items-center gap-1 text-[12px] text-ink-mute">
+                        <Square size={12} strokeWidth={2} />
+                        {t.count}
+                      </span>
+                    </div>
+                  </a>
+                ))
+              )}
+            </div>
+          </section>
+        );
+      })}
+
+      {/* ── 이전 주 더보기 ── */}
+      {hasMore ? (
+        <div className="px-4 pt-8">
+          <button
+            onClick={() => setExtra((n) => n + 1)}
+            className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-line bg-surface py-3 text-[13px] font-semibold text-ink-soft"
+          >
+            이전 주 더보기
+            <ChevronDown size={14} />
+          </button>
+        </div>
+      ) : (
+        <div className="px-4 pt-8 text-center text-[12px] text-ink-mute">
+          더 이상 이전 주차가 없습니다
+        </div>
+      )}
 
       <BottomNav />
 
@@ -113,7 +146,6 @@ export default function UpdatePage() {
             <div className="max-h-[60vh] overflow-y-auto">
               {sheet === "week"
                 ? updates.map((u) => {
-                    const label = `${u.year}년 ${String(u.month).padStart(2, "0")}월 ${u.week}주차`;
                     const active = u.id === weekId;
                     return (
                       <button
@@ -125,7 +157,7 @@ export default function UpdatePage() {
                         className="flex w-full items-center justify-between border-b border-line py-3.5 text-left last:border-0"
                       >
                         <div className="min-w-0">
-                          <span className="text-[14px] text-ink-soft">{label}</span>
+                          <span className="text-[14px] text-ink-soft">{labelOf(u)}</span>
                           <span className="ml-2 text-[12px] text-ink-mute">{u.dateRange}</span>
                         </div>
                         {active ? (
