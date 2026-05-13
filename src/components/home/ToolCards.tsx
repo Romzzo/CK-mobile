@@ -1,9 +1,7 @@
 "use client";
 
 import { ChevronRight } from "lucide-react";
-import useEmblaCarousel from "embla-carousel-react";
-import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
+import { useEffect, useRef } from "react";
 import SectionHeader from "@/components/home/SectionHeader";
 
 const tools = [
@@ -45,11 +43,35 @@ const ctaColorMap: Record<(typeof tools)[number]["color"], string> = {
 };
 
 export default function ToolCards() {
-  const autoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: true }));
-  const [emblaRef] = useEmblaCarousel(
-    { align: "start", dragFree: false, loop: true },
-    [autoplay.current]
-  );
+  const scrollRef = useRef<HTMLDivElement>(null);
+  const indexRef = useRef(0);
+  const timerRef = useRef<ReturnType<typeof setInterval> | null>(null);
+
+  const scrollTo = (idx: number) => {
+    const el = scrollRef.current;
+    if (!el) return;
+    const cards = el.querySelectorAll<HTMLElement>("a");
+    if (!cards[idx]) return;
+    el.scrollTo({ left: cards[idx].offsetLeft - 16, behavior: "smooth" });
+  };
+
+  const startAutoplay = () => {
+    timerRef.current = setInterval(() => {
+      indexRef.current = (indexRef.current + 1) % tools.length;
+      scrollTo(indexRef.current);
+    }, 3500);
+  };
+
+  const resetAutoplay = () => {
+    if (timerRef.current) clearInterval(timerRef.current);
+    startAutoplay();
+  };
+
+  useEffect(() => {
+    startAutoplay();
+    return () => { if (timerRef.current) clearInterval(timerRef.current); };
+  // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
 
   return (
     <section className="pt-8">
@@ -57,27 +79,28 @@ export default function ToolCards() {
         <SectionHeader title="놓치면 아까운 혜택" />
       </div>
 
-      <div className="mt-3 overflow-hidden" ref={emblaRef}>
-        <div className="flex gap-3 px-4">
-          {tools.map((t) => (
-            <a
-              key={t.href}
-              href={t.href}
-              target={t.href.startsWith("http") ? "_blank" : undefined}
-              rel={t.href.startsWith("http") ? "noopener noreferrer" : undefined}
-              className="flex h-[140px] w-[72vw] max-w-[260px] flex-shrink-0 flex-col rounded-2xl border border-line bg-surface p-4"
-            >
-              <p className="text-[15px] font-bold leading-snug text-ink">{t.title}</p>
-              <p className="mt-1 text-[12px] leading-snug text-ink-mute">{t.sub}</p>
-              <span
-                className={`mt-auto inline-flex items-center gap-0.5 pt-3 text-[12px] font-semibold ${ctaColorMap[t.color]}`}
-              >
-                {t.cta}
-                <ChevronRight size={13} />
-              </span>
-            </a>
-          ))}
-        </div>
+      <div
+        ref={scrollRef}
+        onTouchStart={resetAutoplay}
+        className="mt-3 flex gap-3 overflow-x-auto px-4 snap-x snap-mandatory [scroll-padding-left:1rem] [&::-webkit-scrollbar]:hidden [scrollbar-width:none] [-ms-overflow-style:none]"
+      >
+        {tools.map((t) => (
+          <a
+            key={t.href}
+            href={t.href}
+            target={t.href.startsWith("http") ? "_blank" : undefined}
+            rel={t.href.startsWith("http") ? "noopener noreferrer" : undefined}
+            className="snap-start flex h-[140px] w-[72vw] max-w-[260px] flex-shrink-0 flex-col rounded-2xl border border-line bg-surface p-4"
+          >
+            <p className="text-[15px] font-bold leading-snug text-ink">{t.title}</p>
+            <p className="mt-1 text-[12px] leading-snug text-ink-mute">{t.sub}</p>
+            <span className={`mt-auto inline-flex items-center gap-0.5 pt-3 text-[12px] font-semibold ${ctaColorMap[t.color]}`}>
+              {t.cta}
+              <ChevronRight size={13} />
+            </span>
+          </a>
+        ))}
+        <div className="w-4 shrink-0" />
       </div>
     </section>
   );
