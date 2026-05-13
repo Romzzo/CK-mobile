@@ -12,6 +12,7 @@ import BrandStats from "@/components/home/BrandStats";
 import OnboardingBanner from "@/components/home/OnboardingBanner";
 import Footer from "@/components/layout/Footer";
 import BottomNav from "@/components/layout/BottomNav";
+import { useAuth } from "@/lib/useAuth";
 
 const ONBOARDING_KEY = "ck-onboarding-dismissed";
 
@@ -19,6 +20,7 @@ export default function HomeClient() {
   const heroSearchRef = useRef<HTMLDivElement>(null);
   const [solidHeader, setSolidHeader] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   useEffect(() => {
     const el = heroSearchRef.current;
@@ -58,7 +60,7 @@ export default function HomeClient() {
 
       <Footer />
 
-      {showOnboarding ? <OnboardingBanner onClose={dismissOnboarding} /> : null}
+      {showOnboarding && !isLoggedIn ? <OnboardingBanner onClose={dismissOnboarding} /> : null}
       <BottomNav />
     </div>
   );

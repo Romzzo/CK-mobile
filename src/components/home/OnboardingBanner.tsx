@@ -28,7 +28,7 @@ export default function OnboardingBanner({ onClose }: { onClose: () => void }) {
           href="/signup"
           className="shrink-0 rounded-xl bg-white px-3 py-2 text-[13px] font-bold text-brand"
         >
-          가입하기 →
+          회원가입 →
         </Link>
         <button onClick={onClose} aria-label="닫기" className="-mr-1.5 grid h-9 w-9 shrink-0 place-items-center text-white/70">
           <X size={16} />
