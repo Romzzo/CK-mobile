@@ -46,7 +46,7 @@ export default function HomeClient() {
     <div className="min-h-dvh bg-surface-muted">
       <StickyHeader solid={solidHeader} />
 
-      <main className="pb-8">
+      <main className="pb-[22px]">
         <HomeHero searchRef={heroSearchRef} />
         <ToolCards />
         <CategoryCards />
