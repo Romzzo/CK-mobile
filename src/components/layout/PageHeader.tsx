@@ -1,16 +1,19 @@
 "use client";
 
 import { ArrowLeft } from "lucide-react";
+import type { ReactNode } from "react";
 import { useRouter } from "next/navigation";
 
 export default function PageHeader({
   title,
   subtitle,
   fallbackHref = "/",
+  right,
 }: {
   title: string;
   subtitle?: string;
   fallbackHref?: string;
+  right?: ReactNode;
 }) {
   const router = useRouter();
 
@@ -28,10 +31,11 @@ export default function PageHeader({
         <button aria-label="뒤로" onClick={goBack} className="shrink-0 p-2.5 text-ink-soft">
           <ArrowLeft size={22} />
         </button>
-        <div className="min-w-0">
+        <div className="min-w-0 flex-1">
           <h1 className="truncate text-[16px] font-bold leading-tight tracking-tight text-ink">{title}</h1>
           {subtitle ? <p className="truncate text-[11px] text-ink-mute">{subtitle}</p> : null}
         </div>
+        {right}
       </div>
     </header>
   );

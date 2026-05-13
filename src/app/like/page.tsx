@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart } from "lucide-react";
+import { Heart, Minus, Lock } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { mockItems } from "@/lib/mockData";
@@ -12,22 +12,35 @@ const typeFilters = ["전체", "일러스트", "사진", "아이콘", "AI이미�
 
 const contentNo = (id: number) => `ta0225a${String(id).padStart(5, "0")}`;
 
+const aspectClass = (a: "tall" | "wide" | "square") =>
+  a === "tall" ? "aspect-[3/4]" : a === "wide" ? "aspect-[3/2]" : "aspect-square";
+
 export default function LikePage() {
   const router = useRouter();
   const [items, setItems] = useState(initialLiked);
   const [activeType, setActiveType] = useState("전체");
+  const [editMode, setEditMode] = useState(false);
 
   const filtered = activeType === "전체" ? items : items.filter((i) => i.type === activeType);
   const remove = (id: number) => setItems((prev) => prev.filter((i) => i.id !== id));
   const idsParam = filtered.map((i) => i.id).join(",");
-  const cols = [filtered.filter((_, i) => i % 2 === 0), filtered.filter((_, i) => i % 2 === 1)];
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
       <PageHeader
         title="좋아요한 콘텐츠"
-        subtitle={items.length > 0 ? `${items.length}개` : undefined}
+        subtitle={`${items.length}개`}
         fallbackHref="/"
+        right={
+          items.length > 0 ? (
+            <button
+              onClick={() => setEditMode((v) => !v)}
+              className="shrink-0 px-3 py-2 text-[13px] font-semibold text-ink-soft"
+            >
+              {editMode ? "완료" : "편집"}
+            </button>
+          ) : null
+        }
       />
 
       {/* 유형 필터 */}
@@ -39,9 +52,11 @@ export default function LikePage() {
               key={f}
               onClick={() => setActiveType(f)}
               className="shrink-0 rounded-full px-3.5 py-1.5 text-[13px] font-medium transition-colors"
-              style={active
-                ? { backgroundColor: "var(--ink)", color: "#fff" }
-                : { backgroundColor: "var(--surface-muted)", color: "var(--ink-soft)" }}
+              style={
+                active
+                  ? { backgroundColor: "var(--ink)", color: "#fff" }
+                  : { backgroundColor: "var(--surface-muted)", color: "var(--ink-soft)" }
+              }
             >
               {f}
             </button>
@@ -62,34 +77,61 @@ export default function LikePage() {
           </button>
         </div>
       ) : (
-        <div className="px-3 pt-3">
-          <div className="flex gap-2.5">
-            {cols.map((col, ci) => (
-              <div key={ci} className="flex flex-1 flex-col gap-2.5">
-                {col.map((item) => (
-                  <div key={item.id} className="relative overflow-hidden rounded-xl bg-surface">
-                    <button
-                      onClick={() => router.push(`/content/${item.id}?ids=${idsParam}&idx=${filtered.indexOf(item)}`)}
-                      className="block w-full"
-                    >
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img src={item.imageUrl} alt={item.title} className="h-40 w-full object-cover" />
-                    </button>
-                    <button
-                      aria-label="좋아요 해제"
-                      onClick={() => remove(item.id)}
-                      className="absolute right-1.5 top-1.5 flex h-9 w-9 items-center justify-center rounded-full bg-white/90 shadow-sm"
-                    >
-                      <Heart size={15} style={{ color: "var(--danger)" }} fill="var(--danger)" />
-                    </button>
-                    <div className="p-2">
-                      <p className="truncate text-[12px] font-medium text-ink-soft">{contentNo(item.id)}</p>
-                    </div>
-                  </div>
-                ))}
+        <div className="columns-2 gap-2.5 px-3 pt-3">
+          {filtered.map((item, idx) => (
+            <div
+              key={item.id}
+              className="mb-2.5 break-inside-avoid overflow-hidden rounded-xl bg-surface"
+            >
+              <div
+                onClick={
+                  editMode
+                    ? undefined
+                    : () => router.push(`/content/${item.id}?ids=${idsParam}&idx=${idx}`)
+                }
+                className={`relative ${editMode ? "" : "cursor-pointer"}`}
+              >
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={item.imageUrl}
+                  alt={item.title}
+                  className={`w-full ${aspectClass(item.aspectRatio)} rounded-xl object-cover`}
+                />
+
+                {item.isPremium ? (
+                  <span
+                    className="absolute bottom-1.5 left-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold text-white"
+                    style={{ backgroundColor: "rgba(10,8,18,0.65)", backdropFilter: "blur(4px)" }}
+                  >
+                    <Lock size={9} /> PRO
+                  </span>
+                ) : null}
+
+                {editMode ? (
+                  <button
+                    aria-label="좋아요 해제"
+                    onClick={(e) => {
+                      e.stopPropagation();
+                      remove(item.id);
+                    }}
+                    className="absolute left-1.5 top-1.5 grid h-7 w-7 place-items-center rounded-full bg-white/95 shadow-sm"
+                  >
+                    <Minus size={14} className="text-ink" />
+                  </button>
+                ) : null}
               </div>
-            ))}
-          </div>
+
+              <div className="flex items-center justify-between gap-1 px-2 py-1.5">
+                <span className="truncate text-[11px] text-ink-mute">{contentNo(item.id)}</span>
+                <span
+                  className="shrink-0 rounded-full px-2 py-0.5 text-[10px]"
+                  style={{ backgroundColor: "var(--surface-muted)", color: "var(--ink-soft)" }}
+                >
+                  {item.type}
+                </span>
+              </div>
+            </div>
+          ))}
         </div>
       )}
 
