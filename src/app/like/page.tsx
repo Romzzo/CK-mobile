@@ -81,7 +81,7 @@ export default function LikePage() {
           {filtered.map((item, idx) => (
             <div
               key={item.id}
-              className="mb-2.5 break-inside-avoid overflow-hidden rounded-xl bg-surface"
+              className="mb-2.5 break-inside-avoid"
             >
               <div
                 onClick={
@@ -95,7 +95,7 @@ export default function LikePage() {
                 <img
                   src={item.imageUrl}
                   alt={item.title}
-                  className={`w-full ${aspectClass(item.aspectRatio)} rounded-xl object-cover`}
+                  className={`w-full ${aspectClass(item.aspectRatio)} object-cover`}
                 />
 
                 {item.isPremium ? (
