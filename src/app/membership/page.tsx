@@ -57,6 +57,8 @@ const sharedBenefits = [
   "저작권 안전 보장 상업적 이용 가능",
 ];
 
+const PC_MEMBERSHIP_URL = "https://www.clipartkorea.co.kr/membership";
+
 export default function MembershipPage() {
   const [selected, setSelected] = useState("creator");
   const currentPlan = plans.find((p) => p.id === selected)!;
@@ -77,9 +79,14 @@ export default function MembershipPage() {
             <p className="mt-0.5 text-[14px] font-bold text-white">첫 구매 <span className="text-[18px]">94% OFF</span></p>
             <p className="text-[12px] text-white/80">5컷 15만원 → <span className="font-semibold text-white">9,000원</span></p>
           </div>
-          <button className="relative flex shrink-0 items-center gap-1 rounded-xl bg-white px-3.5 py-2 text-[12px] font-bold text-brand">
-            신청 <ChevronRight size={12} />
-          </button>
+          <a
+            href={PC_MEMBERSHIP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="relative flex shrink-0 items-center gap-1 rounded-xl bg-white px-3.5 py-2 text-[12px] font-bold text-brand"
+          >
+            PC에서 신청 <ChevronRight size={12} />
+          </a>
         </div>
 
         {/* 무료회원 혜택 */}
@@ -200,15 +207,18 @@ export default function MembershipPage() {
         className="fixed bottom-0 left-1/2 w-full max-w-[480px] -translate-x-1/2 border-t border-line bg-surface px-4 py-3"
         style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
       >
-        <button
+        <a
+          href={PC_MEMBERSHIP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
           className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[15px] font-semibold text-white"
           style={{ backgroundColor: "var(--brand)" }}
         >
           <Crown size={15} fill="white" />
-          {currentPlan.name} 구매하기 — {currentPlan.price}원
-        </button>
+          PC에서 {currentPlan.name} 신청
+        </a>
         <p className="mt-1.5 text-center text-[11px] text-ink-mute">
-          {currentPlan.period} 계약 · 부가세 별도 · 프로모션 할인 적용
+          {currentPlan.price}원 · {currentPlan.period} 계약 · 결제는 PC 웹에서 진행됩니다
         </p>
       </div>
     </div>
