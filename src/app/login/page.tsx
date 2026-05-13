@@ -16,7 +16,7 @@ export default function LoginPage() {
   const handleLogin = () => {
     // 프로토타입: ID/PW 검증 없이 바로 로그인 상태 진입
     login();
-    router.push("/my");
+    router.back();
   };
 
   return (
