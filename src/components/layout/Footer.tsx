@@ -4,12 +4,31 @@ import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 
 const linkGroups = [
-  { title: "회사", links: ["회사소개", "채용문의", "작가입점", "사업제휴"] },
+  {
+    title: "회사",
+    links: [
+      { label: "회사소개", href: "#" },
+      { label: "채용공고", href: "#" },
+    ],
+  },
   {
     title: "서비스",
-    links: ["클립아트코리아 소개", "공지사항", "자주묻는질문", "라이선스구매/견적", "이벤트", "콘텐츠 유의사항"],
+    links: [
+      { label: "공지사항", href: "#" },
+      { label: "상담문의", href: "#" },
+      { label: "이벤트", href: "/event" },
+      { label: "무료콘텐츠", href: "/free" },
+    ],
   },
-  { title: "정책 및 법률", links: ["이용약관", "라이선스 규정", "개인정보처리방침", "청소년보호정책"] },
+  {
+    title: "정책 및 법률",
+    links: [
+      { label: "이용약관", href: "#" },
+      { label: "라이선스 규정", href: "#" },
+      { label: "개인정보처리방침", href: "#" },
+      { label: "청소년보호정책", href: "#" },
+    ],
+  },
 ];
 
 const sns = ["유튜브", "인스타그램", "페이스북", "핀터레스트", "블로그"];
@@ -37,8 +56,8 @@ export default function Footer() {
             <dt className="mb-2 text-[12px] font-bold text-ink-mute">{g.title}</dt>
             <dd className="grid grid-cols-2 gap-x-3 gap-y-1.5">
               {g.links.map((l) => (
-                <a key={l} href="#" className="text-[12px] text-ink-soft">
-                  {l}
+                <a key={l.label} href={l.href} className="text-[12px] text-ink-soft">
+                  {l.label}
                 </a>
               ))}
             </dd>
