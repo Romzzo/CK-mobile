@@ -2,9 +2,11 @@
 
 import { Search, Crown } from "lucide-react";
 import Link from "next/link";
+import { useAuth } from "@/lib/useAuth";
 
 export default function StickyHeader({ solid }: { solid: boolean }) {
   const fg = solid ? "var(--ink-soft)" : "#fff";
+  const { isLoggedIn } = useAuth();
   return (
     <header
       className="pt-safe fixed left-1/2 top-0 z-40 w-full max-w-[480px] -translate-x-1/2 transition-colors duration-300"
@@ -47,17 +49,32 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
             <Crown size={13} />
             멤버십
           </Link>
-          <Link
-            href="/login"
-            className="shrink-0 rounded-full px-3 py-2 text-[12px] font-bold transition-colors duration-300"
-            style={
-              solid
-                ? { backgroundColor: "var(--surface-muted)", color: "var(--ink-soft)", border: "1px solid var(--line)" }
-                : { backgroundColor: "rgba(255,255,255,0.18)", color: "#fff", border: "1px solid rgba(255,255,255,0.32)" }
-            }
-          >
-            로그인
-          </Link>
+          {isLoggedIn ? (
+            <Link
+              href="/my"
+              aria-label="MY"
+              className="grid h-8 w-8 shrink-0 place-items-center rounded-full text-[12px] font-bold text-white transition-colors duration-300"
+              style={
+                solid
+                  ? { backgroundColor: "var(--brand)" }
+                  : { backgroundColor: "var(--brand)", boxShadow: "0 0 0 1px rgba(255,255,255,0.32)" }
+              }
+            >
+              박
+            </Link>
+          ) : (
+            <Link
+              href="/login"
+              className="shrink-0 rounded-full px-3 py-2 text-[12px] font-bold transition-colors duration-300"
+              style={
+                solid
+                  ? { backgroundColor: "var(--surface-muted)", color: "var(--ink-soft)", border: "1px solid var(--line)" }
+                  : { backgroundColor: "rgba(255,255,255,0.18)", color: "#fff", border: "1px solid rgba(255,255,255,0.32)" }
+              }
+            >
+              로그인
+            </Link>
+          )}
         </div>
       </div>
     </header>
