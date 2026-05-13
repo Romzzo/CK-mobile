@@ -4,12 +4,20 @@ import { useState } from "react";
 import { Eye, EyeOff } from "lucide-react";
 import { useRouter } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
+import { useAuth } from "@/lib/useAuth";
 
 export default function LoginPage() {
   const router = useRouter();
+  const { login } = useAuth();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
   const [showPw, setShowPw] = useState(false);
+
+  const handleLogin = () => {
+    // 프로토타입: ID/PW 검증 없이 바로 로그인 상태 진입
+    login();
+    router.push("/my");
+  };
 
   return (
     <div className="flex min-h-dvh flex-col bg-surface">
@@ -23,7 +31,11 @@ export default function LoginPage() {
           <p className="mt-1.5 text-[14px] text-ink-soft">1,500만+ 콘텐츠를 자유롭게 이용하세요</p>
         </div>
 
-        <button className="mb-4 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-line bg-surface text-[14px] font-semibold text-ink shadow-sm">
+        <button
+          type="button"
+          onClick={handleLogin}
+          className="mb-4 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-line bg-surface text-[14px] font-semibold text-ink shadow-sm"
+        >
           <GoogleIcon />
           Google로 계속하기
         </button>
@@ -67,6 +79,8 @@ export default function LoginPage() {
         </div>
 
         <button
+          type="button"
+          onClick={handleLogin}
           className="mb-4 h-12 w-full rounded-xl text-[15px] font-semibold text-white"
           style={{ backgroundColor: "var(--brand)" }}
         >

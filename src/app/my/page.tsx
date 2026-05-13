@@ -6,9 +6,7 @@ import Link from "next/link";
 import { useRouter } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
-
-// 프로토타입 목업 — true 로 바꾸면 로그인 상태 화면 노출
-const IS_LOGGED_IN = false;
+import { useAuth } from "@/lib/useAuth";
 
 type MenuItem = { icon: React.ElementType; label: string; danger?: boolean; path: string | null };
 
@@ -51,12 +49,21 @@ const ChargeLink = () => (
 
 export default function MyPage() {
   const router = useRouter();
+  const { isLoggedIn, logout } = useAuth();
+
+  const handleMenuClick = (item: MenuItem) => {
+    if (item.label === "로그아웃") {
+      logout();
+      return;
+    }
+    if (item.path) router.push(item.path);
+  };
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
       <PageHeader title="MY" fallbackHref="/" />
 
-      {!IS_LOGGED_IN ? (
+      {!isLoggedIn ? (
         /* ── 비로그인 상태 ── */
         <>
           <div className="flex flex-col items-center px-8 pt-16 text-center">
@@ -191,7 +198,7 @@ export default function MyPage() {
               {group.items.map(({ icon: Icon, label, danger, path }, i) => (
                 <button
                   key={label}
-                  onClick={() => path && router.push(path)}
+                  onClick={() => handleMenuClick({ icon: Icon, label, danger, path })}
                   className={`flex w-full items-center gap-3 px-5 py-4 ${i < group.items.length - 1 ? "border-b border-line" : ""}`}
                 >
                   <Icon size={18} className={danger ? "text-danger" : "text-ink-mute"} />
