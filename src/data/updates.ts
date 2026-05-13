@@ -1,5 +1,15 @@
-// 주차별 업데이트 아카이브 더미 데이터
-// 실서비스는 PC(m.clipartkorea.co.kr/update) 데이터를 따른다.
+// 주차별 업데이트 — 각 주차에 여러 "테마 컬렉션"이 들어 있는 구조.
+// PC 웹 m.clipartkorea.co.kr/update 의 화면 패턴(주차 단일 표시 + 테마 카드 2열 그리드)을
+// 모바일 디자인 시스템으로 재구성한 더미 데이터.
+
+export type Theme = {
+  id: string;
+  title: string;
+  cover: string;
+  count: number;
+  category: string; // 국내일러스트 | 해외일러스트 | 아이콘 | 포토 | AI이미지 | PPT | 폰트 | 3D | PNG | 합성·웹
+  pcUrl: string;
+};
 
 export type WeeklyUpdate = {
   id: string;
@@ -7,124 +17,88 @@ export type WeeklyUpdate = {
   month: number;
   week: number;
   dateRange: string;
-  count: number;
-  category: string;
-  thumbnails: string[];
-  pcUrl: string;
+  themes: Theme[];
 };
 
 const pcUrl = "https://m.clipartkorea.co.kr/update";
-
-const thumb = (seed: string) => `https://picsum.photos/seed/upd-${seed}/300/300`;
+const cover = (seed: string) => `https://picsum.photos/seed/upd-${seed}/600/800`;
 
 export const updates: WeeklyUpdate[] = [
   {
     id: "2026-05-w3",
     year: 2026, month: 5, week: 3,
     dateRange: "05.10~05.16",
-    count: 1842,
-    category: "국내일러스트",
-    thumbnails: [thumb("2605w3a"), thumb("2605w3b"), thumb("2605w3c"), thumb("2605w3d")],
-    pcUrl,
+    themes: [
+      { id: "26w3-1", title: "힘내라 대한민국", cover: cover("26w3-1"), count: 7, category: "포토", pcUrl },
+      { id: "26w3-2", title: "summer letter", cover: cover("26w3-2"), count: 16, category: "합성·웹", pcUrl },
+      { id: "26w3-3", title: "이제 핏을 바꿀 시간", cover: cover("26w3-3"), count: 11, category: "합성·웹", pcUrl },
+      { id: "26w3-4", title: "반려동물 동반법", cover: cover("26w3-4"), count: 9, category: "국내일러스트", pcUrl },
+      { id: "26w3-5", title: "스몰웨딩 트렌드", cover: cover("26w3-5"), count: 12, category: "포토", pcUrl },
+      { id: "26w3-6", title: "비타민 듬뿍 과일", cover: cover("26w3-6"), count: 14, category: "포토", pcUrl },
+      { id: "26w3-7", title: "캠핑 라이프", cover: cover("26w3-7"), count: 18, category: "국내일러스트", pcUrl },
+      { id: "26w3-8", title: "AI 시그니처 캐릭터", cover: cover("26w3-8"), count: 22, category: "AI이미지", pcUrl },
+    ],
   },
   {
     id: "2026-05-w2",
     year: 2026, month: 5, week: 2,
     dateRange: "05.03~05.09",
-    count: 2104,
-    category: "AI이미지",
-    thumbnails: [thumb("2605w2a"), thumb("2605w2b"), thumb("2605w2c"), thumb("2605w2d")],
-    pcUrl,
+    themes: [
+      { id: "26w2-1", title: "어버이날 감사장", cover: cover("26w2-1"), count: 10, category: "국내일러스트", pcUrl },
+      { id: "26w2-2", title: "봄날의 산책", cover: cover("26w2-2"), count: 15, category: "포토", pcUrl },
+      { id: "26w2-3", title: "오피스 인포그래픽", cover: cover("26w2-3"), count: 8, category: "PPT", pcUrl },
+      { id: "26w2-4", title: "라인 아이콘 200", cover: cover("26w2-4"), count: 200, category: "아이콘", pcUrl },
+      { id: "26w2-5", title: "한식 일러스트", cover: cover("26w2-5"), count: 13, category: "국내일러스트", pcUrl },
+      { id: "26w2-6", title: "비즈니스 인물 PNG", cover: cover("26w2-6"), count: 24, category: "PNG", pcUrl },
+    ],
   },
   {
     id: "2026-05-w1",
     year: 2026, month: 5, week: 1,
     dateRange: "04.26~05.02",
-    count: 1567,
-    category: "포토",
-    thumbnails: [thumb("2605w1a"), thumb("2605w1b"), thumb("2605w1c"), thumb("2605w1d")],
-    pcUrl,
+    themes: [
+      { id: "26w1-1", title: "어린이날 축하", cover: cover("26w1-1"), count: 11, category: "국내일러스트", pcUrl },
+      { id: "26w1-2", title: "근로자의 날", cover: cover("26w1-2"), count: 6, category: "합성·웹", pcUrl },
+      { id: "26w1-3", title: "3D 캘린더 오브젝트", cover: cover("26w1-3"), count: 9, category: "3D", pcUrl },
+      { id: "26w1-4", title: "사이버 시큐리티", cover: cover("26w1-4"), count: 14, category: "해외일러스트", pcUrl },
+      { id: "26w1-5", title: "여행 가방 패턴", cover: cover("26w1-5"), count: 12, category: "포토", pcUrl },
+    ],
   },
   {
     id: "2026-04-w4",
     year: 2026, month: 4, week: 4,
     dateRange: "04.19~04.25",
-    count: 1320,
-    category: "해외일러스트",
-    thumbnails: [thumb("2604w4a"), thumb("2604w4b"), thumb("2604w4c"), thumb("2604w4d")],
-    pcUrl,
+    themes: [
+      { id: "26-04w4-1", title: "벚꽃 엔딩", cover: cover("2604w4-1"), count: 17, category: "포토", pcUrl },
+      { id: "26-04w4-2", title: "세계 책의 날", cover: cover("2604w4-2"), count: 8, category: "국내일러스트", pcUrl },
+      { id: "26-04w4-3", title: "지구의 날 캠페인", cover: cover("2604w4-3"), count: 10, category: "합성·웹", pcUrl },
+      { id: "26-04w4-4", title: "친환경 폰트 5종", cover: cover("2604w4-4"), count: 5, category: "폰트", pcUrl },
+      { id: "26-04w4-5", title: "여름맞이 룩북", cover: cover("2604w4-5"), count: 19, category: "포토", pcUrl },
+    ],
   },
   {
     id: "2026-04-w3",
     year: 2026, month: 4, week: 3,
     dateRange: "04.12~04.18",
-    count: 1985,
-    category: "PPT",
-    thumbnails: [thumb("2604w3a"), thumb("2604w3b"), thumb("2604w3c"), thumb("2604w3d")],
-    pcUrl,
+    themes: [
+      { id: "26-04w3-1", title: "재택근무 PPT", cover: cover("2604w3-1"), count: 12, category: "PPT", pcUrl },
+      { id: "26-04w3-2", title: "스포츠 아이콘 100", cover: cover("2604w3-2"), count: 100, category: "아이콘", pcUrl },
+      { id: "26-04w3-3", title: "꽃다발 누끼", cover: cover("2604w3-3"), count: 16, category: "PNG", pcUrl },
+      { id: "26-04w3-4", title: "도시 야경", cover: cover("2604w3-4"), count: 9, category: "포토", pcUrl },
+      { id: "26-04w3-5", title: "AI 풍경 셋", cover: cover("2604w3-5"), count: 18, category: "AI이미지", pcUrl },
+      { id: "26-04w3-6", title: "감성 캘리그래피", cover: cover("2604w3-6"), count: 7, category: "국내일러스트", pcUrl },
+    ],
   },
   {
     id: "2026-04-w2",
     year: 2026, month: 4, week: 2,
     dateRange: "04.05~04.11",
-    count: 1450,
-    category: "아이콘",
-    thumbnails: [thumb("2604w2a"), thumb("2604w2b"), thumb("2604w2c"), thumb("2604w2d")],
-    pcUrl,
-  },
-  {
-    id: "2026-04-w1",
-    year: 2026, month: 4, week: 1,
-    dateRange: "03.29~04.04",
-    count: 1730,
-    category: "3D",
-    thumbnails: [thumb("2604w1a"), thumb("2604w1b"), thumb("2604w1c"), thumb("2604w1d")],
-    pcUrl,
-  },
-  {
-    id: "2026-03-w5",
-    year: 2026, month: 3, week: 5,
-    dateRange: "03.22~03.28",
-    count: 1248,
-    category: "PNG",
-    thumbnails: [thumb("2603w5a"), thumb("2603w5b"), thumb("2603w5c"), thumb("2603w5d")],
-    pcUrl,
-  },
-  {
-    id: "2026-03-w4",
-    year: 2026, month: 3, week: 4,
-    dateRange: "03.15~03.21",
-    count: 1612,
-    category: "국내일러스트",
-    thumbnails: [thumb("2603w4a"), thumb("2603w4b"), thumb("2603w4c"), thumb("2603w4d")],
-    pcUrl,
-  },
-  {
-    id: "2026-03-w3",
-    year: 2026, month: 3, week: 3,
-    dateRange: "03.08~03.14",
-    count: 1390,
-    category: "합성·웹",
-    thumbnails: [thumb("2603w3a"), thumb("2603w3b"), thumb("2603w3c"), thumb("2603w3d")],
-    pcUrl,
-  },
-  {
-    id: "2026-03-w2",
-    year: 2026, month: 3, week: 2,
-    dateRange: "03.01~03.07",
-    count: 1284,
-    category: "폰트",
-    thumbnails: [thumb("2603w2a"), thumb("2603w2b"), thumb("2603w2c"), thumb("2603w2d")],
-    pcUrl,
-  },
-  {
-    id: "2026-03-w1",
-    year: 2026, month: 3, week: 1,
-    dateRange: "02.22~02.28",
-    count: 1505,
-    category: "AI이미지",
-    thumbnails: [thumb("2603w1a"), thumb("2603w1b"), thumb("2603w1c"), thumb("2603w1d")],
-    pcUrl,
+    themes: [
+      { id: "26-04w2-1", title: "신학기 캠퍼스", cover: cover("2604w2-1"), count: 14, category: "포토", pcUrl },
+      { id: "26-04w2-2", title: "헬스 트레이너", cover: cover("2604w2-2"), count: 11, category: "포토", pcUrl },
+      { id: "26-04w2-3", title: "3D 비즈니스 캐릭터", cover: cover("2604w2-3"), count: 13, category: "3D", pcUrl },
+      { id: "26-04w2-4", title: "리뉴얼 인포그래픽", cover: cover("2604w2-4"), count: 6, category: "PPT", pcUrl },
+    ],
   },
 ];
 
