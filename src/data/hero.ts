@@ -1,7 +1,7 @@
 // 홈 히어로 배경 이미지 — 페이지 로드마다 이 배열에서 랜덤 1개 선택
 // 사용법: 1) public/hero/ 에 jpg/png/webp 파일 업로드  2) 아래에 "/hero/파일명" 추가
 export const HERO_IMAGES: string[] = [
-  // "/hero/hero-01.jpg",
+  "/hero/hero-01.jpg",
   // "/hero/hero-02.jpg",
   // ...
 ];
