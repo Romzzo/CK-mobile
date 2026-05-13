@@ -2,6 +2,7 @@
 
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
+import { YoutubeIcon, InstagramIcon, FacebookIcon, BlogIcon } from "@/components/ui/SnsIcons";
 
 const linkGroups = [
   {
@@ -31,7 +32,12 @@ const linkGroups = [
   },
 ];
 
-const sns = ["유튜브", "인스타그램", "페이스북", "핀터레스트", "블로그"];
+const snsIcons = [
+  { label: "유튜브", Icon: YoutubeIcon },
+  { label: "인스타그램", Icon: InstagramIcon },
+  { label: "페이스북", Icon: FacebookIcon },
+  { label: "블로그", Icon: BlogIcon },
+];
 
 const companyInfo = [
   "사업자등록번호: 201-86-24458 | 대표: 이철집",
@@ -84,10 +90,15 @@ export default function Footer() {
         </div>
       ) : null}
 
-      <div className="mt-4 flex flex-wrap gap-x-3 gap-y-1.5">
-        {sns.map((s) => (
-          <a key={s} href="#" className="text-[11px] text-ink-mute">
-            {s}
+      <div className="mt-4 flex items-center gap-2">
+        {snsIcons.map(({ label, Icon }) => (
+          <a
+            key={label}
+            href="#"
+            aria-label={label}
+            className="p-1.5 text-ink-mute transition-colors hover:text-ink-soft"
+          >
+            <Icon size={22} />
           </a>
         ))}
       </div>
