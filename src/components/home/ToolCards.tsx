@@ -2,6 +2,8 @@
 
 import { ChevronRight } from "lucide-react";
 import useEmblaCarousel from "embla-carousel-react";
+import Autoplay from "embla-carousel-autoplay";
+import { useRef } from "react";
 import SectionHeader from "@/components/home/SectionHeader";
 
 const tools = [
@@ -43,7 +45,11 @@ const ctaColorMap: Record<(typeof tools)[number]["color"], string> = {
 };
 
 export default function ToolCards() {
-  const [emblaRef] = useEmblaCarousel({ align: "start", dragFree: true });
+  const autoplay = useRef(Autoplay({ delay: 3500, stopOnInteraction: true }));
+  const [emblaRef] = useEmblaCarousel(
+    { align: "start", dragFree: false, loop: true },
+    [autoplay.current]
+  );
 
   return (
     <section className="pt-8">
