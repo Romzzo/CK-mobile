@@ -3,25 +3,21 @@
 import { Search } from "lucide-react";
 import { useRouter } from "next/navigation";
 import { useEffect, useState, type FormEvent, type RefObject } from "react";
-
-// Pexels 미연결(키 없음)·로딩 중 폴백
-const HERO_FALLBACK = "https://picsum.photos/seed/ck-hero-studio/1200/720";
+import { HERO_IMAGES, HERO_FALLBACK } from "@/data/hero";
 
 const hotKeywords = ["어버이날", "여름 배경", "AI 이미지", "비즈니스 아이콘", "꽃 일러스트"];
 
 export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivElement | null> }) {
   const router = useRouter();
   const [q, setQ] = useState("");
+  // SSR/hydration 일관성을 위해 폴백으로 시작, 클라이언트 마운트 후 랜덤 픽
   const [heroImg, setHeroImg] = useState<string>(HERO_FALLBACK);
 
   useEffect(() => {
-    fetch("/api/pexels?query=colorful%20creative%20studio&per_page=1")
-      .then((r) => r.json())
-      .then((d) => {
-        const url = d?.photos?.[0]?.src?.landscape;
-        if (url) setHeroImg(url);
-      })
-      .catch(() => {});
+    if (HERO_IMAGES.length === 0) return;
+    const pick = HERO_IMAGES[Math.floor(Math.random() * HERO_IMAGES.length)];
+    // eslint-disable-next-line react-hooks/set-state-in-effect
+    setHeroImg(pick);
   }, []);
 
   const goSearch = (term: string) => {
