@@ -1,7 +1,7 @@
 "use client";
 
 import { useMemo, useState } from "react";
-import { Calendar, ChevronDown, Check, Layers } from "lucide-react";
+import { Calendar, ChevronDown, Check, Square } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import { updates, UPDATE_CATEGORIES } from "@/data/updates";
@@ -79,13 +79,13 @@ export default function UpdatePage() {
                 <img
                   src={t.cover}
                   alt=""
-                  className="aspect-[3/4] w-full object-cover"
+                  className="aspect-[4/3] w-full object-cover"
                 />
               </div>
               <div className="mt-2 flex items-center justify-between gap-2">
                 <p className="min-w-0 truncate text-[13px] font-bold text-ink">{t.title}</p>
                 <span className="flex shrink-0 items-center gap-1 text-[12px] text-ink-mute">
-                  <Layers size={13} />
+                  <Square size={12} strokeWidth={2} />
                   {t.count}
                 </span>
               </div>
