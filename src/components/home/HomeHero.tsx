@@ -44,7 +44,7 @@ export default function HomeHero({ searchRef }: { searchRef: RefObject<HTMLDivEl
         />
       </div>
 
-      <div className="relative px-5 pb-[68px]" style={{ paddingTop: "calc(5rem + env(safe-area-inset-top, 0px))" }}>
+      <div className="relative px-5 pb-[58px]" style={{ paddingTop: "calc(5rem + env(safe-area-inset-top, 0px))" }}>
         <h1 className="text-[26px] font-bold leading-[1.25] tracking-tight text-white">
           일잘러 디자이너의 필수 사이트
           <br />
