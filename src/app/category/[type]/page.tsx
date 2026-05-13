@@ -1,3 +1,4 @@
+import { redirect } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import PinGrid from "@/components/home/PinGrid";
 import ScrollRestore from "@/components/common/ScrollRestore";
@@ -18,6 +19,8 @@ const categoryMeta: Record<string, { label: string; desc: string }> = {
 
 export default async function CategoryPage({ params }: { params: Promise<{ type: string }> }) {
   const { type } = await params;
+  // "업데이트"는 카테고리 PinGrid 가 아니라 전용 주차 아카이브 /update 로 보냄.
+  if (type === "update") redirect("/update");
   const meta = categoryMeta[type] ?? { label: type, desc: "" };
 
   return (

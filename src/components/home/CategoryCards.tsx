@@ -11,7 +11,7 @@ export default function CategoryCards() {
         {CATEGORIES.map((c) => (
           <Link
             key={c.type}
-            href={`/category/${c.type}`}
+            href={c.type === "update" ? "/update" : `/category/${c.type}`}
             className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-surface-muted"
           >
             {/* eslint-disable-next-line @next/next/no-img-element */}

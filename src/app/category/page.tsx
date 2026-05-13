@@ -37,7 +37,7 @@ export default function CategoryIndexPage() {
           {CATEGORIES.map((c) => (
             <Link
               key={c.type}
-              href={`/category/${c.type}`}
+              href={c.type === "update" ? "/update" : `/category/${c.type}`}
               className="relative block h-[100px] overflow-hidden rounded-2xl bg-surface-muted"
             >
               {imgs[c.type] ? (
