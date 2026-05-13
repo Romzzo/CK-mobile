@@ -47,7 +47,7 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
             style={{ color: fg }}
           >
             <Crown size={13} />
-            멤버십
+            라이선스
           </Link>
           {isLoggedIn ? (
             <Link
