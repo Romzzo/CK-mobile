@@ -4,6 +4,10 @@ export const HERO_IMAGES: string[] = [
   "/hero/hero-01.jpg",
   "/hero/hero-02.jpg",
   "/hero/hero-03.jpg",
+  "/hero/hero-04.jpg",
+  "/hero/hero-05.jpg",
+  "/hero/hero-06.jpg",
+  "/hero/hero-07.jpg",
 ];
 
 // HERO_IMAGES가 비어 있거나 로딩(SSR) 시 사용되는 폴백
