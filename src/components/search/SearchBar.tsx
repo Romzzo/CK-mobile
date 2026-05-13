@@ -1,7 +1,7 @@
 "use client";
 
-import { Search, X, ArrowLeft } from "lucide-react";
-import { useState, useRef, useEffect, type FormEvent } from "react";
+import { Search, X, ArrowLeft, Camera } from "lucide-react";
+import { useState, useRef, useEffect, type FormEvent, type ChangeEvent } from "react";
 import { useRouter } from "next/navigation";
 
 interface SearchBarProps {
@@ -12,6 +12,7 @@ interface SearchBarProps {
 export default function SearchBar({ initialQuery, onSubmit }: SearchBarProps) {
   const router = useRouter();
   const inputRef = useRef<HTMLInputElement>(null);
+  const fileRef = useRef<HTMLInputElement>(null);
   const [text, setText] = useState(initialQuery);
 
   useEffect(() => {
@@ -22,6 +23,14 @@ export default function SearchBar({ initialQuery, onSubmit }: SearchBarProps) {
     e.preventDefault();
     onSubmit(text.trim());
     inputRef.current?.blur();
+  };
+
+  const onImagePick = (e: ChangeEvent<HTMLInputElement>) => {
+    const f = e.target.files?.[0];
+    if (!f) return;
+    // 프로토타입: 실제 비전 검색 미연동 — 파일명만 안내
+    alert(`이미지로 검색 (프로토타입)\n${f.name}`);
+    e.target.value = "";
   };
 
   return (
@@ -67,6 +76,22 @@ export default function SearchBar({ initialQuery, onSubmit }: SearchBarProps) {
               <X size={15} />
             </button>
           ) : null}
+
+          <button
+            type="button"
+            aria-label="이미지로 검색"
+            onClick={() => fileRef.current?.click()}
+            className="grid h-8 w-8 shrink-0 place-items-center text-ink-soft"
+          >
+            <Camera size={17} />
+          </button>
+          <input
+            ref={fileRef}
+            type="file"
+            accept="image/*"
+            className="hidden"
+            onChange={onImagePick}
+          />
         </form>
       </div>
     </div>

@@ -5,12 +5,12 @@ import { useState } from "react";
 
 const typeFilters = ["전체", "일러스트", "사진", "아이콘", "AI이미지", "PPT", "폰트", "영상"];
 const priceFilters = ["전체", "무료", "유료"];
-const sortOptions = ["관련순", "최신순", "인기순", "다운로드순"];
+const sortOptions = ["추천순", "다운로드순", "등록순"];
 
 export default function FilterBar() {
   const [activeType, setActiveType] = useState("전체");
   const [activePrice, setActivePrice] = useState("전체");
-  const [activeSort, setActiveSort] = useState("관련순");
+  const [activeSort, setActiveSort] = useState("추천순");
   const [showSortSheet, setShowSortSheet] = useState(false);
 
   return (
