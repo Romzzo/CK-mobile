@@ -74,7 +74,7 @@ export default function MyPage() {
       </header>
 
       {/* 프로필 카드 */}
-      <div className="mx-4 mt-4 flex gap-4 rounded-2xl border border-line bg-surface p-5">
+      <div className="mx-4 mt-4 flex items-center gap-4 rounded-2xl border border-line bg-surface p-5">
         <div className="flex h-14 w-14 shrink-0 items-center justify-center rounded-2xl text-[20px] font-bold text-white" style={{ backgroundColor: "var(--brand)" }}>
           박
         </div>
@@ -85,14 +85,14 @@ export default function MyPage() {
             <span className="shrink-0 text-[12px] font-semibold text-ink-soft">무료 회원</span>
           </div>
           <p className="mt-0.5 truncate text-[12px] text-ink-mute">example@email.com</p>
-          <button
-            className="mt-2 inline-flex items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-semibold"
-            style={{ borderColor: "var(--brand)", color: "var(--brand)" }}
-          >
-            <Pencil size={12} />
-            정보 수정
-          </button>
         </div>
+        <button
+          className="inline-flex shrink-0 items-center gap-1 rounded-full border px-3 py-1.5 text-[12px] font-semibold"
+          style={{ borderColor: "var(--brand)", color: "var(--brand)" }}
+        >
+          <Pencil size={12} />
+          정보 수정
+        </button>
       </div>
 
       {/* 멤버십 배너 */}

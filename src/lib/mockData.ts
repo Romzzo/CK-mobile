@@ -23,8 +23,8 @@ export const categories: { id: string; label: string; emoji: string }[] = [
 ];
 
 export const trendingKeywords = [
-  "여름 배경", "비즈니스 아이콘", "꽃 일러스트", "인물 사진", "AI 배경",
-  "프레임", "음식", "자연", "축하", "동물",
+  "가정의달", "5월", "쿠폰", "봄", "의료뷰티",
+  "이벤트", "ai", "선물", "카네이션", "여름",
 ];
 
 export const mockItems: ContentItem[] = [

@@ -43,7 +43,7 @@ export default function RecentSearches({ onSelect }: { onSelect: (keyword: strin
       ) : null}
 
       <div>
-        <SectionHeader title="인기 검색어" subtitle="실시간 TOP 10" />
+        <SectionHeader title="인기 검색어" subtitle="많이 찾는 키워드 TOP 10" />
         <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-3">
           {trendingKeywords.map((keyword, i) => (
             <button
