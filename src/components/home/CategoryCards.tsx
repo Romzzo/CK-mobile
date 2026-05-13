@@ -1,31 +1,8 @@
-"use client";
-
 import Link from "next/link";
-import { useState, useEffect } from "react";
 import SectionHeader from "@/components/home/SectionHeader";
-
-const CATEGORIES = [
-  { label: "일러스트", type: "illust" },
-  { label: "사진", type: "photo" },
-  { label: "아이콘", type: "icon" },
-  { label: "AI 이미지", type: "ai" },
-  { label: "PPT 템플릿", type: "ppt" },
-  { label: "폰트", type: "font" },
-  { label: "합성·웹", type: "composite" },
-  { label: "3D", type: "3d" },
-  { label: "PNG", type: "png" },
-];
+import { CATEGORIES } from "@/data/curated";
 
 export default function CategoryCards() {
-  const [imgs, setImgs] = useState<Record<string, string | null>>({});
-
-  useEffect(() => {
-    fetch("/api/pexels?type=categories")
-      .then((r) => r.json())
-      .then((data) => setImgs(data))
-      .catch(() => {});
-  }, []);
-
   return (
     <section className="px-4 pt-8">
       <SectionHeader title="카테고리" href="/category" action="전체 보기" />
@@ -37,16 +14,8 @@ export default function CategoryCards() {
             href={`/category/${c.type}`}
             className="relative aspect-[4/5] overflow-hidden rounded-2xl bg-surface-muted"
           >
-            {imgs[c.type] ? (
-              // eslint-disable-next-line @next/next/no-img-element
-              <img
-                src={imgs[c.type]!}
-                alt=""
-                className="absolute inset-0 h-full w-full object-cover"
-              />
-            ) : (
-              <div className="absolute inset-0 animate-pulse bg-surface-muted" />
-            )}
+            {/* eslint-disable-next-line @next/next/no-img-element */}
+            <img src={c.image} alt="" className="absolute inset-0 h-full w-full object-cover" />
             <div
               className="absolute inset-0"
               style={{ background: "linear-gradient(to top, rgba(0,0,0,0.58), rgba(0,0,0,0) 56%)" }}
