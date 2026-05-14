@@ -2,7 +2,6 @@
 
 import { Clock, X } from "lucide-react";
 import { trendingKeywords } from "@/lib/mockData";
-import SectionHeader from "@/components/home/SectionHeader";
 import { useRecentSearches } from "@/lib/useRecentSearches";
 
 export default function RecentSearches({ onSelect }: { onSelect: (keyword: string) => void }) {
@@ -38,7 +37,7 @@ export default function RecentSearches({ onSelect }: { onSelect: (keyword: strin
       ) : null}
 
       <div>
-        <SectionHeader title="인기 검색어" subtitle="많이 찾는 키워드 TOP 10" />
+        <h2 className="text-[15px] font-bold text-ink">인기 검색어</h2>
         <div className="mt-3 grid grid-cols-2 gap-x-3 gap-y-3">
           {trendingKeywords.map((keyword, i) => (
             <button
