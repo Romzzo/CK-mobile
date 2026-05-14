@@ -24,7 +24,7 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
           className="shrink-0 transition-colors duration-300"
           style={{ color: solid ? "var(--brand)" : "#fff" }}
         >
-          <BrandLogo style={{ height: 16, width: "auto" }} />
+          <BrandLogo style={{ height: 13, width: "auto" }} />
         </Link>
 
         <Link
