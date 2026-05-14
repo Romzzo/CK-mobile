@@ -1,7 +1,7 @@
 "use client";
 
 import { Heart } from "lucide-react";
-import { useState, useEffect } from "react";
+import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
 
 interface PexelsPhoto {
@@ -73,6 +73,7 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
 }
 
 const SKELETON_RATIOS = [3 / 4, 1, 4 / 3, 2 / 3, 4 / 5, 3 / 5];
+const PER_PAGE = 12;
 
 // 한글 받침 유무에 따라 조사 "이/가" 결정. 비한글(영문 등)은 "가" 기본.
 function subjectParticle(word: string): string {
@@ -85,31 +86,77 @@ function subjectParticle(word: string): string {
 }
 
 // Pexels 는 다운로드/등록 정렬을 제공하지 않아 프로토타입 차원에서
-// 정렬값별로 다른 page 를 요청해 결과가 시각적으로 바뀌도록 매핑.
-const PEXELS_PAGE_BY_SORT: Record<string, number> = {
-  추천순: 1,
-  다운로드순: 2,
-  등록순: 3,
+// 정렬값별로 Pexels 페이지 시작점을 어긋나게 띄움. 무한 스크롤은 이 시작점 위로 page 를 +1 씩 가산.
+const SORT_PAGE_OFFSET: Record<string, number> = {
+  추천순: 0,
+  다운로드순: 10,
+  등록순: 20,
 };
 
+// query/sort 가 바뀌면 부모(/search 페이지)에서 key 를 새로 줘 컴포넌트가 remount 된다.
+// 그래서 내부 reset 로직 없이 page=1 부터 자연스럽게 다시 시작.
 export default function PinGrid({ query, sort = "추천순" }: { query?: string; sort?: string }) {
   const [photos, setPhotos] = useState<PexelsPhoto[]>([]);
+  const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
+  const [loadingMore, setLoadingMore] = useState(false);
+  const [hasMore, setHasMore] = useState(true);
 
   useEffect(() => {
-    setLoading(true);
-    const page = PEXELS_PAGE_BY_SORT[sort] ?? 1;
-    const params = new URLSearchParams({ per_page: "12", page: String(page) });
+    let cancelled = false;
+    if (page === 1) setLoading(true);
+    else setLoadingMore(true);
+
+    const pexelsPage = (SORT_PAGE_OFFSET[sort] ?? 0) + page;
+    const params = new URLSearchParams({
+      per_page: String(PER_PAGE),
+      page: String(pexelsPage),
+    });
     if (query) params.set("query", query);
+
     fetch(`/api/pexels?${params.toString()}`)
       .then((r) => r.json())
-      .then((data) => setPhotos(Array.isArray(data.photos) ? data.photos : []))
-      .catch(() => setPhotos([]))
-      .finally(() => setLoading(false));
-  }, [query, sort]);
+      .then((data) => {
+        if (cancelled) return;
+        const next = Array.isArray(data.photos) ? data.photos : [];
+        setPhotos((prev) => (page === 1 ? next : [...prev, ...next]));
+        if (next.length < PER_PAGE) setHasMore(false);
+      })
+      .catch(() => {
+        if (!cancelled) setHasMore(false);
+      })
+      .finally(() => {
+        if (cancelled) return;
+        setLoading(false);
+        setLoadingMore(false);
+      });
+
+    return () => {
+      cancelled = true;
+    };
+  }, [page, sort, query]);
+
+  // 무한 스크롤 sentinel — 마지막 카드 가까이 보이면 다음 페이지 로드
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!hasMore || loading || loadingMore) return;
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setPage((p) => p + 1);
+        }
+      },
+      { rootMargin: "320px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasMore, loading, loadingMore]);
 
   const idsParam = photos.map((p) => p.id).join(",");
 
+  // 초기 로딩(페이지 1) — 스켈레톤
   if (loading) {
     return (
       <div className="columns-2 gap-px">
@@ -140,10 +187,24 @@ export default function PinGrid({ query, sort = "추천순" }: { query?: string;
   }
 
   return (
-    <div className="columns-2 gap-px">
-      {photos.map((photo, i) => (
-        <PinCard key={photo.id} photo={photo} index={i} idsParam={idsParam} />
-      ))}
-    </div>
+    <>
+      <div className="columns-2 gap-px">
+        {photos.map((photo, i) => (
+          <PinCard key={photo.id} photo={photo} index={i} idsParam={idsParam} />
+        ))}
+      </div>
+
+      {hasMore ? (
+        <div ref={sentinelRef} className="flex h-16 items-center justify-center">
+          {loadingMore ? (
+            <span className="text-[12px] text-ink-mute">불러오는 중...</span>
+          ) : null}
+        </div>
+      ) : (
+        <div className="py-6 text-center text-[12px] text-ink-mute">
+          모든 결과를 다 봤어요
+        </div>
+      )}
+    </>
   );
 }
