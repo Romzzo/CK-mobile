@@ -2,6 +2,7 @@ import { redirect } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import PinGrid from "@/components/home/PinGrid";
 import ScrollRestore from "@/components/common/ScrollRestore";
+import ScrollTopButton from "@/components/common/ScrollTopButton";
 import BottomNav from "@/components/layout/BottomNav";
 
 const categoryMeta: Record<string, { label: string; desc: string }> = {
@@ -36,6 +37,8 @@ export default async function CategoryPage({ params }: { params: Promise<{ type:
         </div>
         <PinGrid />
       </main>
+
+      <ScrollTopButton />
 
       <BottomNav />
     </div>

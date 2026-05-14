@@ -7,6 +7,7 @@ import { useState } from "react";
 import { mockItems } from "@/lib/mockData";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
+import ScrollTopButton from "@/components/common/ScrollTopButton";
 import { useAuth } from "@/lib/useAuth";
 
 const initialLiked = mockItems.filter((_, i) => i % 2 === 0);
@@ -175,6 +176,8 @@ export default function LikePage() {
           ))}
         </div>
       )}
+
+      <ScrollTopButton />
 
       <BottomNav />
     </div>
