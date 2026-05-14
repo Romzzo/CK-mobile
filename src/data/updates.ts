@@ -163,7 +163,7 @@ export function findThemeBySeq(seq: number): { theme: Theme; week: WeeklyUpdate 
 export function getThemeContents(
   seq: number,
   count: number,
-): { url: string; aspect: number }[] {
+): { id: number; url: string; aspect: number }[] {
   // 마소너리 효과를 위해 비율 분산 (결정적)
   const SHAPES: ReadonlyArray<{ w: number; h: number }> = [
     { w: 400, h: 500 },
@@ -176,6 +176,7 @@ export function getThemeContents(
   return Array.from({ length: count }, (_, i) => {
     const s = SHAPES[(seq + i * 3) % SHAPES.length];
     return {
+      id: seq * 1000 + i,
       url: `https://picsum.photos/seed/tc-${seq}-${i}/${s.w}/${s.h}`,
       aspect: s.w / s.h,
     };

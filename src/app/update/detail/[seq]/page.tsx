@@ -3,6 +3,7 @@
 import { notFound } from "next/navigation";
 import { use, useState } from "react";
 import { Heart } from "lucide-react";
+import Link from "next/link";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import { findThemeBySeq, getThemeContents } from "@/data/updates";
@@ -21,6 +22,7 @@ export default function ThemeDetailPage({
   const { theme, week } = result;
   const endDate = `${week.year}.${week.dateRange.split("~")[1]}`;
   const contents = getThemeContents(seq, theme.count);
+  const idsParam = contents.map((c) => c.id).join(",");
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
@@ -43,7 +45,14 @@ export default function ThemeDetailPage({
       {/* ── 콘텐츠 마소너리 (1px 여백, R 없음) ── */}
       <div className="columns-2 gap-px bg-surface-muted">
         {contents.map((c, i) => (
-          <ContentTile key={i} url={c.url} aspect={c.aspect} />
+          <ContentTile
+            key={c.id}
+            id={c.id}
+            url={c.url}
+            aspect={c.aspect}
+            index={i}
+            idsParam={idsParam}
+          />
         ))}
       </div>
 
@@ -52,10 +61,25 @@ export default function ThemeDetailPage({
   );
 }
 
-function ContentTile({ url, aspect }: { url: string; aspect: number }) {
+function ContentTile({
+  id,
+  url,
+  aspect,
+  index,
+  idsParam,
+}: {
+  id: number;
+  url: string;
+  aspect: number;
+  index: number;
+  idsParam: string;
+}) {
   const [liked, setLiked] = useState(false);
   return (
-    <div className="relative mb-px break-inside-avoid">
+    <Link
+      href={`/content/${id}?ids=${idsParam}&idx=${index}`}
+      className="relative mb-px block break-inside-avoid"
+    >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
         src={url}
@@ -65,7 +89,11 @@ function ContentTile({ url, aspect }: { url: string; aspect: number }) {
       />
       <button
         aria-label="좋아요"
-        onClick={() => setLiked((v) => !v)}
+        onClick={(e) => {
+          e.preventDefault();
+          e.stopPropagation();
+          setLiked((v) => !v);
+        }}
         className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-white/90 shadow-sm"
         style={{ backdropFilter: "blur(4px)" }}
       >
@@ -76,6 +104,6 @@ function ContentTile({ url, aspect }: { url: string; aspect: number }) {
           fill={liked ? "var(--danger)" : "none"}
         />
       </button>
-    </div>
+    </Link>
   );
 }
