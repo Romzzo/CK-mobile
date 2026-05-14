@@ -94,7 +94,7 @@ function ContentTile({
           e.stopPropagation();
           setLiked((v) => !v);
         }}
-        className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-white/90 shadow-sm"
+        className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-white/80 shadow-sm"
         style={{ backdropFilter: "blur(4px)" }}
       >
         <Heart
