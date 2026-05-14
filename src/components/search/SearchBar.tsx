@@ -60,7 +60,7 @@ export default function SearchBar({ initialQuery, onSubmit }: SearchBarProps) {
             value={text}
             onChange={(e) => setText(e.target.value)}
             placeholder="한글, 영문, 콘텐츠번호로 검색"
-            className="min-w-0 flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-ink-mute"
+            className="min-w-0 flex-1 bg-transparent text-[14px] text-ink outline-none placeholder:text-ink-mute [&::-webkit-search-cancel-button]:appearance-none [&::-webkit-search-decoration]:appearance-none"
           />
           {text ? (
             <button
