@@ -38,14 +38,14 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
       {isMedical ? (
         <span
           className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
-          style={{ backgroundColor: "rgba(0,0,0,0.8)" }}
+          style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
         >
           의료뷰티
         </span>
       ) : isAI ? (
         <span
           className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
-          style={{ backgroundColor: "color-mix(in srgb, var(--brand) 80%, transparent)" }}
+          style={{ backgroundColor: "color-mix(in srgb, var(--brand) 40%, transparent)" }}
         >
           AI
         </span>

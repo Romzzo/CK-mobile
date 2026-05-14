@@ -16,6 +16,8 @@ export default function SearchBar({ initialQuery, onSubmit }: SearchBarProps) {
   const [text, setText] = useState(initialQuery);
 
   useEffect(() => {
+    // initialQuery 가 바뀌면 입력값 동기화 + 빈 값일 땐 자동 포커스
+    setText(initialQuery);
     if (!initialQuery) inputRef.current?.focus();
   }, [initialQuery]);
 
