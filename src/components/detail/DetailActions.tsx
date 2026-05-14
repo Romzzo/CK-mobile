@@ -25,7 +25,7 @@ export default function DetailActions() {
           fill={liked ? "var(--danger)" : "none"}
           style={liked ? { color: "var(--danger)" } : undefined}
         />
-        {liked ? "찜했어요" : "찜하기"}
+        {liked ? "좋아요 취소" : "좋아요"}
       </button>
     </div>
   );
