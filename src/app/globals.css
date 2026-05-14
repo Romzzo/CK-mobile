@@ -108,12 +108,16 @@
     @apply h-full;
     -webkit-text-size-adjust: 100%;
     scrollbar-gutter: stable;
+    /* PTR(pull-to-refresh) 차단 — 새로고침 후 Next.js 라우터-useSearchParams race 로
+       후속 검색이 안 먹히는 케이스 방지. 앱이 아니라 모바일 웹이라 PTR 자체가 기능적 의미 없음. */
+    overscroll-behavior-y: contain;
   }
   body {
     color: var(--ink);
     font-family: 'Pretendard', -apple-system, BlinkMacSystemFont, 'Apple SD Gothic Neo', system-ui, sans-serif;
     -webkit-font-smoothing: antialiased;
     text-rendering: optimizeLegibility;
+    overscroll-behavior-y: contain;
   }
   /* Hide scrollbars on horizontal scrollers */
   .no-scrollbar {
