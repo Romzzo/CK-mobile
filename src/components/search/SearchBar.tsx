@@ -23,8 +23,12 @@ export default function SearchBar({ initialQuery, onSubmit }: SearchBarProps) {
 
   const submit = (e: FormEvent) => {
     e.preventDefault();
-    onSubmit(text.trim());
+    // IME(한글 조합) 미커밋 상태로 제출되는 케이스 방어:
+    //   1) blur() 로 조합 강제 종료
+    //   2) DOM input.value 를 우선 채택 (controlled state 가 stale 일 수 있음)
     inputRef.current?.blur();
+    const value = (inputRef.current?.value ?? text).trim();
+    onSubmit(value);
   };
 
   const onImagePick = (e: ChangeEvent<HTMLInputElement>) => {

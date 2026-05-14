@@ -20,13 +20,21 @@ function SearchContent() {
   const hasQuery = query.length > 0;
   const { add: addRecent } = useRecentSearches();
 
-  const [activeSort, setActiveSort] = useState("추천순");
+  // sort 영속화: 클라이언트 마운트 시 sessionStorage 를 동기 초기값으로 읽음.
+  //   - 이전엔 useEffect 로 마운트 후 setActiveSort 했는데, 그 사이 PinGrid 의 key
+  //     ({query}|{sort}) 가 두 번 바뀌며 fetch 가 race 를 일으키던 케이스 있었음.
+  //   - 서버 렌더 시엔 sessionStorage 가 없으니 기본값. 그래도 OK — /search 진입은
+  //     클라이언트 네비게이션이 99% 라 초기값 캐시 효과를 거의 그대로 누림.
+  const [activeSort, setActiveSort] = useState<string>(() => {
+    if (typeof window === "undefined") return "추천순";
+    try {
+      const stored = sessionStorage.getItem("search_sort");
+      return stored && SORT_OPTIONS.includes(stored) ? stored : "추천순";
+    } catch {
+      return "추천순";
+    }
+  });
   const [sortOpen, setSortOpen] = useState(false);
-
-  useEffect(() => {
-    const stored = sessionStorage.getItem("search_sort");
-    if (stored && SORT_OPTIONS.includes(stored)) setActiveSort(stored);
-  }, []);
 
   // 검색 쿼리가 들어올 때마다(직접 URL/입력 제출/최근·인기 키워드 탭 등) 최근 검색어에 누적
   useEffect(() => {
@@ -35,7 +43,7 @@ function SearchContent() {
 
   const go = (q: string) => {
     const t = q.trim();
-    router.replace(t ? `/search?q=${encodeURIComponent(t)}` : "/search");
+    router.push(t ? `/search?q=${encodeURIComponent(t)}` : "/search");
   };
 
   return (
