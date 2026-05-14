@@ -14,7 +14,7 @@ const labelOf = (w: WeeklyUpdate) =>
 
 export default function UpdatePage() {
   const [weekId, setWeekId] = useState(updates[0].id);
-  const [category, setCategory] = useState<string>("전체");
+  const [category, setCategory] = useState<string>("전체 업데이트");
   const [sheet, setSheet] = useState<SheetKey>(null);
   // 선택된 주차 이전으로 추가 로딩한 주차 수
   const [extra, setExtra] = useState(0);
@@ -33,7 +33,7 @@ export default function UpdatePage() {
   const hasMore = selectedIdx + 1 + extra < updates.length;
 
   const filterThemes = (w: WeeklyUpdate) =>
-    category === "전체" ? w.themes : w.themes.filter((t) => t.category === category);
+    category === "전체 업데이트" ? w.themes : w.themes.filter((t) => t.category === category);
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
@@ -74,37 +74,38 @@ export default function UpdatePage() {
               </p>
             </div>
 
-            <div className="grid grid-cols-2 gap-x-3 gap-y-5 px-4 pt-4">
-              {themes.length === 0 ? (
-                <div className="col-span-2 rounded-2xl border border-line bg-surface px-5 py-10 text-center">
-                  <p className="text-[13px] font-semibold text-ink">이 주차에는 해당 카테고리 업데이트가 없어요</p>
+            {themes.length === 0 ? (
+              <div className="px-4 pt-5">
+                <div className="rounded-2xl bg-surface px-5 py-12 text-center">
+                  <p className="text-[13px] font-semibold text-ink-soft">업데이트된 콘텐츠가 없어요.</p>
                 </div>
-              ) : (
-                themes.map((t) => (
+              </div>
+            ) : (
+              <div className="columns-2 gap-3 px-4 pt-4 [&>*]:mb-5">
+                {themes.map((t) => (
                   <Link
                     key={t.id}
                     href={`/update/detail/${t.seq}`}
-                    className="block"
+                    className="block break-inside-avoid"
                   >
-                    <div className="overflow-hidden rounded-2xl bg-surface-muted">
-                      {/* eslint-disable-next-line @next/next/no-img-element */}
-                      <img
-                        src={t.cover}
-                        alt=""
-                        className="aspect-[4/3] w-full object-cover"
-                      />
-                    </div>
+                    {/* eslint-disable-next-line @next/next/no-img-element */}
+                    <img
+                      src={t.cover}
+                      alt=""
+                      className="block w-full rounded-xl bg-surface-muted"
+                      style={{ aspectRatio: t.aspect }}
+                    />
                     <div className="mt-2 flex items-center justify-between gap-2">
-                      <p className="min-w-0 truncate text-[13px] font-bold text-ink">{t.title}</p>
-                      <span className="flex shrink-0 items-center gap-1 text-[12px] text-ink-mute">
-                        <Square size={12} strokeWidth={2} />
+                      <p className="min-w-0 truncate text-[13px] font-semibold text-ink">{t.title}</p>
+                      <span className="flex shrink-0 items-center gap-1 text-[11px] text-ink-mute">
+                        <Square size={10} strokeWidth={2} />
                         {t.count}
                       </span>
                     </div>
                   </Link>
-                ))
-              )}
-            </div>
+                ))}
+              </div>
+            )}
           </section>
         );
       })}

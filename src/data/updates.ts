@@ -9,6 +9,8 @@ export type Theme = {
   id: string;
   title: string;
   cover: string;
+  /** 커버 이미지의 width/height 비율 — 마소너리 레이아웃 미리 잡아 CLS 방지 */
+  aspect: number;
   count: number;
   category: string;
   seq: number;
@@ -23,47 +25,54 @@ export type WeeklyUpdate = {
   themes: Theme[];
 };
 
-const cover = (seed: string) => `https://picsum.photos/seed/upd-${seed}/600/800`;
+// picsum 으로부터 받을 커버 후보 비율들 — 마소너리 그리드에서 자연 비율 다양성 확보
+const SHAPES: ReadonlyArray<{ w: number; h: number }> = [
+  { w: 600, h: 800 }, // 3:4 (portrait)
+  { w: 600, h: 600 }, // 1:1 (square)
+  { w: 600, h: 450 }, // 4:3 (landscape)
+  { w: 600, h: 900 }, // 2:3 (tall)
+  { w: 600, h: 750 }, // 4:5
+];
 
 const themePool: ReadonlyArray<{ title: string; category: string }> = [
-  { title: "힘내라 대한민국", category: "포토" },
-  { title: "summer letter", category: "합성·웹" },
-  { title: "이제 핏을 바꿀 시간", category: "합성·웹" },
+  { title: "힘내라 대한민국", category: "국내포토" },
+  { title: "summer letter", category: "합성.편집" },
+  { title: "이제 핏을 바꿀 시간", category: "합성.편집" },
   { title: "반려동물 동반법", category: "국내일러스트" },
-  { title: "스몰웨딩 트렌드", category: "포토" },
-  { title: "비타민 듬뿍 과일", category: "포토" },
+  { title: "스몰웨딩 트렌드", category: "국내포토" },
+  { title: "비타민 듬뿍 과일", category: "국내포토" },
   { title: "캠핑 라이프", category: "국내일러스트" },
   { title: "AI 시그니처 캐릭터", category: "AI이미지" },
   { title: "어버이날 감사장", category: "국내일러스트" },
-  { title: "봄날의 산책", category: "포토" },
+  { title: "봄날의 산책", category: "해외포토" },
   { title: "오피스 인포그래픽", category: "PPT" },
   { title: "라인 아이콘 200", category: "아이콘" },
   { title: "한식 일러스트", category: "국내일러스트" },
   { title: "비즈니스 인물 PNG", category: "PNG" },
   { title: "어린이날 축하", category: "국내일러스트" },
-  { title: "근로자의 날", category: "합성·웹" },
+  { title: "근로자의 날", category: "웹.모바일" },
   { title: "3D 캘린더 오브젝트", category: "3D" },
   { title: "사이버 시큐리티", category: "해외일러스트" },
-  { title: "여행 가방 패턴", category: "포토" },
-  { title: "벚꽃 엔딩", category: "포토" },
+  { title: "여행 가방 패턴", category: "해외포토" },
+  { title: "벚꽃 엔딩", category: "국내포토" },
   { title: "세계 책의 날", category: "국내일러스트" },
-  { title: "지구의 날 캠페인", category: "합성·웹" },
-  { title: "친환경 폰트 5종", category: "폰트" },
-  { title: "여름맞이 룩북", category: "포토" },
+  { title: "지구의 날 캠페인", category: "웹.모바일" },
+  { title: "친환경 폰트 5종", category: "합성.편집" },
+  { title: "여름맞이 룩북", category: "해외포토" },
   { title: "재택근무 PPT", category: "PPT" },
   { title: "스포츠 아이콘 100", category: "아이콘" },
   { title: "꽃다발 누끼", category: "PNG" },
-  { title: "도시 야경", category: "포토" },
+  { title: "도시 야경", category: "해외포토" },
   { title: "AI 풍경 셋", category: "AI이미지" },
   { title: "감성 캘리그래피", category: "국내일러스트" },
-  { title: "신학기 캠퍼스", category: "포토" },
-  { title: "헬스 트레이너", category: "포토" },
+  { title: "신학기 캠퍼스", category: "국내포토" },
+  { title: "헬스 트레이너", category: "해외포토" },
   { title: "3D 비즈니스 캐릭터", category: "3D" },
   { title: "리뉴얼 인포그래픽", category: "PPT" },
-  { title: "크리스마스 마켓", category: "포토" },
+  { title: "크리스마스 마켓", category: "해외포토" },
   { title: "겨울 눈꽃 패턴", category: "국내일러스트" },
-  { title: "수능 응원", category: "합성·웹" },
-  { title: "가을 단풍 풍경", category: "포토" },
+  { title: "수능 응원", category: "합성.편집" },
+  { title: "가을 단풍 풍경", category: "국내포토" },
   { title: "추석 명절", category: "국내일러스트" },
   { title: "할로윈 호박", category: "해외일러스트" },
 ];
@@ -107,10 +116,12 @@ function buildWeeks(): WeeklyUpdate[] {
     const themes: Theme[] = [];
     for (let i = 0; i < themeCount; i++) {
       const p = themePool[(weekIndex * 7 + i * 11) % themePool.length];
+      const shape = SHAPES[(weekIndex * 3 + i * 2) % SHAPES.length];
       themes.push({
         id: `${id}-t${i + 1}`,
         title: p.title,
-        cover: cover(`${id}-${i + 1}`),
+        cover: `https://picsum.photos/seed/upd-${id}-${i + 1}/${shape.w}/${shape.h}`,
+        aspect: shape.w / shape.h,
         count: 5 + ((weekIndex * 3 + i * 5) % 36),
         category: p.category,
         seq: 70000 + weekIndex * 10 + i,
@@ -156,15 +167,16 @@ export function getThemeContents(seq: number, count: number): string[] {
 }
 
 export const UPDATE_CATEGORIES = [
-  "전체",
+  "전체 업데이트",
   "국내일러스트",
   "해외일러스트",
   "아이콘",
-  "포토",
-  "AI이미지",
-  "PPT",
-  "폰트",
+  "국내포토",
+  "해외포토",
+  "합성.편집",
+  "웹.모바일",
   "3D",
   "PNG",
-  "합성·웹",
+  "AI이미지",
+  "PPT",
 ] as const;
