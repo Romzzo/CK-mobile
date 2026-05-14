@@ -133,11 +133,14 @@ export default function UpdatePage() {
       {sheet ? (
         <>
           <div
-            className="fixed inset-0 z-40"
+            className="fixed inset-0 z-[55]"
             style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
             onClick={() => setSheet(null)}
           />
-          <div className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl bg-surface px-4 pb-8 pt-4">
+          <div
+            className="fixed bottom-0 left-1/2 z-[60] w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl bg-surface px-4 pt-4"
+            style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 24px)" }}
+          >
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line" />
             <p className="mb-1 text-[15px] font-bold text-ink">
               {sheet === "week" ? "주차 선택" : "카테고리"}

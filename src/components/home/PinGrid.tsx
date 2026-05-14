@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Lock } from "lucide-react";
+import { Heart } from "lucide-react";
 import { useState, useEffect } from "react";
 import Link from "next/link";
 
@@ -15,8 +15,11 @@ interface PexelsPhoto {
 function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number; idsParam: string }) {
   const [liked, setLiked] = useState(false);
   const aspect = photo.width && photo.height ? photo.width / photo.height : 1;
-  const isPremium = index === 4 || index === 7;
-  const isNew = index < 3;
+  // 콘텐츠 타입 뱃지 (mock — 실제론 콘텐츠 메타에서 옴)
+  //  - 의료뷰티: 초상권 계약이 완료된 인물사진
+  //  - AI: 생성형 AI 이미지
+  const isAI = index === 0 || index === 5 || index === 9;
+  const isMedical = index === 2 || index === 7;
 
   return (
     <Link
@@ -32,16 +35,19 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
         style={{ aspectRatio: aspect }}
       />
 
-      {isPremium ? (
+      {isMedical ? (
         <span
-          className="absolute left-2 top-2 flex items-center gap-1 rounded-full px-1.5 py-0.5 text-[10px] font-semibold text-white"
-          style={{ backgroundColor: "rgba(0,0,0,0.55)" }}
+          className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
+          style={{ backgroundColor: "rgba(0,0,0,0.6)" }}
         >
-          <Lock size={9} /> PRO
+          의료뷰티
         </span>
-      ) : isNew ? (
-        <span className="absolute left-2 top-2 rounded-full bg-brand px-1.5 py-0.5 text-[10px] font-bold text-white">
-          NEW
+      ) : isAI ? (
+        <span
+          className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
+          style={{ backgroundColor: "var(--brand)" }}
+        >
+          AI
         </span>
       ) : null}
 
@@ -52,7 +58,7 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
           e.stopPropagation();
           setLiked((v) => !v);
         }}
-        className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-white/80 shadow-sm before:absolute before:-inset-2 before:content-['']"
+        className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-white/60 shadow-sm before:absolute before:-inset-2 before:content-['']"
         style={{ backdropFilter: "blur(4px)" }}
       >
         <Heart
