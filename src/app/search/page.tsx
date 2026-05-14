@@ -23,6 +23,11 @@ function SearchContent() {
   const [activeSort, setActiveSort] = useState("추천순");
   const [sortOpen, setSortOpen] = useState(false);
 
+  useEffect(() => {
+    const stored = sessionStorage.getItem("search_sort");
+    if (stored && SORT_OPTIONS.includes(stored)) setActiveSort(stored);
+  }, []);
+
   // 검색 쿼리가 들어올 때마다(직접 URL/입력 제출/최근·인기 키워드 탭 등) 최근 검색어에 누적
   useEffect(() => {
     if (query) addRecent(query);
@@ -84,6 +89,7 @@ function SearchContent() {
                 key={opt}
                 onClick={() => {
                   setActiveSort(opt);
+                  sessionStorage.setItem("search_sort", opt);
                   setSortOpen(false);
                 }}
                 className="flex w-full items-center justify-between border-b border-line py-3.5 text-left last:border-0"
