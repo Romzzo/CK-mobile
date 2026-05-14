@@ -16,6 +16,7 @@ export async function GET(request: NextRequest) {
   const { searchParams } = new URL(request.url);
   const query = searchParams.get("query") || "";
   const perPage = Number(searchParams.get("per_page") || "12");
+  const page = Math.max(1, Number(searchParams.get("page") || "1"));
   const type = searchParams.get("type") || "";
 
   const apiKey = process.env.PEXELS_API_KEY;
@@ -40,8 +41,8 @@ export async function GET(request: NextRequest) {
   // 한글 쿼리는 locale=ko-KR 을 넘겨야 Pexels 가 제대로 매칭함 (영문 쿼리는 ko-KR 도 무난)
   const hasKorean = /[ㄱ-힝]/.test(query);
   const url = query
-    ? `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}${hasKorean ? "&locale=ko-KR" : ""}`
-    : `https://api.pexels.com/v1/curated?per_page=${perPage}`;
+    ? `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}&page=${page}${hasKorean ? "&locale=ko-KR" : ""}`
+    : `https://api.pexels.com/v1/curated?per_page=${perPage}&page=${page}`;
 
   const res = await fetch(url, {
     headers: { Authorization: apiKey },

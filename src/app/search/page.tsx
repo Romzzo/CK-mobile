@@ -59,7 +59,7 @@ function SearchContent() {
                 {activeSort}
               </button>
             </div>
-            <PinGrid key={query} query={query} />
+            <PinGrid key={query} query={query} sort={activeSort} />
           </div>
         </>
       ) : (

@@ -84,21 +84,29 @@ function subjectParticle(word: string): string {
   return "가";
 }
 
-export default function PinGrid({ query }: { query?: string }) {
+// Pexels 는 다운로드/등록 정렬을 제공하지 않아 프로토타입 차원에서
+// 정렬값별로 다른 page 를 요청해 결과가 시각적으로 바뀌도록 매핑.
+const PEXELS_PAGE_BY_SORT: Record<string, number> = {
+  추천순: 1,
+  다운로드순: 2,
+  등록순: 3,
+};
+
+export default function PinGrid({ query, sort = "추천순" }: { query?: string; sort?: string }) {
   const [photos, setPhotos] = useState<PexelsPhoto[]>([]);
   const [loading, setLoading] = useState(true);
 
   useEffect(() => {
     setLoading(true);
-    const url = query
-      ? `/api/pexels?query=${encodeURIComponent(query)}&per_page=12`
-      : "/api/pexels?per_page=12";
-    fetch(url)
+    const page = PEXELS_PAGE_BY_SORT[sort] ?? 1;
+    const params = new URLSearchParams({ per_page: "12", page: String(page) });
+    if (query) params.set("query", query);
+    fetch(`/api/pexels?${params.toString()}`)
       .then((r) => r.json())
       .then((data) => setPhotos(Array.isArray(data.photos) ? data.photos : []))
       .catch(() => setPhotos([]))
       .finally(() => setLoading(false));
-  }, [query]);
+  }, [query, sort]);
 
   const idsParam = photos.map((p) => p.id).join(",");
 
