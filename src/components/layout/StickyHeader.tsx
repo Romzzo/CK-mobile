@@ -2,6 +2,7 @@
 
 import { Search, Crown } from "lucide-react";
 import Link from "next/link";
+import BrandLogo from "@/components/brand/BrandLogo";
 import { useAuth } from "@/lib/useAuth";
 
 export default function StickyHeader({ solid }: { solid: boolean }) {
@@ -17,14 +18,13 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
       }}
     >
       <div className="flex h-14 items-center gap-3 px-4">
-        <Link href="/" className="shrink-0">
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img
-            src="/ck-logo.svg"
-            alt="ClipartKorea"
-            className="h-7 w-auto transition-[filter] duration-300"
-            style={solid ? undefined : { filter: "brightness(0) invert(1)" }}
-          />
+        <Link
+          href="/"
+          aria-label="clipartkorea 홈"
+          className="shrink-0 transition-colors duration-300"
+          style={{ color: solid ? "var(--brand)" : "#fff" }}
+        >
+          <BrandLogo style={{ height: 16, width: "auto" }} />
         </Link>
 
         <Link
