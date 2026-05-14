@@ -1,8 +1,20 @@
 "use client";
 
-import { Heart } from "lucide-react";
+import { Heart, SearchX } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+
+// 검색 결과 0건일 때 추천할 인기 키워드 (하드코딩 — 추후 운영 데이터 연동)
+const POPULAR_KEYWORDS = [
+  "배경화면",
+  "사람",
+  "비즈니스",
+  "자연",
+  "음식",
+  "여행",
+  "패턴",
+  "크리스마스",
+];
 
 interface PexelsPhoto {
   id: number;
@@ -75,16 +87,6 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
 const SKELETON_RATIOS = [3 / 4, 1, 4 / 3, 2 / 3, 4 / 5, 3 / 5];
 const PER_PAGE = 12;
 
-// 한글 받침 유무에 따라 조사 "이/가" 결정. 비한글(영문 등)은 "가" 기본.
-function subjectParticle(word: string): string {
-  if (!word) return "가";
-  const last = word.charCodeAt(word.length - 1);
-  if (last >= 0xac00 && last <= 0xd7a3) {
-    return (last - 0xac00) % 28 !== 0 ? "이" : "가";
-  }
-  return "가";
-}
-
 // Pexels 는 다운로드/등록 정렬을 제공하지 않아 프로토타입 차원에서
 // 정렬값별로 Pexels 페이지 시작점을 어긋나게 띄움. 무한 스크롤은 이 시작점 위로 page 를 +1 씩 가산.
 const SORT_PAGE_OFFSET: Record<string, number> = {
@@ -95,7 +97,15 @@ const SORT_PAGE_OFFSET: Record<string, number> = {
 
 // query/sort 가 바뀌면 부모(/search 페이지)에서 key 를 새로 줘 컴포넌트가 remount 된다.
 // 그래서 내부 reset 로직 없이 page=1 부터 자연스럽게 다시 시작.
-export default function PinGrid({ query, sort = "추천순" }: { query?: string; sort?: string }) {
+export default function PinGrid({
+  query,
+  sort = "추천순",
+  onSelect,
+}: {
+  query?: string;
+  sort?: string;
+  onSelect?: (keyword: string) => void;
+}) {
   const [photos, setPhotos] = useState<PexelsPhoto[]>([]);
   const [page, setPage] = useState(1);
   const [loading, setLoading] = useState(true);
@@ -171,17 +181,35 @@ export default function PinGrid({ query, sort = "추천순" }: { query?: string;
     );
   }
 
-  // 검색 쿼리가 있는데 결과 0건 — 안내 메시지
+  // 검색 쿼리가 있는데 결과 0건 — empty state (docs/spec-search-empty-state.md)
   if (photos.length === 0 && query) {
     return (
-      <div className="px-6 pb-12 pt-10 text-center">
-        <p className="text-[14px] text-ink-soft">
-          <strong className="font-bold text-ink">{query}</strong>
-          {subjectParticle(query)} 포함된 검색결과가 없어요.
+      <div className="flex flex-col items-center px-6 pb-16 pt-16 text-center">
+        <SearchX size={56} strokeWidth={1.5} className="mb-5 text-ink-mute" />
+
+        <p className="text-[16px] font-medium text-ink">
+          <strong className="font-bold">{query}</strong> 검색 결과가 없어요
         </p>
-        <p className="mt-1.5 text-[13px] text-ink-mute">
-          다른 키워드로 검색해주세요.
+
+        <p className="mt-2 text-[13px] leading-relaxed text-ink-soft">
+          철자가 맞는지 확인하거나
+          <br />더 짧은 키워드로 검색해보세요
         </p>
+
+        <div className="mt-6 w-full">
+          <p className="mb-2 text-left text-[12px] font-bold text-ink-mute">인기 키워드</p>
+          <div className="flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]">
+            {POPULAR_KEYWORDS.map((kw) => (
+              <button
+                key={kw}
+                onClick={() => onSelect?.(kw)}
+                className="shrink-0 rounded-full border border-line bg-surface px-3.5 py-1.5 text-[13px] text-ink-soft"
+              >
+                {kw}
+              </button>
+            ))}
+          </div>
+        </div>
       </div>
     );
   }

@@ -67,7 +67,12 @@ function SearchContent() {
                 {activeSort}
               </button>
             </div>
-            <PinGrid key={`${query}|${activeSort}`} query={query} sort={activeSort} />
+            <PinGrid
+              key={`${query}|${activeSort}`}
+              query={query}
+              sort={activeSort}
+              onSelect={go}
+            />
           </div>
         </>
       ) : (
