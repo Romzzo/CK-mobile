@@ -74,34 +74,68 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
 
 const SKELETON_RATIOS = [3 / 4, 1, 4 / 3, 2 / 3, 4 / 5, 3 / 5];
 
+// 한글 받침 유무에 따라 조사 "이/가" 결정. 비한글(영문 등)은 "가" 기본.
+function subjectParticle(word: string): string {
+  if (!word) return "가";
+  const last = word.charCodeAt(word.length - 1);
+  if (last >= 0xac00 && last <= 0xd7a3) {
+    return (last - 0xac00) % 28 !== 0 ? "이" : "가";
+  }
+  return "가";
+}
+
 export default function PinGrid({ query }: { query?: string }) {
   const [photos, setPhotos] = useState<PexelsPhoto[]>([]);
+  const [loading, setLoading] = useState(true);
 
   useEffect(() => {
+    setLoading(true);
     const url = query
       ? `/api/pexels?query=${encodeURIComponent(query)}&per_page=12`
       : "/api/pexels?per_page=12";
     fetch(url)
       .then((r) => r.json())
-      .then((data) => { if (data.photos) setPhotos(data.photos); })
-      .catch(() => {});
+      .then((data) => setPhotos(Array.isArray(data.photos) ? data.photos : []))
+      .catch(() => setPhotos([]))
+      .finally(() => setLoading(false));
   }, [query]);
 
   const idsParam = photos.map((p) => p.id).join(",");
 
+  if (loading) {
+    return (
+      <div className="columns-2 gap-px">
+        {Array.from({ length: 12 }).map((_, i) => (
+          <div
+            key={i}
+            className="mb-px w-full animate-pulse break-inside-avoid bg-surface-muted"
+            style={{ aspectRatio: SKELETON_RATIOS[i % SKELETON_RATIOS.length] }}
+          />
+        ))}
+      </div>
+    );
+  }
+
+  // 검색 쿼리가 있는데 결과 0건 — 안내 메시지
+  if (photos.length === 0 && query) {
+    return (
+      <div className="px-6 pb-12 pt-10 text-center">
+        <p className="text-[14px] text-ink-soft">
+          <strong className="font-bold text-ink">{query}</strong>
+          {subjectParticle(query)} 포함된 검색결과가 없어요.
+        </p>
+        <p className="mt-1.5 text-[13px] text-ink-mute">
+          다른 키워드로 검색해주세요.
+        </p>
+      </div>
+    );
+  }
+
   return (
     <div className="columns-2 gap-px">
-      {photos.length === 0
-        ? Array.from({ length: 12 }).map((_, i) => (
-            <div
-              key={i}
-              className="mb-px w-full animate-pulse break-inside-avoid bg-surface-muted"
-              style={{ aspectRatio: SKELETON_RATIOS[i % SKELETON_RATIOS.length] }}
-            />
-          ))
-        : photos.map((photo, i) => (
-            <PinCard key={photo.id} photo={photo} index={i} idsParam={idsParam} />
-          ))}
+      {photos.map((photo, i) => (
+        <PinCard key={photo.id} photo={photo} index={i} idsParam={idsParam} />
+      ))}
     </div>
   );
 }
