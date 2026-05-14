@@ -17,13 +17,14 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
       }}
     >
       <div className="flex h-14 items-center gap-3 px-4">
-        <Link
-          href="/"
-          className="shrink-0 text-[15px] font-extrabold tracking-tight transition-colors duration-300"
-          style={{ color: solid ? "var(--ink)" : "#fff" }}
-        >
-          clipart
-          <span style={{ color: solid ? "var(--brand)" : "rgba(255,255,255,0.8)" }}>korea</span>
+        <Link href="/" className="shrink-0">
+          {/* eslint-disable-next-line @next/next/no-img-element */}
+          <img
+            src="/ck-logo.svg"
+            alt="ClipartKorea"
+            className="h-7 w-auto transition-[filter] duration-300"
+            style={solid ? undefined : { filter: "brightness(0) invert(1)" }}
+          />
         </Link>
 
         <Link
