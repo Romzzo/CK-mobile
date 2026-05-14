@@ -6,6 +6,7 @@ import { Heart } from "lucide-react";
 import Link from "next/link";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
+import ScrollTopButton from "@/components/common/ScrollTopButton";
 import { findThemeBySeq, getThemeContents } from "@/data/updates";
 
 export default function ThemeDetailPage({
@@ -55,6 +56,8 @@ export default function ThemeDetailPage({
           />
         ))}
       </div>
+
+      <ScrollTopButton />
 
       <BottomNav />
     </div>

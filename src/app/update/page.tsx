@@ -5,6 +5,7 @@ import Link from "next/link";
 import { Calendar, ChevronDown, Check, Square } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
+import ScrollTopButton from "@/components/common/ScrollTopButton";
 import { updates, UPDATE_CATEGORIES, type WeeklyUpdate } from "@/data/updates";
 
 type SheetKey = "week" | "category" | null;
@@ -126,6 +127,8 @@ export default function UpdatePage() {
           더 이상 이전 주차가 없습니다
         </div>
       )}
+
+      <ScrollTopButton />
 
       <BottomNav />
 
