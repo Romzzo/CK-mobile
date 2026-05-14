@@ -37,8 +37,10 @@ export async function GET(request: NextRequest) {
   }
 
   // 일반 검색 or 큐레이션
+  // 한글 쿼리는 locale=ko-KR 을 넘겨야 Pexels 가 제대로 매칭함 (영문 쿼리는 ko-KR 도 무난)
+  const hasKorean = /[ㄱ-힝]/.test(query);
   const url = query
-    ? `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}`
+    ? `https://api.pexels.com/v1/search?query=${encodeURIComponent(query)}&per_page=${perPage}${hasKorean ? "&locale=ko-KR" : ""}`
     : `https://api.pexels.com/v1/curated?per_page=${perPage}`;
 
   const res = await fetch(url, {
