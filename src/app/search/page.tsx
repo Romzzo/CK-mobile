@@ -35,8 +35,8 @@ function SearchContent() {
       {hasQuery ? (
         <>
           <FilterBar />
-          <div className="px-3 pb-28">
-            <div className="px-1 py-3.5">
+          <div className="pb-28">
+            <div className="px-4 py-3.5">
               <span className="text-[13px] text-ink-mute">
                 <span className="font-bold text-ink">&ldquo;{query}&rdquo;</span> 검색 결과
               </span>

@@ -12,38 +12,25 @@ interface PexelsPhoto {
   src: { portrait: string; landscape: string; medium: string; small: string };
 }
 
-function getAspectRatio(w: number, h: number): "tall" | "square" | "wide" {
-  if (h > w * 1.15) return "tall";
-  if (w > h * 1.15) return "wide";
-  return "square";
-}
-
-const ratioClass = {
-  tall: "aspect-[3/4]",
-  square: "aspect-square",
-  wide: "aspect-[3/2]",
-};
-
 function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number; idsParam: string }) {
   const [liked, setLiked] = useState(false);
-  const ratio = getAspectRatio(photo.width, photo.height);
+  const aspect = photo.width && photo.height ? photo.width / photo.height : 1;
   const isPremium = index === 4 || index === 7;
   const isNew = index < 3;
 
   return (
     <Link
       href={`/content/${photo.id}?ids=${idsParam}&idx=${index}`}
-      className="relative block overflow-hidden rounded-xl bg-surface-muted"
+      className="relative mb-px block break-inside-avoid"
     >
-      <div className={`${ratioClass[ratio]} w-full`}>
-        {/* eslint-disable-next-line @next/next/no-img-element */}
-        <img
-          src={photo.src.medium}
-          alt={photo.alt || ""}
-          loading="lazy"
-          className="h-full w-full object-cover"
-        />
-      </div>
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={photo.src.medium}
+        alt={photo.alt || ""}
+        loading="lazy"
+        className="block w-full bg-surface-muted"
+        style={{ aspectRatio: aspect }}
+      />
 
       {isPremium ? (
         <span
@@ -59,7 +46,7 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
       ) : null}
 
       <button
-        aria-label="찜하기"
+        aria-label="좋아요"
         onClick={(e) => {
           e.preventDefault();
           e.stopPropagation();
@@ -79,6 +66,8 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
   );
 }
 
+const SKELETON_RATIOS = [3 / 4, 1, 4 / 3, 2 / 3, 4 / 5, 3 / 5];
+
 export default function PinGrid({ query }: { query?: string }) {
   const [photos, setPhotos] = useState<PexelsPhoto[]>([]);
 
@@ -93,28 +82,20 @@ export default function PinGrid({ query }: { query?: string }) {
   }, [query]);
 
   const idsParam = photos.map((p) => p.id).join(",");
-  const cols: [PexelsPhoto, number][][] = [[], []];
-  photos.forEach((photo, i) => cols[i % 2].push([photo, i]));
 
   return (
-    <div className="flex gap-2">
-      {photos.length === 0 ? (
-        [0, 1].map((col) => (
-          <div key={col} className="flex flex-1 flex-col gap-2">
-            {[0, 1, 2, 3, 4, 5].map((i) => (
-              <div key={i} className="aspect-[3/4] w-full animate-pulse rounded-xl bg-surface-muted" />
-            ))}
-          </div>
-        ))
-      ) : (
-        cols.map((col, ci) => (
-          <div key={ci} className="flex flex-1 flex-col gap-2">
-            {col.map(([photo, origIdx]) => (
-              <PinCard key={photo.id} photo={photo} index={origIdx} idsParam={idsParam} />
-            ))}
-          </div>
-        ))
-      )}
+    <div className="columns-2 gap-px">
+      {photos.length === 0
+        ? Array.from({ length: 12 }).map((_, i) => (
+            <div
+              key={i}
+              className="mb-px w-full animate-pulse break-inside-avoid bg-surface-muted"
+              style={{ aspectRatio: SKELETON_RATIOS[i % SKELETON_RATIOS.length] }}
+            />
+          ))
+        : photos.map((photo, i) => (
+            <PinCard key={photo.id} photo={photo} index={i} idsParam={idsParam} />
+          ))}
     </div>
   );
 }

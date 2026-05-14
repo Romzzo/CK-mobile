@@ -1,6 +1,6 @@
 "use client";
 
-import { Home, Search, Heart, Sparkles, User } from "lucide-react";
+import { Home, Search, Heart, Newspaper, User } from "lucide-react";
 import Link from "next/link";
 import { usePathname } from "next/navigation";
 
@@ -10,7 +10,7 @@ import { usePathname } from "next/navigation";
 // 카테고리 버전으로 돌리려면:
 //   1) 위 lucide import 에 LayoutGrid 추가
 //   2) 아래 SECONDARY_TAB 를 { label: "카테고리", icon: LayoutGrid, path: "/category" } 로 교체
-const SECONDARY_TAB = { label: "업데이트", icon: Sparkles, path: "/update" };
+const SECONDARY_TAB = { label: "업데이트", icon: Newspaper, path: "/update" };
 
 const navItems = [
   { label: "홈", icon: Home, path: "/" },

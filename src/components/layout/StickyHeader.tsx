@@ -42,14 +42,16 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
         </Link>
 
         <div className="flex shrink-0 items-center gap-2">
-          <Link
-            href="/membership"
-            className="flex shrink-0 items-center gap-1 text-[13px] font-semibold transition-colors duration-300"
-            style={{ color: fg }}
-          >
-            <Crown size={13} />
-            라이선스
-          </Link>
+          {!solid ? (
+            <Link
+              href="/membership"
+              className="flex shrink-0 items-center gap-1 text-[13px] font-semibold transition-colors duration-300"
+              style={{ color: fg }}
+            >
+              <Crown size={13} />
+              라이선스
+            </Link>
+          ) : null}
           {isLoggedIn ? (
             <Link
               href="/my"
