@@ -1,5 +1,6 @@
 import type { Metadata, Viewport } from "next";
 import "./globals.css";
+import BfcacheReload from "@/components/common/BfcacheReload";
 
 export const metadata: Metadata = {
   title: "클립아트코리아 — 디자인 소스, 여기서 다 끝내세요",
@@ -27,6 +28,7 @@ export default function RootLayout({
         />
       </head>
       <body className="min-h-full bg-[#E9E9EC]">
+        <BfcacheReload />
         <div className="mx-auto min-h-full w-full max-w-[480px] bg-surface-muted">
           {children}
         </div>
