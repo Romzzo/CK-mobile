@@ -8,6 +8,7 @@ import FilterBar from "@/components/search/FilterBar";
 import RecentSearches from "@/components/search/RecentSearches";
 import PinGrid from "@/components/home/PinGrid";
 import ScrollRestore from "@/components/common/ScrollRestore";
+import ScrollTopButton from "@/components/common/ScrollTopButton";
 import BottomNav from "@/components/layout/BottomNav";
 import { useRecentSearches } from "@/lib/useRecentSearches";
 
@@ -79,6 +80,7 @@ function SearchContent() {
               onSelect={go}
             />
           </div>
+          <ScrollTopButton />
         </>
       ) : (
         <div className="pb-28">
