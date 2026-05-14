@@ -1,17 +1,12 @@
 "use client";
 
 import { Clock, X } from "lucide-react";
-import { useState } from "react";
 import { trendingKeywords } from "@/lib/mockData";
 import SectionHeader from "@/components/home/SectionHeader";
-
-const initialRecent = ["여름 배경", "비즈니스 아이콘", "꽃 일러스트", "AI 배경", "인물 사진"];
+import { useRecentSearches } from "@/lib/useRecentSearches";
 
 export default function RecentSearches({ onSelect }: { onSelect: (keyword: string) => void }) {
-  const [recent, setRecent] = useState(initialRecent);
-
-  const remove = (keyword: string) => setRecent((prev) => prev.filter((k) => k !== keyword));
-  const clearAll = () => setRecent([]);
+  const { list: recent, remove, clearAll } = useRecentSearches();
 
   return (
     <div className="px-4 py-5">

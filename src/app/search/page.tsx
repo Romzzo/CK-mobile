@@ -1,6 +1,6 @@
 "use client";
 
-import { Suspense } from "react";
+import { Suspense, useEffect } from "react";
 import { useRouter, useSearchParams } from "next/navigation";
 import SearchBar from "@/components/search/SearchBar";
 import FilterBar from "@/components/search/FilterBar";
@@ -8,12 +8,19 @@ import RecentSearches from "@/components/search/RecentSearches";
 import PinGrid from "@/components/home/PinGrid";
 import ScrollRestore from "@/components/common/ScrollRestore";
 import BottomNav from "@/components/layout/BottomNav";
+import { useRecentSearches } from "@/lib/useRecentSearches";
 
 function SearchContent() {
   const router = useRouter();
   const searchParams = useSearchParams();
   const query = (searchParams.get("q") ?? "").trim();
   const hasQuery = query.length > 0;
+  const { add: addRecent } = useRecentSearches();
+
+  // 검색 쿼리가 들어올 때마다(직접 URL/입력 제출/최근·인기 키워드 탭 등) 최근 검색어에 누적
+  useEffect(() => {
+    if (query) addRecent(query);
+  }, [query, addRecent]);
 
   const go = (q: string) => {
     const t = q.trim();
