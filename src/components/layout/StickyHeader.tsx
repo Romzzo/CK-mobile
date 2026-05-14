@@ -22,7 +22,7 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
           href="/"
           aria-label="clipartkorea 홈"
           className="shrink-0 transition-colors duration-300"
-          style={{ color: solid ? "#ED1765" : "#fff" }}
+          style={{ color: "#ED1765" }}
         >
           <BrandLogo style={{ height: 13, width: "auto" }} />
         </Link>
