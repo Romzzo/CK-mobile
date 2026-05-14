@@ -1,6 +1,7 @@
 "use client";
 
 import { useEffect, useMemo, useState } from "react";
+import Link from "next/link";
 import { Calendar, ChevronDown, Check, Square } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
@@ -80,11 +81,9 @@ export default function UpdatePage() {
                 </div>
               ) : (
                 themes.map((t) => (
-                  <a
+                  <Link
                     key={t.id}
-                    href={t.pcUrl}
-                    target="_blank"
-                    rel="noopener noreferrer"
+                    href={`/update/detail/${t.seq}`}
                     className="block"
                   >
                     <div className="overflow-hidden rounded-2xl bg-surface-muted">
@@ -102,7 +101,7 @@ export default function UpdatePage() {
                         {t.count}
                       </span>
                     </div>
-                  </a>
+                  </Link>
                 ))
               )}
             </div>

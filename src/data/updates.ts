@@ -11,7 +11,7 @@ export type Theme = {
   cover: string;
   count: number;
   category: string;
-  pcUrl: string;
+  seq: number;
 };
 
 export type WeeklyUpdate = {
@@ -23,7 +23,6 @@ export type WeeklyUpdate = {
   themes: Theme[];
 };
 
-const PC_URL = "https://m.clipartkorea.co.kr/update";
 const cover = (seed: string) => `https://picsum.photos/seed/upd-${seed}/600/800`;
 
 const themePool: ReadonlyArray<{ title: string; category: string }> = [
@@ -114,7 +113,7 @@ function buildWeeks(): WeeklyUpdate[] {
         cover: cover(`${id}-${i + 1}`),
         count: 5 + ((weekIndex * 3 + i * 5) % 36),
         category: p.category,
-        pcUrl: PC_URL,
+        seq: 70000 + weekIndex * 10 + i,
       });
     }
 
@@ -141,6 +140,20 @@ function buildWeeks(): WeeklyUpdate[] {
 }
 
 export const updates: WeeklyUpdate[] = buildWeeks();
+
+export function findThemeBySeq(seq: number): { theme: Theme; week: WeeklyUpdate } | null {
+  for (const week of updates) {
+    const theme = week.themes.find((t) => t.seq === seq);
+    if (theme) return { theme, week };
+  }
+  return null;
+}
+
+export function getThemeContents(seq: number, count: number): string[] {
+  return Array.from({ length: count }, (_, i) =>
+    `https://picsum.photos/seed/tc-${seq}-${i}/400/400`
+  );
+}
 
 export const UPDATE_CATEGORIES = [
   "전체",
