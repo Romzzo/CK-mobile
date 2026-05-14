@@ -1,11 +1,13 @@
 "use client";
 
 import { Heart, Minus, Lock } from "lucide-react";
+import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useState } from "react";
 import { mockItems } from "@/lib/mockData";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
+import { useAuth } from "@/lib/useAuth";
 
 const initialLiked = mockItems.filter((_, i) => i % 2 === 0);
 const typeFilters = ["전체", "일러스트", "사진", "아이콘", "AI이미지", "PPT"];
@@ -17,6 +19,7 @@ const aspectClass = (a: "tall" | "wide" | "square") =>
 
 export default function LikePage() {
   const router = useRouter();
+  const { isLoggedIn } = useAuth();
   const [items, setItems] = useState(initialLiked);
   const [activeType, setActiveType] = useState("전체");
   const [editMode, setEditMode] = useState(false);
@@ -24,6 +27,44 @@ export default function LikePage() {
   const filtered = activeType === "전체" ? items : items.filter((i) => i.type === activeType);
   const remove = (id: number) => setItems((prev) => prev.filter((i) => i.id !== id));
   const idsParam = filtered.map((i) => i.id).join(",");
+
+  // ── 비로그인 상태 ── /my 페이지와 동일 패턴
+  if (!isLoggedIn) {
+    return (
+      <div className="min-h-dvh bg-surface-muted pb-28">
+        <PageHeader title="좋아요한 콘텐츠" fallbackHref="/" />
+
+        <div className="flex flex-col items-center px-8 pt-16 text-center">
+          <div
+            className="flex h-16 w-16 items-center justify-center rounded-3xl"
+            style={{ backgroundColor: "var(--brand-soft)" }}
+          >
+            <Heart size={28} style={{ color: "var(--brand)" }} />
+          </div>
+          <p className="mt-4 text-[17px] font-bold text-ink">로그인하고 좋아요한 콘텐츠를 확인하세요</p>
+          <p className="mt-1.5 text-[13px] leading-relaxed text-ink-mute">
+            마음에 든 콘텐츠를 모아두고 PC에서 바로 다운로드할 수 있어요
+          </p>
+        </div>
+
+        <div className="mt-7 px-4">
+          <Link
+            href="/login"
+            className="flex items-center justify-center rounded-xl py-3.5 text-[15px] font-semibold text-white"
+            style={{ backgroundColor: "var(--brand)" }}
+          >
+            로그인
+          </Link>
+          <p className="mt-3 text-center text-[13px] text-ink-mute">
+            아직 회원이 아니신가요?{" "}
+            <Link href="/signup" className="font-bold text-brand">무료 회원가입</Link>
+          </p>
+        </div>
+
+        <BottomNav />
+      </div>
+    );
+  }
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
