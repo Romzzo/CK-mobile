@@ -75,27 +75,27 @@ export default function UpdatePage() {
             </div>
 
             {themes.length === 0 ? (
-              <div className="px-4 pt-5">
-                <div className="rounded-2xl bg-surface px-5 py-12 text-center">
+              <div className="px-3 pt-5">
+                <div className="bg-surface px-5 py-12 text-center">
                   <p className="text-[13px] font-semibold text-ink-soft">업데이트된 콘텐츠가 없어요.</p>
                 </div>
               </div>
             ) : (
-              <div className="columns-2 gap-3 px-4 pt-4 [&>*]:mb-5">
+              <div className="columns-2 gap-2.5 px-3 pt-3">
                 {themes.map((t) => (
                   <Link
                     key={t.id}
                     href={`/update/detail/${t.seq}`}
-                    className="block break-inside-avoid"
+                    className="mb-2.5 block break-inside-avoid"
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
                       src={t.cover}
                       alt=""
-                      className="block w-full rounded-xl bg-surface-muted"
+                      className="block w-full bg-surface-muted"
                       style={{ aspectRatio: t.aspect }}
                     />
-                    <div className="mt-2 flex items-center justify-between gap-2">
+                    <div className="flex items-center justify-between gap-2 px-2 py-1.5">
                       <p className="min-w-0 truncate text-[13px] font-semibold text-ink">{t.title}</p>
                       <span className="flex shrink-0 items-center gap-1 text-[11px] text-ink-mute">
                         <Square size={10} strokeWidth={2} />

@@ -49,7 +49,7 @@ function SearchContent() {
           <div className="pb-28">
             <div className="flex items-center justify-between gap-2 px-4 py-3.5">
               <span className="min-w-0 truncate text-[13px] text-ink-mute">
-                <span className="font-bold text-ink">&ldquo;{query}&rdquo;</span> 검색 결과
+                <span className="font-bold text-ink">{query}</span> 검색 결과
               </span>
               <button
                 onClick={() => setSortOpen(true)}
