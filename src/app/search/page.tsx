@@ -35,6 +35,10 @@ function SearchContent() {
     }
   });
   const [sortOpen, setSortOpen] = useState(false);
+  // 검색 시퀀스 — submit 할 때마다 +1.
+  // useSearchParams 가 router.push 직후 즉시 emit 못 하는 케이스가 있어, PinGrid key 에
+  // 시퀀스를 포함시켜 매 submit 마다 반드시 remount → 재fetch 되도록 보강.
+  const [searchSeq, setSearchSeq] = useState(0);
 
   // 검색 쿼리가 들어올 때마다(직접 URL/입력 제출/최근·인기 키워드 탭 등) 최근 검색어에 누적
   useEffect(() => {
@@ -44,6 +48,7 @@ function SearchContent() {
   const go = (q: string) => {
     const t = q.trim();
     router.push(t ? `/search?q=${encodeURIComponent(t)}` : "/search");
+    setSearchSeq((s) => s + 1);
   };
 
   return (
@@ -68,7 +73,7 @@ function SearchContent() {
               </button>
             </div>
             <PinGrid
-              key={`${query}|${activeSort}`}
+              key={`${query}|${activeSort}|${searchSeq}`}
               query={query}
               sort={activeSort}
               onSelect={go}
