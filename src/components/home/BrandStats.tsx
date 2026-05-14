@@ -2,9 +2,10 @@ import Link from "next/link";
 import { Check, ArrowRight } from "lucide-react";
 
 const benefits = [
-  "AI스튜디오 크레딧 1,000개 즉시 지급",
-  "첫 멤버십 최대 94% 할인",
-  "무료 콘텐츠 매일 업데이트",
+  "AI스튜디오 1,000 크레딧 즉시 지급",
+  "초보도 프로처럼 에디터 무료 사용",
+  "5만 컷 이상의 무료콘텐츠 제공",
+  "멤버십 라이선스 최대 50% 할인",
 ];
 
 export default function BrandStats() {

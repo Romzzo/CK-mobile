@@ -1,18 +1,34 @@
 "use client";
 
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, Paintbrush, Sparkles, Gift, BadgePercent } from "lucide-react";
+import type { LucideIcon } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
 import { useRef } from "react";
 import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
 import SectionHeader from "@/components/home/SectionHeader";
 
-const tools = [
+type ColorKey = "purple" | "blue" | "green" | "orange";
+
+// 우하단 장식 아이콘:
+// - iconSrc 가 있으면 public/tools/ 의 PNG/SVG 자산(예: "/tools/credit.png")을 렌더
+// - 없으면 Icon(lucide) 폴백 렌더
+// 3D 일러스트 느낌을 원하면 public/tools/ 에 파일 두고 iconSrc 만 채우면 됨.
+const tools: ReadonlyArray<{
+  title: string;
+  sub: string;
+  cta: string;
+  href: string;
+  color: ColorKey;
+  Icon: LucideIcon;
+  iconSrc?: string;
+}> = [
   {
     title: "포토샵 없이 바로 편집",
     sub: "설치 없이 웹에서 · 무료 체험 가능",
     cta: "지금 만들어보기",
     href: "https://editor.clipartkorea.co.kr/editor",
     color: "purple",
+    Icon: Paintbrush,
   },
   {
     title: "가입하면 1,000크레딧",
@@ -20,6 +36,7 @@ const tools = [
     cta: "무료로 시작하기",
     href: "https://www.clipartkorea.co.kr/aistudio",
     color: "blue",
+    Icon: Sparkles,
   },
   {
     title: "매일 무료 콘텐츠",
@@ -27,6 +44,7 @@ const tools = [
     cta: "무료 혜택 보기",
     href: "/free",
     color: "green",
+    Icon: Gift,
   },
   {
     title: "라이선스 최대 50% 할인",
@@ -34,14 +52,29 @@ const tools = [
     cta: "할인 확인하기",
     href: "/membership",
     color: "orange",
+    Icon: BadgePercent,
   },
-] as const;
+];
 
-const ctaColorMap: Record<(typeof tools)[number]["color"], string> = {
+const ctaColorMap: Record<ColorKey, string> = {
   purple: "text-brand",
   blue: "text-blue-500",
   green: "text-emerald-500",
   orange: "text-orange-500",
+};
+
+const iconBgMap: Record<ColorKey, string> = {
+  purple: "rgba(126, 60, 234, 0.12)",
+  blue: "rgba(59, 130, 246, 0.12)",
+  green: "rgba(16, 185, 129, 0.12)",
+  orange: "rgba(249, 115, 22, 0.12)",
+};
+
+const iconColorMap: Record<ColorKey, string> = {
+  purple: "var(--brand)",
+  blue: "#3B82F6",
+  green: "#10B981",
+  orange: "#F97316",
 };
 
 export default function ToolCards() {
@@ -62,7 +95,7 @@ export default function ToolCards() {
                   href={t.href}
                   target={t.href.startsWith("http") ? "_blank" : undefined}
                   rel={t.href.startsWith("http") ? "noopener noreferrer" : undefined}
-                  className="flex h-[140px] flex-col rounded-2xl border border-line bg-surface p-4"
+                  className="relative flex h-[140px] flex-col overflow-hidden rounded-2xl border border-line bg-surface p-4"
                 >
                   <p className="text-[15px] font-bold leading-snug text-ink">{t.title}</p>
                   <p className="mt-1 text-[12px] leading-snug text-ink-mute">{t.sub}</p>
@@ -72,6 +105,19 @@ export default function ToolCards() {
                     {t.cta}
                     <ChevronRight size={13} />
                   </span>
+
+                  {/* 우하단 장식 아이콘 */}
+                  <div
+                    className="pointer-events-none absolute bottom-3 right-3 grid h-12 w-12 place-items-center rounded-full"
+                    style={{ backgroundColor: iconBgMap[t.color] }}
+                  >
+                    {t.iconSrc ? (
+                      // eslint-disable-next-line @next/next/no-img-element
+                      <img src={t.iconSrc} alt="" className="h-9 w-9 object-contain" />
+                    ) : (
+                      <t.Icon size={22} strokeWidth={1.8} style={{ color: iconColorMap[t.color] }} />
+                    )}
+                  </div>
                 </a>
               </CarouselItem>
             ))}
