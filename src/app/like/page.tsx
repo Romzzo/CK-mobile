@@ -3,15 +3,22 @@
 import { Heart, Minus, Lock } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
-import { useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { mockItems } from "@/lib/mockData";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import ScrollTopButton from "@/components/common/ScrollTopButton";
 import { useAuth } from "@/lib/useAuth";
 
-const initialLiked = mockItems.filter((_, i) => i % 2 === 0);
+// 실제 API 연동 전까지 ~100개 mock — mockItems 를 순환 + id 어긋나게 만들어 무한스크롤 데모.
+// 실API 도입 시 useState 초기값을 빈 배열로 두고 첫 페이지를 fetch 하는 패턴으로 교체.
+const initialLiked = Array.from({ length: 100 }, (_, i) => {
+  const base = mockItems[i % mockItems.length];
+  return { ...base, id: 10000 + i };
+});
+
 const typeFilters = ["전체", "일러스트", "사진", "아이콘", "AI이미지", "PPT"];
+const PER_PAGE = 30;
 
 const contentNo = (id: number) => `ta0225a${String(id).padStart(5, "0")}`;
 
@@ -24,10 +31,38 @@ export default function LikePage() {
   const [items, setItems] = useState(initialLiked);
   const [activeType, setActiveType] = useState("전체");
   const [editMode, setEditMode] = useState(false);
+  // 무한스크롤 — 현재 화면에 보여줄 개수 (필터 적용 후 slice).
+  // 실API 연동 시엔 fetched pages 배열로 교체하면 됨.
+  const [displayedCount, setDisplayedCount] = useState(PER_PAGE);
 
   const filtered = activeType === "전체" ? items : items.filter((i) => i.type === activeType);
+  const displayed = filtered.slice(0, displayedCount);
+  const hasMore = displayedCount < filtered.length;
   const remove = (id: number) => setItems((prev) => prev.filter((i) => i.id !== id));
-  const idsParam = filtered.map((i) => i.id).join(",");
+  const idsParam = displayed.map((i) => i.id).join(",");
+
+  // 필터 변경 시 페이지 리셋
+  useEffect(() => {
+    setDisplayedCount(PER_PAGE);
+  }, [activeType]);
+
+  // 무한 스크롤 sentinel
+  const sentinelRef = useRef<HTMLDivElement | null>(null);
+  useEffect(() => {
+    if (!hasMore || !isLoggedIn) return;
+    const el = sentinelRef.current;
+    if (!el) return;
+    const observer = new IntersectionObserver(
+      ([entry]) => {
+        if (entry.isIntersecting) {
+          setDisplayedCount((c) => c + PER_PAGE);
+        }
+      },
+      { rootMargin: "320px" },
+    );
+    observer.observe(el);
+    return () => observer.disconnect();
+  }, [hasMore, isLoggedIn]);
 
   // ── 비로그인 상태 ── /my 페이지와 동일 패턴
   if (!isLoggedIn) {
@@ -107,74 +142,90 @@ export default function LikePage() {
       </div>
 
       {filtered.length === 0 ? (
-        <div className="flex flex-col items-center justify-center gap-3 py-24">
-          <Heart size={40} className="text-line" />
-          <p className="text-[14px] text-ink-mute">좋아요한 콘텐츠가 없어요</p>
-          <button
-            onClick={() => router.push("/")}
-            className="mt-1 rounded-full px-4 py-2 text-[14px] font-semibold text-white"
-            style={{ backgroundColor: "var(--brand)" }}
-          >
-            콘텐츠 둘러보기
-          </button>
-        </div>
-      ) : (
-        <div className="columns-2 gap-2.5 px-3 pt-3">
-          {filtered.map((item, idx) => (
-            <div
-              key={item.id}
-              className="mb-2.5 break-inside-avoid"
+        items.length === 0 ? (
+          <div className="flex flex-col items-center justify-center gap-3 py-24">
+            <Heart size={40} className="text-line" />
+            <p className="text-[14px] text-ink-mute">좋아요한 콘텐츠가 없어요</p>
+            <button
+              onClick={() => router.push("/")}
+              className="mt-1 rounded-full px-4 py-2 text-[14px] font-semibold text-white"
+              style={{ backgroundColor: "var(--brand)" }}
             >
-              <div
-                onClick={
-                  editMode
-                    ? undefined
-                    : () => router.push(`/content/${item.id}?ids=${idsParam}&idx=${idx}`)
-                }
-                className={`relative ${editMode ? "" : "cursor-pointer"}`}
-              >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={item.imageUrl}
-                  alt={item.title}
-                  className={`w-full ${aspectClass(item.aspectRatio)} object-cover`}
-                />
-
-                {item.isPremium ? (
-                  <span
-                    className="absolute bottom-1.5 left-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold text-white"
-                    style={{ backgroundColor: "rgba(10,8,18,0.65)", backdropFilter: "blur(4px)" }}
-                  >
-                    <Lock size={9} /> PRO
-                  </span>
-                ) : null}
-
-                {editMode ? (
-                  <button
-                    aria-label="좋아요 해제"
-                    onClick={(e) => {
-                      e.stopPropagation();
-                      remove(item.id);
-                    }}
-                    className="absolute left-1.5 top-1.5 grid h-7 w-7 place-items-center rounded-full bg-white/95 shadow-sm"
-                  >
-                    <Minus size={14} className="text-ink" />
-                  </button>
-                ) : null}
-              </div>
-
-              <div className="flex items-center justify-between gap-1 px-2 py-1.5">
-                <span className="truncate text-[11px] text-ink-mute">{contentNo(item.id)}</span>
-                <span
-                  className="shrink-0 rounded-full px-2 py-0.5 text-[10px]"
-                  style={{ backgroundColor: "var(--surface-muted)", color: "var(--ink-soft)" }}
+              콘텐츠 둘러보기
+            </button>
+          </div>
+        ) : (
+          <div className="px-3 pt-8 text-center">
+            <p className="text-[13px] text-ink-mute">해당 카테고리에 좋아요한 콘텐츠가 없어요</p>
+          </div>
+        )
+      ) : (
+        <>
+          <div className="columns-2 gap-2.5 px-3 pt-3">
+            {displayed.map((item, idx) => (
+              <div key={item.id} className="mb-2.5 break-inside-avoid">
+                <div
+                  onClick={
+                    editMode
+                      ? undefined
+                      : () => router.push(`/content/${item.id}?ids=${idsParam}&idx=${idx}`)
+                  }
+                  className={`relative ${editMode ? "" : "cursor-pointer"}`}
                 >
-                  {item.type}
-                </span>
+                  {/* eslint-disable-next-line @next/next/no-img-element */}
+                  <img
+                    src={item.imageUrl}
+                    alt={item.title}
+                    loading="lazy"
+                    className={`w-full ${aspectClass(item.aspectRatio)} object-cover`}
+                  />
+
+                  {item.isPremium ? (
+                    <span
+                      className="absolute bottom-1.5 left-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold text-white"
+                      style={{ backgroundColor: "rgba(10,8,18,0.65)", backdropFilter: "blur(4px)" }}
+                    >
+                      <Lock size={9} /> PRO
+                    </span>
+                  ) : null}
+
+                  {editMode ? (
+                    <button
+                      aria-label="좋아요 해제"
+                      onClick={(e) => {
+                        e.stopPropagation();
+                        remove(item.id);
+                      }}
+                      className="absolute left-1.5 top-1.5 grid h-7 w-7 place-items-center rounded-full bg-white/95 shadow-sm"
+                    >
+                      <Minus size={14} className="text-ink" />
+                    </button>
+                  ) : null}
+                </div>
+
+                <div className="flex items-center justify-between gap-1 px-2 py-1.5">
+                  <span className="truncate text-[11px] text-ink-mute">{contentNo(item.id)}</span>
+                  <span
+                    className="shrink-0 rounded-full px-2 py-0.5 text-[10px]"
+                    style={{ backgroundColor: "var(--surface-muted)", color: "var(--ink-soft)" }}
+                  >
+                    {item.type}
+                  </span>
+                </div>
               </div>
+            ))}
+          </div>
+
+          {hasMore ? (
+            <div ref={sentinelRef} className="flex h-16 items-center justify-center">
+              <span className="text-[12px] text-ink-mute">불러오는 중...</span>
             </div>
-          ))}
-        </div>
+          ) : (
+            <div className="py-6 text-center text-[12px] text-ink-mute">
+              모든 콘텐츠를 다 봤어요
+            </div>
+          )}
+        </>
       )}
 
       <ScrollTopButton />
