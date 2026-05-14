@@ -160,10 +160,26 @@ export function findThemeBySeq(seq: number): { theme: Theme; week: WeeklyUpdate 
   return null;
 }
 
-export function getThemeContents(seq: number, count: number): string[] {
-  return Array.from({ length: count }, (_, i) =>
-    `https://picsum.photos/seed/tc-${seq}-${i}/400/400`
-  );
+export function getThemeContents(
+  seq: number,
+  count: number,
+): { url: string; aspect: number }[] {
+  // 마소너리 효과를 위해 비율 분산 (결정적)
+  const SHAPES: ReadonlyArray<{ w: number; h: number }> = [
+    { w: 400, h: 500 },
+    { w: 400, h: 400 },
+    { w: 400, h: 600 },
+    { w: 400, h: 450 },
+    { w: 400, h: 350 },
+    { w: 400, h: 550 },
+  ];
+  return Array.from({ length: count }, (_, i) => {
+    const s = SHAPES[(seq + i * 3) % SHAPES.length];
+    return {
+      url: `https://picsum.photos/seed/tc-${seq}-${i}/${s.w}/${s.h}`,
+      aspect: s.w / s.h,
+    };
+  });
 }
 
 export const UPDATE_CATEGORIES = [

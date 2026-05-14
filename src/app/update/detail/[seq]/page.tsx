@@ -1,8 +1,8 @@
 "use client";
 
 import { notFound } from "next/navigation";
-import { use } from "react";
-import { Bookmark } from "lucide-react";
+import { use, useState } from "react";
+import { Heart } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import { findThemeBySeq, getThemeContents } from "@/data/updates";
@@ -26,37 +26,56 @@ export default function ThemeDetailPage({
     <div className="min-h-dvh bg-surface-muted pb-28">
       <PageHeader title={theme.title} fallbackHref="/update" />
 
-      {/* 서브 헤더 */}
-      <div className="flex items-center justify-between border-b border-line bg-surface px-4 py-2.5">
-        <span className="text-[13px] text-ink-mute">{theme.count} 것</span>
-        <span className="text-[13px] text-ink-soft">
-          {theme.category}
-          <span className="ml-2 text-ink-mute">{endDate}</span>
-        </span>
+      {/* ── 서브 헤더: 카테고리 핀 + 콘텐츠 수 + 날짜 ── */}
+      <div className="flex items-center justify-between bg-surface px-4 py-4">
+        <div className="flex items-center gap-3">
+          <span
+            className="inline-flex items-center rounded-full border px-3 py-1 text-[13px] font-semibold"
+            style={{ borderColor: "var(--brand)", color: "var(--brand)" }}
+          >
+            {theme.category}
+          </span>
+          <span className="text-[13px] text-ink-soft">총 {theme.count}컷</span>
+        </div>
+        <span className="text-[14px] text-ink-mute">{endDate}</span>
       </div>
 
-      {/* 콘텐츠 2열 그리드 */}
-      <div className="grid grid-cols-2 gap-px bg-line">
-        {contents.map((url, i) => (
-          <div key={i} className="relative bg-surface-muted">
-            {/* eslint-disable-next-line @next/next/no-img-element */}
-            <img
-              src={url}
-              alt=""
-              className="aspect-square w-full object-cover"
-            />
-            <button
-              aria-label="담기"
-              className="absolute bottom-2 right-2 grid h-7 w-7 place-items-center rounded-full"
-              style={{ backgroundColor: "rgba(0,0,0,0.45)", backdropFilter: "blur(4px)" }}
-            >
-              <Bookmark size={13} className="text-white" strokeWidth={2} />
-            </button>
-          </div>
+      {/* ── 콘텐츠 마소너리 (1px 여백, R 없음) ── */}
+      <div className="columns-2 gap-px bg-surface-muted">
+        {contents.map((c, i) => (
+          <ContentTile key={i} url={c.url} aspect={c.aspect} />
         ))}
       </div>
 
       <BottomNav />
+    </div>
+  );
+}
+
+function ContentTile({ url, aspect }: { url: string; aspect: number }) {
+  const [liked, setLiked] = useState(false);
+  return (
+    <div className="relative mb-px break-inside-avoid">
+      {/* eslint-disable-next-line @next/next/no-img-element */}
+      <img
+        src={url}
+        alt=""
+        className="block w-full bg-surface-muted"
+        style={{ aspectRatio: aspect }}
+      />
+      <button
+        aria-label="좋아요"
+        onClick={() => setLiked((v) => !v)}
+        className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-white/90 shadow-sm"
+        style={{ backdropFilter: "blur(4px)" }}
+      >
+        <Heart
+          size={15}
+          className={liked ? "" : "text-ink-soft"}
+          style={liked ? { color: "var(--danger)" } : undefined}
+          fill={liked ? "var(--danger)" : "none"}
+        />
+      </button>
     </div>
   );
 }
