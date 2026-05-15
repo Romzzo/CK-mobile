@@ -3,9 +3,10 @@
 import { ChevronRight, Paintbrush, Sparkles, Gift, BadgePercent } from "lucide-react";
 import type { LucideIcon } from "lucide-react";
 import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { useRef, useState } from "react";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import SectionHeader from "@/components/home/SectionHeader";
+import { useEmblaFirmDrag } from "@/lib/useEmblaFirmDrag";
 
 type ColorKey = "purple" | "blue" | "green" | "orange";
 
@@ -79,6 +80,8 @@ const iconColorMap: Record<ColorKey, string> = {
 
 export default function ToolCards() {
   const plugin = useRef(Autoplay({ delay: 3500, stopOnInteraction: true }));
+  const [api, setApi] = useState<CarouselApi>();
+  useEmblaFirmDrag(api);
 
   return (
     <section className="pt-8">
@@ -88,6 +91,7 @@ export default function ToolCards() {
 
       <div className="mt-3 px-4">
         <Carousel
+          setApi={setApi}
           plugins={[plugin.current]}
           opts={{ loop: true, align: "start", duration: 10, dragFree: false, skipSnaps: false }}
           className="w-full"

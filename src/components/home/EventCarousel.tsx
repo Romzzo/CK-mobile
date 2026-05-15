@@ -1,15 +1,18 @@
 "use client";
 
-import { Carousel, CarouselContent, CarouselItem } from "@/components/ui/carousel";
+import { Carousel, CarouselContent, CarouselItem, type CarouselApi } from "@/components/ui/carousel";
 import Autoplay from "embla-carousel-autoplay";
-import { useRef } from "react";
+import { useRef, useState } from "react";
 import Link from "next/link";
 import { ChevronRight } from "lucide-react";
 import SectionHeader from "@/components/home/SectionHeader";
 import { events } from "@/lib/events";
+import { useEmblaFirmDrag } from "@/lib/useEmblaFirmDrag";
 
 export default function EventCarousel() {
   const plugin = useRef(Autoplay({ delay: 4000, stopOnInteraction: true }));
+  const [api, setApi] = useState<CarouselApi>();
+  useEmblaFirmDrag(api);
 
   return (
     <section className="pt-8">
@@ -19,6 +22,7 @@ export default function EventCarousel() {
 
       <div className="mt-3 px-4">
         <Carousel
+          setApi={setApi}
           plugins={[plugin.current]}
           opts={{ loop: true, duration: 10, dragFree: false, skipSnaps: false }}
           className="w-full"
