@@ -41,12 +41,6 @@ function CreditBlock({ children }: { children: React.ReactNode }) {
   );
 }
 
-const ChargeLink = () => (
-  <Link href="/free" className="mt-2 inline-block text-[13px] font-semibold text-brand">
-    크레딧 충전하기 →
-  </Link>
-);
-
 export default function MyPage() {
   const router = useRouter();
   const { isLoggedIn, mounted, logout } = useAuth();
@@ -162,25 +156,22 @@ export default function MyPage() {
             <span className="shrink-0 text-[12px] font-semibold">멤버십 보기 →</span>
           </Link>
 
-          {/* AI 스튜디오 크레딧 — mock 3종 */}
+          {/* AI 스튜디오 크레딧 — mock 3종. 충전·구매는 PC 웹에서. */}
           {/* 크레딧 있음 (무료/유료 공통) */}
           <CreditBlock>
             <p className="text-[14px] font-bold text-ink">AI 스튜디오 크레딧</p>
             <p className="mt-0.5 text-[12px] text-ink-soft">잔여 2,450 C</p>
-            <ChargeLink />
           </CreditBlock>
           {/* 크레딧 없음 */}
           <CreditBlock>
             <p className="text-[14px] font-bold text-ink">AI 스튜디오 크레딧</p>
             <p className="mt-0.5 text-[12px] text-ink-mute">잔여 크레딧이 없습니다.</p>
-            <ChargeLink />
           </CreditBlock>
           {/* 유료 회원 (자동 지급) */}
           <CreditBlock>
             <p className="text-[14px] font-bold text-ink">AI 스튜디오 크레딧</p>
             <p className="mt-0.5 text-[12px] text-ink-soft">잔여 2,450 C</p>
             <p className="mt-0.5 text-[11px] text-ink-mute">매월 3,000C 자동 지급 · 다음 지급일 06.01</p>
-            <ChargeLink />
           </CreditBlock>
 
           {/* 라이선스 사용범위 */}

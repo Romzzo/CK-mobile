@@ -8,8 +8,8 @@ const linkGroups = [
   {
     title: "회사",
     links: [
-      { label: "회사소개", href: "#" },
-      { label: "채용공고", href: "#" },
+      { label: "회사소개", href: "https://www.tongro.co.kr" },
+      { label: "채용공고", href: "https://career.tongro.co.kr/" },
     ],
   },
   {
@@ -61,11 +61,20 @@ export default function Footer() {
           <dl key={g.title}>
             <dt className="mb-2 text-[12px] font-bold text-ink-mute">{g.title}</dt>
             <dd className="grid grid-cols-2 gap-x-3 gap-y-1.5">
-              {g.links.map((l) => (
-                <a key={l.label} href={l.href} className="text-[12px] text-ink-soft">
-                  {l.label}
-                </a>
-              ))}
+              {g.links.map((l) => {
+                const external = l.href.startsWith("http");
+                return (
+                  <a
+                    key={l.label}
+                    href={l.href}
+                    target={external ? "_blank" : undefined}
+                    rel={external ? "noopener noreferrer" : undefined}
+                    className="text-[12px] text-ink-soft"
+                  >
+                    {l.label}
+                  </a>
+                );
+              })}
             </dd>
           </dl>
         ))}

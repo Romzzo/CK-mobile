@@ -21,6 +21,13 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
         <Link
           href="/"
           aria-label="clipartkorea 홈"
+          onClick={(e) => {
+            // 이미 메인일 땐 하드 리로드로 새로고침 효과 (히어로 이미지 재추첨 등)
+            if (typeof window !== "undefined" && window.location.pathname === "/") {
+              e.preventDefault();
+              window.location.reload();
+            }
+          }}
           className="shrink-0 transition-colors duration-300"
           style={{ color: solid ? "#ED1765" : "#fff" }}
         >
