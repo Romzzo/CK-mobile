@@ -41,7 +41,7 @@ export default function SearchBar({ initialQuery, onSubmit }: SearchBarProps) {
 
   return (
     <div
-      className="pt-safe sticky top-0 z-40 border-b border-line"
+      className="pt-safe sticky top-0 z-nav border-b border-line"
       style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
     >
       <div className="flex items-center gap-1.5 px-2 py-2.5">

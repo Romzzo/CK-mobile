@@ -10,6 +10,7 @@ import PinGrid from "@/components/home/PinGrid";
 import ScrollRestore from "@/components/common/ScrollRestore";
 import ScrollTopButton from "@/components/common/ScrollTopButton";
 import BottomNav from "@/components/layout/BottomNav";
+import BottomSheet from "@/components/ui/BottomSheet";
 import { useRecentSearches } from "@/lib/useRecentSearches";
 
 const SORT_OPTIONS = ["추천순", "다운로드순", "등록순"];
@@ -52,16 +53,6 @@ function SearchContent() {
     setSearchSeq((s) => s + 1);
   };
 
-  // 바텀시트 ESC 닫기 (a11y)
-  useEffect(() => {
-    if (!sortOpen) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSortOpen(false);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [sortOpen]);
-
   return (
     <div className="min-h-dvh bg-surface-muted">
       <ScrollRestore />
@@ -100,48 +91,29 @@ function SearchContent() {
 
       <BottomNav />
 
-      {/* ── 정렬 바텀시트 (z-[60] 로 BottomNav 위에 노출) ── */}
-      {sortOpen ? (
-        <>
-          <div
-            className="fixed inset-0 z-[55]"
-            style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-            onClick={() => setSortOpen(false)}
-            aria-hidden
-          />
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="search-sort-sheet-title"
-            className="fixed bottom-0 left-1/2 z-[60] w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl bg-surface px-4 pt-4"
-            style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 24px)" }}
+      <BottomSheet open={sortOpen} onClose={() => setSortOpen(false)} title="정렬 기준">
+        {SORT_OPTIONS.map((opt) => (
+          <button
+            key={opt}
+            onClick={() => {
+              setActiveSort(opt);
+              sessionStorage.setItem("search_sort", opt);
+              setSortOpen(false);
+            }}
+            className="flex w-full items-center justify-between border-b border-line py-3.5 text-left last:border-0"
           >
-            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line" />
-            <p id="search-sort-sheet-title" className="mb-1 text-[15px] font-bold text-ink">정렬 기준</p>
-            {SORT_OPTIONS.map((opt) => (
-              <button
-                key={opt}
-                onClick={() => {
-                  setActiveSort(opt);
-                  sessionStorage.setItem("search_sort", opt);
-                  setSortOpen(false);
-                }}
-                className="flex w-full items-center justify-between border-b border-line py-3.5 text-left last:border-0"
+            <span className="text-[14px] text-ink-soft">{opt}</span>
+            {activeSort === opt ? (
+              <span
+                className="grid h-5 w-5 place-items-center rounded-full"
+                style={{ backgroundColor: "var(--brand)" }}
               >
-                <span className="text-[14px] text-ink-soft">{opt}</span>
-                {activeSort === opt ? (
-                  <span
-                    className="grid h-5 w-5 place-items-center rounded-full"
-                    style={{ backgroundColor: "var(--brand)" }}
-                  >
-                    <Check size={11} className="text-white" strokeWidth={3} />
-                  </span>
-                ) : null}
-              </button>
-            ))}
-          </div>
-        </>
-      ) : null}
+                <Check size={11} className="text-white" strokeWidth={3} />
+              </span>
+            ) : null}
+          </button>
+        ))}
+      </BottomSheet>
     </div>
   );
 }

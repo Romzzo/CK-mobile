@@ -41,6 +41,14 @@
   --radius-lg: 20px;
   --radius-xl: 28px;
 
+  /* z-index layers — 3 단으로 정리. Tailwind 의 z-{key} 유틸로 사용 가능 (예: z-nav).
+     - nav   : sticky header / bottom nav / 페이지 chrome (50)
+     - overlay: 바텀시트·모달 배경 오버레이 (55)
+     - sheet  : 바텀시트·모달 본체 (60) */
+  --z-nav: 50;
+  --z-overlay: 55;
+  --z-sheet: 60;
+
   /* CK design tokens — light, content-first */
   --color-brand: var(--brand);
   --color-brand-strong: var(--brand-strong);

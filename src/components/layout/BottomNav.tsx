@@ -25,7 +25,7 @@ export default function BottomNav() {
 
   return (
     <nav
-      className="fixed bottom-0 left-1/2 z-50 w-full max-w-[480px] -translate-x-1/2 border-t border-line"
+      className="fixed bottom-0 left-1/2 z-nav w-full max-w-[480px] -translate-x-1/2 border-t border-line"
       style={{ backgroundColor: "rgba(255,255,255,0.96)", backdropFilter: "blur(16px)" }}
     >
       <div className="flex items-stretch px-1" style={{ paddingBottom: "env(safe-area-inset-bottom)" }}>

@@ -10,7 +10,7 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
   const { isLoggedIn, mounted } = useAuth();
   return (
     <header
-      className="pt-safe fixed left-1/2 top-0 z-40 w-full max-w-[480px] -translate-x-1/2 transition-colors duration-300"
+      className="pt-safe fixed left-1/2 top-0 z-nav w-full max-w-[480px] -translate-x-1/2 transition-colors duration-300"
       style={{
         background: solid ? "rgba(255,255,255,0.92)" : "linear-gradient(180deg, rgba(0,0,0,0.34), rgba(0,0,0,0))",
         backdropFilter: solid ? "blur(16px)" : "none",

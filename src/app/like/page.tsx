@@ -8,6 +8,7 @@ import { mockItems } from "@/lib/mockData";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import ScrollTopButton from "@/components/common/ScrollTopButton";
+import { MASONRY } from "@/components/ui/masonry";
 import { useAuth } from "@/lib/useAuth";
 
 // 실제 API 연동 전까지 ~100개 mock — mockItems 를 순환 + id 어긋나게 만들어 무한스크롤 데모.
@@ -172,9 +173,9 @@ export default function LikePage() {
         )
       ) : (
         <>
-          <div className="columns-2 gap-2.5 px-3 pt-3">
+          <div className={MASONRY.loose.grid}>
             {displayed.map((item, idx) => (
-              <div key={item.id} className="mb-2.5 break-inside-avoid">
+              <div key={item.id} className={MASONRY.loose.item}>
                 <div
                   onClick={
                     editMode

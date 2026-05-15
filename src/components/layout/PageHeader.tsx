@@ -24,7 +24,7 @@ export default function PageHeader({
 
   return (
     <header
-      className="pt-safe sticky top-0 z-40 border-b border-line"
+      className="pt-safe sticky top-0 z-nav border-b border-line"
       style={{ backgroundColor: "rgba(255,255,255,0.92)", backdropFilter: "blur(16px)" }}
     >
       <div className="flex h-14 items-center gap-2 px-2">

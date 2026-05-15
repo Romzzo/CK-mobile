@@ -6,6 +6,8 @@ import { Calendar, ChevronDown, Check, Square } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import ScrollTopButton from "@/components/common/ScrollTopButton";
+import BottomSheet from "@/components/ui/BottomSheet";
+import { MASONRY } from "@/components/ui/masonry";
 import { updates, UPDATE_CATEGORIES, type WeeklyUpdate } from "@/data/updates";
 
 type SheetKey = "week" | "category" | null;
@@ -24,16 +26,6 @@ export default function UpdatePage() {
   useEffect(() => {
     setExtra(0);
   }, [weekId]);
-
-  // 바텀시트 ESC 닫기 (a11y)
-  useEffect(() => {
-    if (!sheet) return;
-    const onKey = (e: KeyboardEvent) => {
-      if (e.key === "Escape") setSheet(null);
-    };
-    window.addEventListener("keydown", onKey);
-    return () => window.removeEventListener("keydown", onKey);
-  }, [sheet]);
 
   const selectedIdx = useMemo(
     () => Math.max(0, updates.findIndex((u) => u.id === weekId)),
@@ -92,12 +84,12 @@ export default function UpdatePage() {
                 </div>
               </div>
             ) : (
-              <div className="columns-2 gap-2.5 px-3 pt-3">
+              <div className={MASONRY.loose.grid}>
                 {themes.map((t) => (
                   <Link
                     key={t.id}
                     href={`/update/detail/${t.seq}`}
-                    className="mb-2.5 block break-inside-avoid"
+                    className={`block ${MASONRY.loose.item}`}
                   >
                     {/* eslint-disable-next-line @next/next/no-img-element */}
                     <img
@@ -142,82 +134,62 @@ export default function UpdatePage() {
 
       <BottomNav />
 
-      {/* ── 바텀시트 ── */}
-      {sheet ? (
-        <>
-          <div
-            className="fixed inset-0 z-[55]"
-            style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
-            onClick={() => setSheet(null)}
-            aria-hidden
-          />
-          <div
-            role="dialog"
-            aria-modal="true"
-            aria-labelledby="update-sheet-title"
-            className="fixed bottom-0 left-1/2 z-[60] w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl bg-surface px-4 pt-4"
-            style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 24px)" }}
-          >
-            <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line" />
-            <p id="update-sheet-title" className="mb-1 text-[15px] font-bold text-ink">
-              {sheet === "week" ? "주차 선택" : "카테고리"}
-            </p>
-
-            <div className="max-h-[60vh] overflow-y-auto">
-              {sheet === "week"
-                ? updates.map((u) => {
-                    const active = u.id === weekId;
-                    return (
-                      <button
-                        key={u.id}
-                        onClick={() => {
-                          setWeekId(u.id);
-                          setSheet(null);
-                        }}
-                        className="flex w-full items-center justify-between border-b border-line py-3.5 text-left last:border-0"
-                      >
-                        <div className="min-w-0">
-                          <span className="text-[14px] text-ink-soft">{labelOf(u)}</span>
-                          <span className="ml-2 text-[12px] text-ink-mute">{u.dateRange}</span>
-                        </div>
-                        {active ? (
-                          <span
-                            className="grid h-5 w-5 place-items-center rounded-full"
-                            style={{ backgroundColor: "var(--brand)" }}
-                          >
-                            <Check size={11} className="text-white" strokeWidth={3} />
-                          </span>
-                        ) : null}
-                      </button>
-                    );
-                  })
-                : UPDATE_CATEGORIES.map((c) => {
-                    const active = c === category;
-                    return (
-                      <button
-                        key={c}
-                        onClick={() => {
-                          setCategory(c);
-                          setSheet(null);
-                        }}
-                        className="flex w-full items-center justify-between border-b border-line py-3.5 text-left last:border-0"
-                      >
-                        <span className="text-[14px] text-ink-soft">{c}</span>
-                        {active ? (
-                          <span
-                            className="grid h-5 w-5 place-items-center rounded-full"
-                            style={{ backgroundColor: "var(--brand)" }}
-                          >
-                            <Check size={11} className="text-white" strokeWidth={3} />
-                          </span>
-                        ) : null}
-                      </button>
-                    );
-                  })}
-            </div>
-          </div>
-        </>
-      ) : null}
+      <BottomSheet
+        open={sheet !== null}
+        onClose={() => setSheet(null)}
+        title={sheet === "week" ? "주차 선택" : "카테고리"}
+      >
+        {sheet === "week"
+          ? updates.map((u) => {
+              const active = u.id === weekId;
+              return (
+                <button
+                  key={u.id}
+                  onClick={() => {
+                    setWeekId(u.id);
+                    setSheet(null);
+                  }}
+                  className="flex w-full items-center justify-between border-b border-line py-3.5 text-left last:border-0"
+                >
+                  <div className="min-w-0">
+                    <span className="text-[14px] text-ink-soft">{labelOf(u)}</span>
+                    <span className="ml-2 text-[12px] text-ink-mute">{u.dateRange}</span>
+                  </div>
+                  {active ? (
+                    <span
+                      className="grid h-5 w-5 place-items-center rounded-full"
+                      style={{ backgroundColor: "var(--brand)" }}
+                    >
+                      <Check size={11} className="text-white" strokeWidth={3} />
+                    </span>
+                  ) : null}
+                </button>
+              );
+            })
+          : UPDATE_CATEGORIES.map((c) => {
+              const active = c === category;
+              return (
+                <button
+                  key={c}
+                  onClick={() => {
+                    setCategory(c);
+                    setSheet(null);
+                  }}
+                  className="flex w-full items-center justify-between border-b border-line py-3.5 text-left last:border-0"
+                >
+                  <span className="text-[14px] text-ink-soft">{c}</span>
+                  {active ? (
+                    <span
+                      className="grid h-5 w-5 place-items-center rounded-full"
+                      style={{ backgroundColor: "var(--brand)" }}
+                    >
+                      <Check size={11} className="text-white" strokeWidth={3} />
+                    </span>
+                  ) : null}
+                </button>
+              );
+            })}
+      </BottomSheet>
     </div>
   );
 }

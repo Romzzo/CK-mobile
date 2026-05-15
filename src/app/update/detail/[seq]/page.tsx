@@ -2,11 +2,12 @@
 
 import { notFound } from "next/navigation";
 import { use, useState } from "react";
-import { Heart } from "lucide-react";
 import Link from "next/link";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import ScrollTopButton from "@/components/common/ScrollTopButton";
+import LikeButton from "@/components/ui/LikeButton";
+import { MASONRY } from "@/components/ui/masonry";
 import { findThemeBySeq, getThemeContents } from "@/data/updates";
 
 export default function ThemeDetailPage({
@@ -43,8 +44,8 @@ export default function ThemeDetailPage({
         <span className="text-[14px] text-ink-mute">{endDate}</span>
       </div>
 
-      {/* ── 콘텐츠 마소너리 (1px 여백, R 없음) ── */}
-      <div className="columns-2 gap-px bg-surface-muted">
+      {/* ── 콘텐츠 마소너리 (MASONRY.tight = 1px 여백, R 없음) ── */}
+      <div className={`${MASONRY.tight.grid} bg-surface-muted`}>
         {contents.map((c, i) => (
           <ContentTile
             key={c.id}
@@ -81,7 +82,7 @@ function ContentTile({
   return (
     <Link
       href={`/content/${id}?ids=${idsParam}&idx=${index}`}
-      className="relative mb-px block break-inside-avoid"
+      className={`relative block ${MASONRY.tight.item}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -91,23 +92,7 @@ function ContentTile({
         className="block w-full bg-surface-muted"
         style={{ aspectRatio: aspect }}
       />
-      <button
-        aria-label="좋아요"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setLiked((v) => !v);
-        }}
-        className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-white/60 shadow-sm"
-        style={{ backdropFilter: "blur(4px)" }}
-      >
-        <Heart
-          size={15}
-          className={liked ? "" : "text-ink-soft"}
-          style={liked ? { color: "var(--danger)" } : undefined}
-          fill={liked ? "var(--danger)" : "none"}
-        />
-      </button>
+      <LikeButton liked={liked} onToggle={() => setLiked((v) => !v)} />
     </Link>
   );
 }

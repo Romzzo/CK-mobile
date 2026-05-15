@@ -1,8 +1,10 @@
 "use client";
 
-import { Heart, SearchX } from "lucide-react";
+import { SearchX } from "lucide-react";
 import { useState, useEffect, useRef } from "react";
 import Link from "next/link";
+import LikeButton from "@/components/ui/LikeButton";
+import { MASONRY } from "@/components/ui/masonry";
 
 // 검색 결과 0건일 때 추천할 인기 키워드 (하드코딩 — 추후 운영 데이터 연동)
 const POPULAR_KEYWORDS = [
@@ -36,7 +38,7 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
   return (
     <Link
       href={`/content/${photo.id}?ids=${idsParam}&idx=${index}`}
-      className="relative mb-px block break-inside-avoid"
+      className={`relative block ${MASONRY.tight.item}`}
     >
       {/* eslint-disable-next-line @next/next/no-img-element */}
       <img
@@ -63,23 +65,7 @@ function PinCard({ photo, index, idsParam }: { photo: PexelsPhoto; index: number
         </span>
       ) : null}
 
-      <button
-        aria-label="좋아요"
-        onClick={(e) => {
-          e.preventDefault();
-          e.stopPropagation();
-          setLiked((v) => !v);
-        }}
-        className="absolute bottom-2 right-2 grid h-8 w-8 place-items-center rounded-full bg-white/60 shadow-sm before:absolute before:-inset-2 before:content-['']"
-        style={{ backdropFilter: "blur(4px)" }}
-      >
-        <Heart
-          size={15}
-          className={liked ? "" : "text-ink-soft"}
-          style={liked ? { color: "var(--danger)" } : undefined}
-          fill={liked ? "var(--danger)" : "none"}
-        />
-      </button>
+      <LikeButton liked={liked} onToggle={() => setLiked((v) => !v)} />
     </Link>
   );
 }
@@ -169,11 +155,11 @@ export default function PinGrid({
   // 초기 로딩(페이지 1) — 스켈레톤
   if (loading) {
     return (
-      <div className="columns-2 gap-px">
+      <div className={MASONRY.tight.grid}>
         {Array.from({ length: 12 }).map((_, i) => (
           <div
             key={i}
-            className="mb-px w-full animate-pulse break-inside-avoid bg-surface-muted"
+            className={`w-full animate-pulse bg-surface-muted ${MASONRY.tight.item}`}
             style={{ aspectRatio: SKELETON_RATIOS[i % SKELETON_RATIOS.length] }}
           />
         ))}
@@ -216,7 +202,7 @@ export default function PinGrid({
 
   return (
     <>
-      <div className="columns-2 gap-px">
+      <div className={MASONRY.tight.grid}>
         {photos.map((photo, i) => (
           <PinCard key={photo.id} photo={photo} index={i} idsParam={idsParam} />
         ))}
