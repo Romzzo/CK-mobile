@@ -16,7 +16,7 @@ const linkGroups = [
     title: "서비스",
     links: [
       { label: "공지사항", href: "#" },
-      { label: "상담문의", href: "#" },
+      { label: "상담문의", href: "/help" },
       { label: "이벤트", href: "/event" },
       { label: "무료콘텐츠", href: "/free" },
     ],

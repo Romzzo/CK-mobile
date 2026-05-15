@@ -15,7 +15,7 @@ const menuGroups: { items: MenuItem[] }[] = [
     items: [
       { icon: Heart, label: "좋아요한 콘텐츠", path: "/like" },
       { icon: Pencil, label: "회원정보 수정", path: "/my/settings" },
-      { icon: HelpCircle, label: "고객센터", path: null }, // 추후 채널톡 연동
+      { icon: HelpCircle, label: "고객센터", path: "/help" },
     ],
   },
   {
@@ -96,11 +96,11 @@ export default function MyPage() {
 
           {/* 비로그인에서도 가능한 메뉴 */}
           <div className="mx-4 mt-10 overflow-hidden rounded-2xl border border-line bg-surface">
-            <button className="flex w-full items-center gap-3 px-5 py-4">
+            <Link href="/help" className="flex w-full items-center gap-3 px-5 py-4">
               <HelpCircle size={18} className="text-ink-mute" />
               <span className="flex-1 text-left text-[14px] text-ink-soft">고객센터</span>
               <ChevronRight size={15} className="text-ink-mute" />
-            </button>
+            </Link>
           </div>
         </>
       ) : (
