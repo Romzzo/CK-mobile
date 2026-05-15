@@ -17,7 +17,7 @@ export const CATEGORIES: Category[] = [
   { label: "일러스트", type: "illust",    image: "https://picsum.photos/seed/cat-illust/400/500" },
   { label: "사진",     type: "photo",     image: "https://picsum.photos/seed/cat-photo/400/500" },
   { label: "아이콘",   type: "icon",      image: "https://picsum.photos/seed/cat-icon/400/500" },
-  { label: "AI 이미지", type: "ai",        image: "https://picsum.photos/seed/cat-ai/400/500" },
+  { label: "AI 이미지", type: "ai",        image: "/category/ai.jpg" },
   { label: "PPT 템플릿", type: "ppt",      image: "https://picsum.photos/seed/cat-ppt/400/500" },
   { label: "합성·웹",  type: "composite", image: "https://picsum.photos/seed/cat-composite/400/500" },
   { label: "3D",       type: "3d",        image: "https://picsum.photos/seed/cat-3d/400/500" },
