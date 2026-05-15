@@ -87,6 +87,7 @@ function ContentTile({
       <img
         src={url}
         alt=""
+        loading="lazy"
         className="block w-full bg-surface-muted"
         style={{ aspectRatio: aspect }}
       />

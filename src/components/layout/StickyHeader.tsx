@@ -7,7 +7,7 @@ import { useAuth } from "@/lib/useAuth";
 
 export default function StickyHeader({ solid }: { solid: boolean }) {
   const fg = solid ? "var(--ink-soft)" : "#fff";
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, mounted } = useAuth();
   return (
     <header
       className="pt-safe fixed left-1/2 top-0 z-40 w-full max-w-[480px] -translate-x-1/2 transition-colors duration-300"
@@ -52,7 +52,10 @@ export default function StickyHeader({ solid }: { solid: boolean }) {
               라이선스
             </Link>
           ) : null}
-          {isLoggedIn ? (
+          {!mounted ? (
+            // 인증 확정 전: 자리만 차지 (로그인/MY 둘 다 안 그림으로써 깜빡임 방지)
+            <span aria-hidden className="block h-8 w-[64px] shrink-0" />
+          ) : isLoggedIn ? (
             <Link
               href="/my"
               aria-label="MY"

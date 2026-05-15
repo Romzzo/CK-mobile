@@ -49,7 +49,7 @@ const ChargeLink = () => (
 
 export default function MyPage() {
   const router = useRouter();
-  const { isLoggedIn, logout } = useAuth();
+  const { isLoggedIn, mounted, logout } = useAuth();
 
   const handleMenuClick = (item: MenuItem) => {
     if (item.label === "로그아웃") {
@@ -64,7 +64,10 @@ export default function MyPage() {
     <div className="min-h-dvh bg-surface-muted pb-28">
       <PageHeader title="MY" fallbackHref="/" />
 
-      {!isLoggedIn ? (
+      {!mounted ? (
+        /* ── 하이드레이션 직후, 인증 상태 확정 전: 깜빡임 방지용 빈 영역 ── */
+        <div aria-hidden className="min-h-[40vh]" />
+      ) : !isLoggedIn ? (
         /* ── 비로그인 상태 ── */
         <>
           <div className="flex flex-col items-center px-8 pt-16 text-center">

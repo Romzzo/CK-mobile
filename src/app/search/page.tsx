@@ -52,6 +52,16 @@ function SearchContent() {
     setSearchSeq((s) => s + 1);
   };
 
+  // 바텀시트 ESC 닫기 (a11y)
+  useEffect(() => {
+    if (!sortOpen) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSortOpen(false);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [sortOpen]);
+
   return (
     <div className="min-h-dvh bg-surface-muted">
       <ScrollRestore />
@@ -97,13 +107,17 @@ function SearchContent() {
             className="fixed inset-0 z-[55]"
             style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
             onClick={() => setSortOpen(false)}
+            aria-hidden
           />
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="search-sort-sheet-title"
             className="fixed bottom-0 left-1/2 z-[60] w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl bg-surface px-4 pt-4"
             style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 24px)" }}
           >
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line" />
-            <p className="mb-1 text-[15px] font-bold text-ink">정렬 기준</p>
+            <p id="search-sort-sheet-title" className="mb-1 text-[15px] font-bold text-ink">정렬 기준</p>
             {SORT_OPTIONS.map((opt) => (
               <button
                 key={opt}

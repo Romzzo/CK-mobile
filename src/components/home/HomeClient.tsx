@@ -20,7 +20,7 @@ export default function HomeClient() {
   const heroSearchRef = useRef<HTMLDivElement>(null);
   const [solidHeader, setSolidHeader] = useState(false);
   const [showOnboarding, setShowOnboarding] = useState(false);
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, mounted } = useAuth();
 
   useEffect(() => {
     const el = heroSearchRef.current;
@@ -60,7 +60,7 @@ export default function HomeClient() {
 
       <Footer />
 
-      {showOnboarding && !isLoggedIn ? <OnboardingBanner onClose={dismissOnboarding} /> : null}
+      {mounted && showOnboarding && !isLoggedIn ? <OnboardingBanner onClose={dismissOnboarding} /> : null}
       <BottomNav />
     </div>
   );

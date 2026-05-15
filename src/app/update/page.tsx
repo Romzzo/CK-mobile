@@ -25,6 +25,16 @@ export default function UpdatePage() {
     setExtra(0);
   }, [weekId]);
 
+  // 바텀시트 ESC 닫기 (a11y)
+  useEffect(() => {
+    if (!sheet) return;
+    const onKey = (e: KeyboardEvent) => {
+      if (e.key === "Escape") setSheet(null);
+    };
+    window.addEventListener("keydown", onKey);
+    return () => window.removeEventListener("keydown", onKey);
+  }, [sheet]);
+
   const selectedIdx = useMemo(
     () => Math.max(0, updates.findIndex((u) => u.id === weekId)),
     [weekId],
@@ -139,13 +149,17 @@ export default function UpdatePage() {
             className="fixed inset-0 z-[55]"
             style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
             onClick={() => setSheet(null)}
+            aria-hidden
           />
           <div
+            role="dialog"
+            aria-modal="true"
+            aria-labelledby="update-sheet-title"
             className="fixed bottom-0 left-1/2 z-[60] w-full max-w-[480px] -translate-x-1/2 rounded-t-2xl bg-surface px-4 pt-4"
             style={{ paddingBottom: "calc(env(safe-area-inset-bottom, 0px) + 24px)" }}
           >
             <div className="mx-auto mb-4 h-1 w-10 rounded-full bg-line" />
-            <p className="mb-1 text-[15px] font-bold text-ink">
+            <p id="update-sheet-title" className="mb-1 text-[15px] font-bold text-ink">
               {sheet === "week" ? "주차 선택" : "카테고리"}
             </p>
 

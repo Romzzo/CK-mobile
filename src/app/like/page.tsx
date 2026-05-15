@@ -27,7 +27,7 @@ const aspectClass = (a: "tall" | "wide" | "square") =>
 
 export default function LikePage() {
   const router = useRouter();
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, mounted } = useAuth();
   const [items, setItems] = useState(initialLiked);
   const [activeType, setActiveType] = useState("전체");
   const [editMode, setEditMode] = useState(false);
@@ -63,6 +63,17 @@ export default function LikePage() {
     observer.observe(el);
     return () => observer.disconnect();
   }, [hasMore, isLoggedIn]);
+
+  // 하이드레이션 직후 인증 확정 전엔 깜빡임 방지용 빈 영역만 노출
+  if (!mounted) {
+    return (
+      <div className="min-h-dvh bg-surface-muted pb-28">
+        <PageHeader title="좋아요한 콘텐츠" fallbackHref="/" />
+        <div aria-hidden className="min-h-[40vh]" />
+        <BottomNav />
+      </div>
+    );
+  }
 
   // ── 비로그인 상태 ── /my 페이지와 동일 패턴
   if (!isLoggedIn) {

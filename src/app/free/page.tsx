@@ -43,7 +43,7 @@ const notices = [
 
 export default function FreeContentPage() {
   const [openNotice, setOpenNotice] = useState(false);
-  const { isLoggedIn } = useAuth();
+  const { isLoggedIn, mounted } = useAuth();
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
@@ -94,8 +94,9 @@ export default function FreeContentPage() {
       </section>
 
       {/* ── 에디터 30일 무료 프로모션 ──
-          비로그인: 가입 유도. 로그인 상태: 에디터 직행. */}
-      {isLoggedIn ? (
+          비로그인: 가입 유도. 로그인 상태: 에디터 직행.
+          mounted=false 인 짧은 동안엔 깜빡임 방지로 비로그인 fallback 안 그림 */}
+      {!mounted ? null : isLoggedIn ? (
         <a
           href="https://editor.clipartkorea.co.kr/editor"
           target="_blank"
@@ -150,8 +151,9 @@ export default function FreeContentPage() {
         )}
       </div>
 
-      {/* ── 하단 CTA ── 비로그인 한정 (로그인 상태에서는 가입/로그인 CTA 무의미) */}
-      {!isLoggedIn ? (
+      {/* ── 하단 CTA ── 비로그인 한정 (로그인 상태에서는 가입/로그인 CTA 무의미)
+          mounted=false 동안엔 안 그림 → "보였다 사라지는" 깜빡임 방지 */}
+      {mounted && !isLoggedIn ? (
         <div className="flex flex-col gap-2.5 px-4 pt-6">
           <Link
             href="/signup"
