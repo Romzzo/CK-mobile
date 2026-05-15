@@ -5,6 +5,7 @@ import Link from "next/link";
 import { ChevronRight, AlertTriangle, Sparkles, Image, Type, MapPin } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
+import { useAuth } from "@/lib/useAuth";
 
 const benefits = [
   {
@@ -42,6 +43,7 @@ const notices = [
 
 export default function FreeContentPage() {
   const [openNotice, setOpenNotice] = useState(false);
+  const { isLoggedIn } = useAuth();
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
@@ -91,19 +93,37 @@ export default function FreeContentPage() {
         </div>
       </section>
 
-      {/* ── 에디터 30일 무료 프로모션 ── */}
-      <Link
-        href="/signup"
-        className="mx-4 mt-4 flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3.5"
-      >
-        <div>
-          <p className="text-[13px] font-bold text-ink">에디터 30일 무료 체험</p>
-          <p className="mt-0.5 text-[11px] text-ink-mute">설치 없이 브라우저에서 바로</p>
-        </div>
-        <div className="flex items-center gap-0.5 text-[13px] font-semibold" style={{ color: "#7A3DEA" }}>
-          시작하기 <ChevronRight size={15} />
-        </div>
-      </Link>
+      {/* ── 에디터 30일 무료 프로모션 ──
+          비로그인: 가입 유도. 로그인 상태: 에디터 직행. */}
+      {isLoggedIn ? (
+        <a
+          href="https://editor.clipartkorea.co.kr/editor"
+          target="_blank"
+          rel="noopener noreferrer"
+          className="mx-4 mt-4 flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3.5"
+        >
+          <div>
+            <p className="text-[13px] font-bold text-ink">에디터로 바로 편집하기</p>
+            <p className="mt-0.5 text-[11px] text-ink-mute">설치 없이 브라우저에서 바로</p>
+          </div>
+          <div className="flex items-center gap-0.5 text-[13px] font-semibold" style={{ color: "#7A3DEA" }}>
+            열기 <ChevronRight size={15} />
+          </div>
+        </a>
+      ) : (
+        <Link
+          href="/signup"
+          className="mx-4 mt-4 flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3.5"
+        >
+          <div>
+            <p className="text-[13px] font-bold text-ink">에디터 30일 무료 체험</p>
+            <p className="mt-0.5 text-[11px] text-ink-mute">설치 없이 브라우저에서 바로</p>
+          </div>
+          <div className="flex items-center gap-0.5 text-[13px] font-semibold" style={{ color: "#7A3DEA" }}>
+            시작하기 <ChevronRight size={15} />
+          </div>
+        </Link>
+      )}
 
       {/* ── 이용 안내 아코디언 ── */}
       <div className="mx-4 mt-4">
@@ -130,22 +150,24 @@ export default function FreeContentPage() {
         )}
       </div>
 
-      {/* ── 하단 CTA ── */}
-      <div className="flex flex-col gap-2.5 px-4 pt-6">
-        <Link
-          href="/signup"
-          className="flex items-center justify-center gap-1.5 rounded-2xl py-3.5 text-[14px] font-semibold text-white"
-          style={{ backgroundColor: "var(--brand)" }}
-        >
-          지금 시작하기 <ChevronRight size={15} />
-        </Link>
-        <Link
-          href="/login"
-          className="flex items-center justify-center gap-1.5 rounded-2xl border border-line py-3.5 text-[14px] font-semibold text-ink-soft"
-        >
-          이미 회원이에요
-        </Link>
-      </div>
+      {/* ── 하단 CTA ── 비로그인 한정 (로그인 상태에서는 가입/로그인 CTA 무의미) */}
+      {!isLoggedIn ? (
+        <div className="flex flex-col gap-2.5 px-4 pt-6">
+          <Link
+            href="/signup"
+            className="flex items-center justify-center gap-1.5 rounded-2xl py-3.5 text-[14px] font-semibold text-white"
+            style={{ backgroundColor: "var(--brand)" }}
+          >
+            지금 시작하기 <ChevronRight size={15} />
+          </Link>
+          <Link
+            href="/login"
+            className="flex items-center justify-center gap-1.5 rounded-2xl border border-line py-3.5 text-[14px] font-semibold text-ink-soft"
+          >
+            이미 회원이에요
+          </Link>
+        </div>
+      ) : null}
 
       <BottomNav />
     </div>
