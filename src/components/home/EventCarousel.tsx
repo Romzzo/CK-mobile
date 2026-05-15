@@ -20,7 +20,7 @@ export default function EventCarousel() {
       <div className="mt-3 px-4">
         <Carousel
           plugins={[plugin.current]}
-          opts={{ loop: true, duration: 18, dragFree: false }}
+          opts={{ loop: true, duration: 10, dragFree: false, skipSnaps: false }}
           className="w-full"
         >
           <CarouselContent className="-ml-2">

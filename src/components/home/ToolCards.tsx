@@ -89,7 +89,7 @@ export default function ToolCards() {
       <div className="mt-3 px-4">
         <Carousel
           plugins={[plugin.current]}
-          opts={{ loop: true, align: "start", duration: 18, dragFree: false }}
+          opts={{ loop: true, align: "start", duration: 10, dragFree: false, skipSnaps: false }}
           className="w-full"
         >
           <CarouselContent className="-ml-3">
