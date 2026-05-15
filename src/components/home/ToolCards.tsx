@@ -87,7 +87,11 @@ export default function ToolCards() {
       </div>
 
       <div className="mt-3 px-4">
-        <Carousel plugins={[plugin.current]} opts={{ loop: true, align: "start" }} className="w-full">
+        <Carousel
+          plugins={[plugin.current]}
+          opts={{ loop: true, align: "start", duration: 18, dragFree: false }}
+          className="w-full"
+        >
           <CarouselContent className="-ml-3">
             {tools.map((t) => (
               <CarouselItem key={t.href} className="basis-[72%] max-w-[260px] pl-3">

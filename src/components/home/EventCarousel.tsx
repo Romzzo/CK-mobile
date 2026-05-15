@@ -18,7 +18,11 @@ export default function EventCarousel() {
       </div>
 
       <div className="mt-3 px-4">
-        <Carousel plugins={[plugin.current]} opts={{ loop: true }} className="w-full">
+        <Carousel
+          plugins={[plugin.current]}
+          opts={{ loop: true, duration: 18, dragFree: false }}
+          className="w-full"
+        >
           <CarouselContent className="-ml-2">
             {events.map((e) => (
               <CarouselItem key={e.id} className="basis-[86%] pl-2">
