@@ -141,6 +141,18 @@
   }
 }
 
+/* z-index 토큰을 Tailwind v4 커스텀 유틸로 노출.
+   (--z-* 네임스페이스는 자동 유틸 생성이 안 돼서 직접 등록) */
+@utility z-nav {
+  z-index: var(--z-nav);
+}
+@utility z-overlay {
+  z-index: var(--z-overlay);
+}
+@utility z-sheet {
+  z-index: var(--z-sheet);
+}
+
 @keyframes ck-slide-up {
   from { transform: translateY(120%); opacity: 0.5; }
   to { transform: translateY(0); opacity: 1; }

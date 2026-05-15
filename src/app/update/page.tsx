@@ -121,7 +121,7 @@ export default function UpdatePage() {
             className="flex w-full items-center justify-center gap-1.5 rounded-xl border border-line bg-surface py-3 text-[13px] font-semibold text-ink-soft"
           >
             이전 주 더보기
-            <ChevronDown size={14} />
+            <ChevronDown size={15} />
           </button>
         </div>
       ) : (

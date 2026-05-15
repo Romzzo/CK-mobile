@@ -24,7 +24,7 @@ export default function SectionHeader({
           className="flex shrink-0 items-center gap-0.5 text-[13px] font-medium text-ink-mute"
         >
           {action}
-          <ChevronRight size={14} />
+          <ChevronRight size={15} />
         </Link>
       ) : null}
     </div>

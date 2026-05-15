@@ -452,3 +452,47 @@ type LikedItem = {
 ### 디자인 미확정
 - [ ] 카테고리 뱃지 색상·스타일
 - [ ] PRO 뱃지 최종 디자인
+
+---
+
+## 11. 코드 가이드라인 (디자인 시스템 부속)
+
+### 아이콘 사이즈 (lucide)
+
+같은 의미의 아이콘은 페이지마다 사이즈가 흔들리지 않도록 3단으로 통일.
+
+| 토큰 | 픽셀 | 쓰임 |
+|------|------|------|
+| `xs` | 13 | 인라인 CTA 텍스트 옆 (예: ToolCards 카드 CTA, 라이선스 PC 신청) |
+| `sm` | 15 | 리스트 row 인디케이터 (마이/설정/무료/SectionHeader 표준) |
+| `md` | 18 | 카드/히어로 인디케이터, 플로팅 버튼 (카테고리·이벤트·ScrollTop) |
+
+> 12·14·16·20 사용 금지. 새 아이콘 박을 때 위 3종 중 하나만 선택.
+> shadcn 벤더 컴포넌트(`src/components/ui/carousel.tsx` 등)는 예외.
+
+### z-index 토큰
+
+`globals.css` 의 3단 토큰 + Tailwind 커스텀 유틸(`@utility`) 로 노출:
+
+| 클래스 | CSS var | 값 | 쓰임 |
+|--------|---------|----|----|
+| `z-nav` | `--z-nav` | 50 | sticky header / bottom nav / page chrome |
+| `z-overlay` | `--z-overlay` | 55 | 모달·시트 배경 dim |
+| `z-sheet` | `--z-sheet` | 60 | 모달·시트 본체 |
+
+> 임의 `z-40`, `z-[55]` 직접 쓰지 말 것. 4단 이상 필요해지면 토큰 확장 먼저 논의.
+
+### 마소너리 그리드 (`@/components/ui/masonry`)
+
+| 변형 | 그리드 | 카드 | 쓰임 |
+|------|--------|------|------|
+| `tight` | `columns-2 gap-px` | `mb-px ...` | 매거진 톤 (PinGrid·테마 상세 콘텐츠) |
+| `loose` | `columns-2 gap-2.5 px-3 pt-3` | `mb-2.5 ...` | 카드 + 정보바 톤 (좋아요·업데이트 리스트) |
+
+### 좋아요 버튼 (`@/components/ui/LikeButton`)
+
+콘텐츠 카드 우하단 좋아요 토글은 항상 이 컴포넌트 사용. `aria-pressed` 자동 포함.
+
+### 바텀시트 (`@/components/ui/BottomSheet`)
+
+z-index / safe-area / `role=dialog` / `aria-modal` / Escape 닫기 모두 자동. 시트 만들 땐 직접 마크업 작성하지 말고 항상 이 컴포넌트로.

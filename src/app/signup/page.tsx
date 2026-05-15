@@ -125,7 +125,7 @@ export default function SignupPage() {
                   {term.label}
                   {term.required ? <span className="ml-1 text-danger">*</span> : <span className="ml-1 text-ink-mute">(선택)</span>}
                 </span>
-                <ChevronRight size={14} className="shrink-0 text-ink-mute" />
+                <ChevronRight size={15} className="shrink-0 text-ink-mute" />
               </div>
             ))}
           </div>
@@ -325,7 +325,7 @@ function SelectField({ label, required, value, onChange, options, placeholder }:
           style={{ color: value ? "var(--ink)" : "var(--ink-mute)" }}
         >
           <span className="truncate">{value || placeholder}</span>
-          <ChevronDown size={16} className="shrink-0 text-ink-mute" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
+          <ChevronDown size={15} className="shrink-0 text-ink-mute" style={{ transform: open ? "rotate(180deg)" : "none", transition: "transform 0.2s" }} />
         </button>
         {open && (
           <div className="absolute left-0 right-0 top-full z-20 mt-1 max-h-52 overflow-y-auto rounded-xl border border-line bg-surface shadow-lg">

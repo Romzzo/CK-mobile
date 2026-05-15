@@ -66,7 +66,7 @@ export default function DetailInfo({ contentNo, type, isPremium, isNew, format, 
       >
         <span className="text-[13px] font-semibold text-ink">유의사항 보기</span>
         <ChevronDown
-          size={16}
+          size={15}
           className="text-ink-mute"
           style={{ transform: showNotice ? "rotate(180deg)" : "none", transition: "transform 0.2s" }}
         />

@@ -69,7 +69,7 @@ export default function CategoryIndexPage() {
                   <p className="mt-1 truncate text-[12px] text-white/80">{c.desc}</p>
                   {c.count ? <p className="mt-0.5 text-[11px] text-white/55">{c.count}</p> : null}
                 </div>
-                <ChevronRight size={20} className="shrink-0 text-white/70" />
+                <ChevronRight size={18} className="shrink-0 text-white/70" />
               </div>
             </Link>
           ))}

@@ -32,7 +32,7 @@ export default function ScrollTopButton({ threshold = 400 }: { threshold?: numbe
         border: "1px solid var(--line)",
       }}
     >
-      <ChevronUp size={20} />
+      <ChevronUp size={18} />
     </button>
   );
 }

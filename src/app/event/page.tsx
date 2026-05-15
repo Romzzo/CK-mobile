@@ -29,7 +29,7 @@ export default function EventListPage() {
                 <p className="mt-0.5 truncate text-[15px] font-bold text-ink">{e.title}</p>
                 <p className="mt-0.5 truncate text-[12px] text-ink-soft">{e.desc}</p>
               </div>
-              <ChevronRight size={20} className="relative shrink-0 text-brand/70" />
+              <ChevronRight size={18} className="relative shrink-0 text-brand/70" />
             </Link>
           ))}
         </div>

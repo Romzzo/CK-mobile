@@ -85,7 +85,7 @@ export default function MembershipPage() {
             rel="noopener noreferrer"
             className="relative flex shrink-0 items-center gap-1 rounded-xl bg-white px-3.5 py-2 text-[12px] font-bold text-brand"
           >
-            PC에서 신청 <ChevronRight size={12} />
+            PC에서 신청 <ChevronRight size={13} />
           </a>
         </div>
 
