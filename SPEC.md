@@ -508,3 +508,14 @@ const go = () => startTransition(() => router.replace(url));
 ```
 
 전체 페이지 스피너/오버레이 대신 이 컴포넌트로 통일 (Toss 톤). z-[100] 고정이라 chrome/sheet 위에 안전하게 떠 있음.
+
+### 스켈레톤 (placeholder pulse)
+
+이미지·카드 로딩 동안 화면이 비어 보이지 않도록 `animate-pulse bg-surface-muted` 조합 사용. 별도 컴포넌트 없이 클래스 패턴으로 통일.
+
+- **고정 자리(absolute):** `<div className="absolute inset-0 animate-pulse bg-surface-muted" />` — 컨테이너 안 이미지 위에 덮어쓰는 형태. 이미지 `onLoad` 시 제거.
+- **레이아웃 자리 차지:** `<div className="w-full animate-pulse bg-surface-muted" style={{ aspectRatio }} />` — 그리드 셀로 흐름 점유. 마소너리·카드 그리드에서 사용.
+
+이미지 페이드인은 `transition-opacity duration-200`, `opacity: loaded ? 1 : 0` 조합. (예: `src/components/detail/HeroImage.tsx`)
+
+전체 페이지 스피너는 도입하지 않음 — 위 스켈레톤 + `LoadingBar` 조합으로 처리.
