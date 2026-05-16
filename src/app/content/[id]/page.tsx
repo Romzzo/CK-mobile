@@ -101,7 +101,7 @@ export default async function ContentDetailPage({
 
   return (
     <div className="min-h-dvh bg-surface pb-24">
-      <DetailHeader />
+      <DetailHeader pageCount={ids.length > 1 ? { current: idx + 1, total: ids.length } : undefined} />
 
       <DetailSwiper key={String(id)} ids={ids} idx={idx} dir={dir}>
         {/* 풀블리드 이미지 */}

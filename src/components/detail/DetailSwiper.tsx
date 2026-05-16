@@ -44,11 +44,6 @@ export default function DetailSwiper({ ids, idx, dir, children }: DetailSwiperPr
 
   return (
     <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
-      {ids.length > 1 ? (
-        <div className="fixed left-1/2 top-[19px] z-50 -translate-x-1/2 text-[12px] font-semibold text-ink-mute">
-          {idx + 1} / {ids.length}
-        </div>
-      ) : null}
       <div
         style={{
           transform: `translateX(${offset})`,
