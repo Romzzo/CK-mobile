@@ -3,8 +3,11 @@
 import { useState } from "react";
 import { ChevronDown } from "lucide-react";
 import { YoutubeIcon, InstagramIcon, FacebookIcon, BlogIcon } from "@/components/ui/SnsIcons";
+import { useAuth } from "@/lib/useAuth";
 
-const linkGroups = [
+type FooterLink = { label: string; href: string; requireAuth?: boolean };
+
+const linkGroups: { title: string; links: FooterLink[] }[] = [
   {
     title: "회사",
     links: [
@@ -16,7 +19,7 @@ const linkGroups = [
     title: "서비스",
     links: [
       { label: "공지사항", href: "#" },
-      { label: "상담문의", href: "/help" },
+      { label: "상담문의", href: "/help", requireAuth: true },
       { label: "이벤트", href: "/event" },
       { label: "무료콘텐츠", href: "/free" },
     ],
@@ -50,6 +53,15 @@ const companyInfo = [
 
 export default function Footer() {
   const [openInfo, setOpenInfo] = useState(false);
+  const { isLoggedIn, mounted } = useAuth();
+
+  // 인증 필요 링크: 비로그인이면 /login?next=원래경로 로 우회
+  const resolveHref = (l: FooterLink) => {
+    if (l.requireAuth && mounted && !isLoggedIn) {
+      return `/login?next=${encodeURIComponent(l.href)}`;
+    }
+    return l.href;
+  };
 
   return (
     <footer
@@ -66,7 +78,7 @@ export default function Footer() {
                 return (
                   <a
                     key={l.label}
-                    href={l.href}
+                    href={resolveHref(l)}
                     target={external ? "_blank" : undefined}
                     rel={external ? "noopener noreferrer" : undefined}
                     className="text-[12px] text-ink-soft"

@@ -1,12 +1,14 @@
 "use client";
 
-import { useState } from "react";
+import { Suspense, useState } from "react";
 import { Eye, EyeOff, X } from "lucide-react";
-import { useRouter } from "next/navigation";
+import { useRouter, useSearchParams } from "next/navigation";
 import { useAuth } from "@/lib/useAuth";
 
-export default function LoginPage() {
+function LoginContent() {
   const router = useRouter();
+  const searchParams = useSearchParams();
+  const next = searchParams.get("next");
   const { login } = useAuth();
   const [id, setId] = useState("");
   const [password, setPassword] = useState("");
@@ -15,7 +17,12 @@ export default function LoginPage() {
   const handleLogin = () => {
     // 프로토타입: ID/PW 검증 없이 바로 로그인 상태 진입
     login();
-    router.back();
+    if (next) {
+      // 진입 의도 페이지로 직접 이동 (예: /login?next=/help → /help)
+      router.replace(next);
+    } else {
+      router.back();
+    }
   };
 
   const close = () => {
@@ -117,6 +124,14 @@ export default function LoginPage() {
         </div>
       </div>
     </div>
+  );
+}
+
+export default function LoginPage() {
+  return (
+    <Suspense fallback={null}>
+      <LoginContent />
+    </Suspense>
   );
 }
 
