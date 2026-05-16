@@ -31,21 +31,6 @@ export default function LoginPage() {
           <p className="mt-1.5 text-[14px] text-ink-soft">1,500만+ 콘텐츠를 자유롭게 이용하세요</p>
         </div>
 
-        <button
-          type="button"
-          onClick={handleLogin}
-          className="mb-4 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-line bg-surface text-[14px] font-semibold text-ink shadow-sm"
-        >
-          <GoogleIcon />
-          Google로 계속하기
-        </button>
-
-        <div className="mb-4 flex items-center gap-3">
-          <div className="h-px flex-1 bg-line" />
-          <span className="text-[12px] font-medium text-ink-mute">또는</span>
-          <div className="h-px flex-1 bg-line" />
-        </div>
-
         <div className="mb-5 flex flex-col gap-3">
           <div>
             <label className="mb-1.5 block text-[12px] font-semibold text-ink-soft">아이디</label>
@@ -85,6 +70,21 @@ export default function LoginPage() {
           style={{ backgroundColor: "var(--brand)" }}
         >
           로그인
+        </button>
+
+        <div className="mb-4 flex items-center gap-3">
+          <div className="h-px flex-1 bg-line" />
+          <span className="text-[12px] font-medium text-ink-mute">또는 다른 방법으로 로그인</span>
+          <div className="h-px flex-1 bg-line" />
+        </div>
+
+        <button
+          type="button"
+          onClick={handleLogin}
+          className="mb-5 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-line bg-surface text-[14px] font-semibold text-ink shadow-sm"
+        >
+          <GoogleIcon />
+          Google로 계속하기
         </button>
 
         <div className="mb-5 flex items-center justify-center gap-3 text-[13px] text-ink-mute">
