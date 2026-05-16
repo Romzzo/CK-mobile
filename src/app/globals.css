@@ -201,3 +201,9 @@
   from { transform: translateY(120%); opacity: 0.5; }
   to { transform: translateY(0); opacity: 1; }
 }
+
+/* 상단 로딩 바 — 좌측 밖에서 우측 밖으로 슬라이딩 반복 (indeterminate) */
+@keyframes ck-loading-slide {
+  0% { transform: translateX(-100%); }
+  100% { transform: translateX(305%); }
+}

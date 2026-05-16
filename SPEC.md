@@ -496,3 +496,15 @@ type LikedItem = {
 ### 바텀시트 (`@/components/ui/BottomSheet`)
 
 z-index / safe-area / `role=dialog` / `aria-modal` / Escape 닫기 모두 자동. 시트 만들 땐 직접 마크업 작성하지 말고 항상 이 컴포넌트로.
+
+### 로딩 바 (`@/components/ui/LoadingBar`)
+
+상단 가로 인디터미넌트 progress bar(2px, brand 색). 네비게이션·비동기 fetch 펜딩 시점에 잠깐 노출.
+
+```tsx
+const [isPending, startTransition] = useTransition();
+const go = () => startTransition(() => router.replace(url));
+<LoadingBar visible={isPending} />
+```
+
+전체 페이지 스피너/오버레이 대신 이 컴포넌트로 통일 (Toss 톤). z-[100] 고정이라 chrome/sheet 위에 안전하게 떠 있음.

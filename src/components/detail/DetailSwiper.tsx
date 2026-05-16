@@ -1,7 +1,8 @@
 "use client";
 
-import { useEffect, useRef, useState, type ReactNode, type TouchEvent } from "react";
+import { useEffect, useRef, useState, useTransition, type ReactNode, type TouchEvent } from "react";
 import { useRouter } from "next/navigation";
+import LoadingBar from "@/components/ui/LoadingBar";
 
 const SWIPE_THRESHOLD = 50;
 
@@ -17,6 +18,8 @@ export default function DetailSwiper({ ids, idx, dir, children }: DetailSwiperPr
   const startX = useRef<number | null>(null);
   const [offset, setOffset] = useState(dir === "next" ? "100%" : dir === "prev" ? "-100%" : "0");
   const [animate, setAnimate] = useState(false);
+  // startTransition 으로 router.replace 를 감싸면 navigation 펜딩 동안 isPending=true
+  const [isPending, startTransition] = useTransition();
 
   useEffect(() => {
     if (dir !== "next" && dir !== "prev") return;
@@ -28,7 +31,9 @@ export default function DetailSwiper({ ids, idx, dir, children }: DetailSwiperPr
   }, [dir]);
 
   const go = (newIdx: number, direction: "next" | "prev") => {
-    router.replace(`/content/${ids[newIdx]}?ids=${ids.join(",")}&idx=${newIdx}&dir=${direction}`);
+    startTransition(() => {
+      router.replace(`/content/${ids[newIdx]}?ids=${ids.join(",")}&idx=${newIdx}&dir=${direction}`);
+    });
   };
 
   const onTouchStart = (e: TouchEvent) => {
@@ -44,6 +49,7 @@ export default function DetailSwiper({ ids, idx, dir, children }: DetailSwiperPr
 
   return (
     <div onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
+      <LoadingBar visible={isPending} />
       <div
         style={{
           transform: `translateX(${offset})`,
