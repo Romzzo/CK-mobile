@@ -1,6 +1,7 @@
 "use client";
 
 import { useState, type FormEvent } from "react";
+import { useRouter } from "next/navigation";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import ScrollTopButton from "@/components/common/ScrollTopButton";
@@ -66,6 +67,7 @@ const inputClass =
 type FormErrors = Partial<Record<"name" | "phone" | "email" | "category" | "subject" | "content", string>>;
 
 export default function HelpPage() {
+  const router = useRouter();
   const [tab, setTab] = useState<Tab>("form");
   const [name, setName] = useState("");
   const [phone, setPhone] = useState("");
@@ -231,7 +233,11 @@ export default function HelpPage() {
           <div className="mt-2 flex gap-2">
             <button
               type="button"
-              onClick={resetForm}
+              onClick={() => {
+                // 취소 = 페이지 닫기(뒤로가기). 직접 진입 케이스는 홈으로 폴백.
+                if (typeof window !== "undefined" && window.history.length > 1) router.back();
+                else router.push("/");
+              }}
               className="flex-1 rounded-xl border border-line bg-surface py-3.5 text-[14px] font-semibold text-ink-soft"
             >
               취소
