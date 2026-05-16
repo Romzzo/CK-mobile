@@ -3,6 +3,7 @@
 import { Suspense, useState } from "react";
 import { Eye, EyeOff, X } from "lucide-react";
 import { useRouter, useSearchParams } from "next/navigation";
+import BrandLogo from "@/components/brand/BrandLogo";
 import { useAuth } from "@/lib/useAuth";
 
 function LoginContent() {
@@ -48,10 +49,8 @@ function LoginContent() {
 
       <div className="flex flex-1 flex-col px-5 pb-8 pt-2">
         <div className="mb-7">
-          <p className="text-[22px] font-extrabold tracking-tight text-ink">
-            clipart<span className="text-brand">korea</span>
-          </p>
-          <p className="mt-1.5 text-[14px] text-ink-soft">1,500만+ 콘텐츠를 자유롭게 이용하세요</p>
+          <BrandLogo style={{ height: 22, width: "auto", color: "#ED1765" }} />
+          <p className="mt-2.5 text-[14px] text-ink-soft">1,500만+ 콘텐츠를 자유롭게 이용하세요</p>
         </div>
 
         <div className="mb-5 flex flex-col gap-3">
