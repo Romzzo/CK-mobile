@@ -1,6 +1,6 @@
 "use client";
 
-import { Check, Crown, Image, Download, Zap, Sparkles, ChevronRight } from "lucide-react";
+import { Check, Crown, Image, Download, Zap, Pencil, Sparkles, ChevronRight } from "lucide-react";
 import { useState } from "react";
 import PageHeader from "@/components/layout/PageHeader";
 
@@ -18,6 +18,7 @@ const plans = [
     benefits: [
       "1,500만+ 이미지·영상·음원 다운로드",
       "에디터 편집 무제한",
+      "5,000종 한글·영문 폰트",
       "숏폼 세로형 영상 제공",
       "저작권 걱정 없는 안전한 사용",
     ],
@@ -45,6 +46,7 @@ const plans = [
 const freeBenefits = [
   { icon: Image, label: "K-이미지 무료 제공", desc: "한국관광공사 공식 이미지" },
   { icon: Download, label: "매주 무료 업데이트", desc: "포토·일러스트 매주 신규 추가" },
+  { icon: Pencil, label: "3,000종 폰트 무료", desc: "한글·영문 다양한 폰트" },
   { icon: Zap, label: "PPT 템플릿 무료", desc: "업무 효율을 높이는 템플릿" },
 ];
 

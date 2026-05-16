@@ -4,7 +4,7 @@ import BfcacheReload from "@/components/common/BfcacheReload";
 
 export const metadata: Metadata = {
   title: "클립아트코리아 — 디자인 소스, 여기서 다 끝내세요",
-  description: "1,500만+ 일러스트·사진·아이콘·AI 이미지. 모바일에서 검색하고 바로 다운로드.",
+  description: "1,500만+ 일러스트·사진·아이콘·AI 이미지·폰트. 모바일에서 검색하고 바로 다운로드.",
 };
 
 export const viewport: Viewport = {

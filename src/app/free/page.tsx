@@ -2,7 +2,7 @@
 
 import { useState } from "react";
 import Link from "next/link";
-import { ChevronRight, AlertTriangle, Sparkles, Image, MapPin } from "lucide-react";
+import { ChevronRight, AlertTriangle, Sparkles, Image, Type, MapPin } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
 import { useAuth } from "@/lib/useAuth";
@@ -23,6 +23,14 @@ const benefits = [
     badge: "매일 5컷 무료",
     href: "/category/illust",
     thumb: "https://picsum.photos/seed/free-img/400/300",
+  },
+  {
+    icon: Type,
+    title: "폰트",
+    desc: "저작권 클린 폰트, 상업적으로 안심하고 사용",
+    badge: "무제한 무료",
+    href: "/search?q=폰트",
+    thumb: "https://picsum.photos/seed/free-font/400/300",
   },
   {
     icon: MapPin,

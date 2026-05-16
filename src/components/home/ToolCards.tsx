@@ -41,7 +41,7 @@ const tools: ReadonlyArray<{
   },
   {
     title: "매일 무료 콘텐츠",
-    sub: "AI이미지 · K-이미지 · 콘텐츠 매일 제공",
+    sub: "AI이미지 · 폰트 · K-이미지 매일 제공",
     cta: "무료 혜택 보기",
     href: "/free",
     color: "green",
