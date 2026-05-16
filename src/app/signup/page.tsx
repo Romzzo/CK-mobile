@@ -91,17 +91,6 @@ export default function SignupPage() {
           <p className="mb-1 text-[12px] font-semibold uppercase tracking-widest text-ink-mute">Step 1</p>
           <h2 className="mb-6 text-[20px] font-bold text-ink">약관 동의</h2>
 
-          <button className="mb-5 flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-line bg-surface text-[14px] font-semibold text-ink shadow-sm">
-            <GoogleIcon />
-            Google로 간편 가입하기
-          </button>
-
-          <div className="mb-5 flex items-center gap-3">
-            <div className="h-px flex-1 bg-line" />
-            <span className="text-[12px] font-medium text-ink-mute">또는 아이디로 가입</span>
-            <div className="h-px flex-1 bg-line" />
-          </div>
-
           <button
             onClick={toggleAll}
             className="mb-3 flex w-full items-center gap-3 rounded-xl border p-4 transition-colors"
@@ -182,6 +171,20 @@ export default function SignupPage() {
                 onChange={(e) => setEmailInput(e.target.value)}
                 placeholder="example@email.com" className="input-base" />
             </Field>
+
+            {/* ── 또는 Google 간편 가입 ── */}
+            <div className="flex items-center gap-3">
+              <div className="h-px flex-1 bg-line" />
+              <span className="text-[12px] font-medium text-ink-mute">또는 Google로 간편 가입</span>
+              <div className="h-px flex-1 bg-line" />
+            </div>
+            <button
+              type="button"
+              className="flex h-12 w-full items-center justify-center gap-2.5 rounded-xl border border-line bg-surface text-[14px] font-semibold text-ink shadow-sm"
+            >
+              <GoogleIcon />
+              Google로 간편 가입하기
+            </button>
 
             <Field label="가입경로">
               <div className="mt-0.5 flex flex-wrap gap-2">
