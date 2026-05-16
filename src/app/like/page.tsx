@@ -1,6 +1,6 @@
 "use client";
 
-import { Heart, Minus, Lock } from "lucide-react";
+import { Heart, Minus } from "lucide-react";
 import Link from "next/link";
 import { useRouter } from "next/navigation";
 import { useEffect, useRef, useState } from "react";
@@ -174,7 +174,11 @@ export default function LikePage() {
       ) : (
         <>
           <div className={MASONRY.loose.grid}>
-            {displayed.map((item, idx) => (
+            {displayed.map((item, idx) => {
+              // PinGrid 와 동일한 목 패턴으로 의료뷰티/AI 뱃지 표시
+              const isAI = idx === 0 || idx === 5 || idx === 9;
+              const isMedical = idx === 2 || idx === 7;
+              return (
               <div key={item.id} className={MASONRY.loose.item}>
                 <div
                   onClick={
@@ -192,12 +196,19 @@ export default function LikePage() {
                     className={`w-full ${aspectClass(item.aspectRatio)} object-cover`}
                   />
 
-                  {item.isPremium ? (
+                  {isMedical ? (
                     <span
-                      className="absolute bottom-1.5 left-1.5 inline-flex items-center gap-1 rounded-md px-1.5 py-0.5 text-[10px] font-bold text-white"
-                      style={{ backgroundColor: "rgba(10,8,18,0.65)", backdropFilter: "blur(4px)" }}
+                      className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
+                      style={{ backgroundColor: "rgba(0,0,0,0.4)" }}
                     >
-                      <Lock size={9} /> PRO
+                      의료뷰티
+                    </span>
+                  ) : isAI ? (
+                    <span
+                      className="absolute left-2 top-2 rounded-full px-2 py-0.5 text-[10px] font-bold text-white"
+                      style={{ backgroundColor: "color-mix(in srgb, var(--brand) 40%, transparent)" }}
+                    >
+                      AI
                     </span>
                   ) : null}
 
@@ -225,7 +236,8 @@ export default function LikePage() {
                   </span>
                 </div>
               </div>
-            ))}
+              );
+            })}
           </div>
 
           {hasMore ? (

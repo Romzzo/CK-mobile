@@ -18,6 +18,38 @@ const vectorTypes = new Set(["일러스트", "아이콘"]);
 
 const tags = ["AI인물", "경제", "민생안정", "소비쿠폰", "소상공인", "안내", "의료뷰티", "지원금", "쿠폰", "활력", "회복"];
 
+type PexelsPhoto = {
+  id: number;
+  width: number;
+  height: number;
+  alt: string;
+  src: { large: string; large2x: string; medium: string; original: string };
+  photographer: string;
+};
+
+// PinGrid 등에서 넘어온 id 가 실제 Pexels 사진이면 가져와 mockItem 위에 덮어씀.
+// 테마 상세 seq*1000+i 처럼 Pexels 에 없는 id 는 404 → null → mockItem 폴백.
+async function fetchPexelsPhoto(id: number): Promise<PexelsPhoto | null> {
+  const apiKey = process.env.PEXELS_API_KEY;
+  if (!apiKey || !Number.isFinite(id) || id <= 0) return null;
+  try {
+    const res = await fetch(`https://api.pexels.com/v1/photos/${id}`, {
+      headers: { Authorization: apiKey },
+      next: { revalidate: 86400 },
+    });
+    if (!res.ok) return null;
+    return (await res.json()) as PexelsPhoto;
+  } catch {
+    return null;
+  }
+}
+
+function ratioKeyOf(w: number, h: number): "tall" | "wide" | "square" {
+  if (h > w * 1.15) return "tall";
+  if (w > h * 1.15) return "wide";
+  return "square";
+}
+
 type SP = { [key: string]: string | string[] | undefined };
 
 function parseSwipeState(sp: SP, currentId: number) {
@@ -49,10 +81,18 @@ export default async function ContentDetailPage({
   const sp = await searchParams;
   const item = mockItems.find((i) => i.id === Number(id)) ?? mockItems[0];
 
+  // Pexels 사진이면 가져와 표시 (검색·카테고리에서 진입한 케이스 연결성 유지)
+  const pexels = await fetchPexelsPhoto(Number(id));
+  const heroSrc = pexels?.src.large2x ?? pexels?.src.large ?? item.imageUrl;
+  const heroAlt = pexels?.alt || item.title;
+  const aspectKey = pexels ? ratioKeyOf(pexels.width, pexels.height) : item.aspectRatio;
+  const dimensions = pexels
+    ? `${pexels.width}×${pexels.height}`
+    : dimensionsByRatio[item.aspectRatio] ?? "4096×4096";
+
   const { ids, idx, dir } = parseSwipeState(sp, Number(id));
 
   const contentNo = `tai${String(item.id).padStart(11, "0")}`;
-  const dimensions = dimensionsByRatio[item.aspectRatio] ?? "4096×4096";
   const extraFormats = vectorTypes.has(item.type) ? ["AI", "EPS", "PSD"] : [];
 
   const sameType = mockItems.filter((i) => i.type === item.type && i.id !== item.id);
@@ -65,11 +105,11 @@ export default async function ContentDetailPage({
 
       <DetailSwiper key={String(id)} ids={ids} idx={idx} dir={dir}>
         {/* 풀블리드 이미지 */}
-        <div className={`relative w-full ${aspectByRatio[item.aspectRatio] ?? "aspect-square"} bg-surface-muted`}>
+        <div className={`relative w-full ${aspectByRatio[aspectKey] ?? "aspect-square"} bg-surface-muted`}>
           {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={item.imageUrl} alt={item.title} className="h-full w-full object-cover" />
+          <img src={heroSrc} alt={heroAlt} className="h-full w-full object-cover" />
         </div>
-        <h1 className="sr-only">{item.title}</h1>
+        <h1 className="sr-only">{heroAlt}</h1>
 
         <DetailInfo
           contentNo={contentNo}
