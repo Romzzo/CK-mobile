@@ -153,6 +153,50 @@
   z-index: var(--z-sheet);
 }
 
+/* 이용약관(/service/agreement) 본문 prose 스타일.
+   dangerouslySetInnerHTML 로 주입된 HTML 요소들을 디자인 시스템 톤으로 일괄 매핑. */
+.agreement-body strong {
+  display: block;
+  margin-top: 1.25rem;
+  margin-bottom: 0.25rem;
+  color: var(--ink);
+  font-size: 13px;
+  font-weight: 600;
+}
+.agreement-body strong:first-child {
+  margin-top: 0.25rem;
+}
+.agreement-body ol {
+  list-style: decimal;
+  padding-left: 1.1rem;
+}
+.agreement-body ul {
+  list-style: disc;
+  padding-left: 1.1rem;
+}
+.agreement-body li {
+  color: var(--ink-soft);
+  font-size: 13px;
+  line-height: 1.7;
+  margin-top: 0.25rem;
+}
+.agreement-body li > ol,
+.agreement-body li > ul {
+  padding-left: 0.85rem;
+  margin-top: 0.4rem;
+}
+/* <b> 로 강조된 조항은 callout 박스로: 좌 보더 + soft 배경 */
+.agreement-body li > b {
+  display: block;
+  margin: 0.5rem 0;
+  padding: 0.75rem 0.9rem;
+  background-color: var(--brand-soft);
+  border-left: 2px solid var(--brand);
+  border-radius: 8px;
+  color: var(--ink);
+  font-weight: 500;
+}
+
 @keyframes ck-slide-up {
   from { transform: translateY(120%); opacity: 0.5; }
   to { transform: translateY(0); opacity: 1; }

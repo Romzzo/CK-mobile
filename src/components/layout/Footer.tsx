@@ -24,7 +24,7 @@ const linkGroups = [
   {
     title: "정책 및 법률",
     links: [
-      { label: "이용약관", href: "#" },
+      { label: "이용약관", href: "/service/agreement" },
       { label: "라이선스 규정", href: "#" },
       { label: "개인정보처리방침", href: "#" },
       { label: "청소년보호정책", href: "#" },
