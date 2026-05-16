@@ -87,15 +87,6 @@ export default function MyPage() {
               <Link href="/signup" className="font-bold text-brand">무료 회원가입</Link>
             </p>
           </div>
-
-          {/* 비로그인에서도 가능한 메뉴 */}
-          <div className="mx-4 mt-10 overflow-hidden rounded-2xl border border-line bg-surface">
-            <Link href="/help" className="flex w-full items-center gap-3 px-5 py-4">
-              <HelpCircle size={18} className="text-ink-mute" />
-              <span className="flex-1 text-left text-[14px] text-ink-soft">고객센터</span>
-              <ChevronRight size={15} className="text-ink-mute" />
-            </Link>
-          </div>
         </>
       ) : (
         /* ── 로그인 상태 ── */
