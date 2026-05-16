@@ -6,7 +6,6 @@ import PageHeader from "@/components/layout/PageHeader";
 import ScrollTopButton from "@/components/common/ScrollTopButton";
 import {
   AGREEMENT_CHAPTERS,
-  AGREEMENT_TLDR,
   AGREEMENT_EFFECTIVE,
 } from "@/data/agreementContent";
 
@@ -18,64 +17,18 @@ export default function ServiceAgreementPage() {
 
   const toggle = (id: string) => setOpen((p) => ({ ...p, [id]: !p[id] }));
 
-  const scrollTo = (id: string) => {
-    const target = document.getElementById(id);
-    if (!target) return;
-    // 닫혀 있던 챕터는 같이 열어줌
-    setOpen((p) => ({ ...p, [id]: true }));
-    target.scrollIntoView({ behavior: "smooth", block: "start" });
-  };
-
   return (
     <div className="min-h-dvh bg-surface-muted">
       <PageHeader title="이용약관" fallbackHref="/" />
 
       <main className="px-4 pb-16 pt-5">
-        {/* ── TL;DR 한눈에 보기 ── */}
-        <section className="rounded-2xl bg-surface p-4">
-          <p className="mb-2 text-[11px] font-bold uppercase tracking-widest text-ink-mute">
-            한눈에 보기
-          </p>
-          <ul className="flex flex-col gap-2">
-            {AGREEMENT_TLDR.map((t) => (
-              <li
-                key={t}
-                className="flex gap-2 text-[13px] leading-relaxed text-ink-soft"
-              >
-                <span
-                  className="mt-[7px] h-1 w-1 shrink-0 rounded-full"
-                  style={{ backgroundColor: "var(--brand)" }}
-                />
-                <span>{t}</span>
-              </li>
-            ))}
-          </ul>
-        </section>
-
-        {/* ── 챕터 pill 내비게이션 ── */}
-        <nav
-          aria-label="목차"
-          className="mt-4 flex gap-2 overflow-x-auto pb-1 [&::-webkit-scrollbar]:hidden [scrollbar-width:none]"
-        >
-          {AGREEMENT_CHAPTERS.map((c) => (
-            <button
-              key={c.id}
-              onClick={() => scrollTo(c.id)}
-              className="shrink-0 rounded-full border border-line bg-surface px-3 py-1.5 text-[12px] text-ink-soft"
-            >
-              {c.label}
-            </button>
-          ))}
-        </nav>
-
         {/* ── 챕터 섹션들 ── */}
-        <div className="mt-4 overflow-hidden rounded-2xl bg-surface">
+        <div className="overflow-hidden rounded-2xl bg-surface">
           {AGREEMENT_CHAPTERS.map((c, i) => (
             <section
               key={c.id}
               id={c.id}
               className={i > 0 ? "border-t border-line" : ""}
-              style={{ scrollMarginTop: "calc(60px + env(safe-area-inset-top, 0px))" }}
             >
               <button
                 type="button"

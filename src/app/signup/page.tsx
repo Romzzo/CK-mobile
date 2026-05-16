@@ -5,8 +5,8 @@ import { ArrowLeft, Eye, EyeOff, Check, ChevronRight, ChevronDown } from "lucide
 import { useRouter } from "next/navigation";
 import type React from "react";
 
-const terms = [
-  { id: "terms", label: "이용약관 동의", required: true },
+const terms: { id: string; label: string; required: boolean; href?: string }[] = [
+  { id: "terms", label: "이용약관 동의", required: true, href: "/service/agreement" },
   { id: "privacy", label: "개인정보 수집 및 이용 동의", required: true },
   { id: "license", label: "라이선스 규정 동의", required: true },
   { id: "sms", label: "마케팅 정보 SMS 수신 동의", required: false },
@@ -125,7 +125,19 @@ export default function SignupPage() {
                   {term.label}
                   {term.required ? <span className="ml-1 text-danger">*</span> : <span className="ml-1 text-ink-mute">(선택)</span>}
                 </span>
-                <ChevronRight size={15} className="shrink-0 text-ink-mute" />
+                {term.href ? (
+                  <a
+                    href={term.href}
+                    target="_blank"
+                    rel="noopener noreferrer"
+                    aria-label={`${term.label} 전문 보기 (새 탭)`}
+                    className="shrink-0 p-1 text-ink-mute"
+                  >
+                    <ChevronRight size={15} />
+                  </a>
+                ) : (
+                  <ChevronRight size={15} className="shrink-0 text-ink-mute opacity-30" />
+                )}
               </div>
             ))}
           </div>
