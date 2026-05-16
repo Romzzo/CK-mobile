@@ -2,9 +2,19 @@
 
 import { Heart } from "lucide-react";
 import { useState } from "react";
+import { useAuth } from "@/lib/useAuth";
 
 export default function DetailActions() {
+  const { isLoggedIn, mounted } = useAuth();
   const [liked, setLiked] = useState(false);
+
+  const onToggle = () => {
+    if (mounted && !isLoggedIn) {
+      alert("로그인을 해주세요.");
+      return;
+    }
+    setLiked((v) => !v);
+  };
 
   return (
     <div
@@ -12,7 +22,7 @@ export default function DetailActions() {
       style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
     >
       <button
-        onClick={() => setLiked((v) => !v)}
+        onClick={onToggle}
         className="flex h-12 w-full items-center justify-center gap-2 rounded-xl border text-[15px] font-semibold transition-colors"
         style={
           liked
