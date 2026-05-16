@@ -1,9 +1,8 @@
 "use client";
 
 import { useState } from "react";
-import { Eye, EyeOff } from "lucide-react";
+import { Eye, EyeOff, X } from "lucide-react";
 import { useRouter } from "next/navigation";
-import PageHeader from "@/components/layout/PageHeader";
 import { useAuth } from "@/lib/useAuth";
 
 export default function LoginPage() {
@@ -19,11 +18,28 @@ export default function LoginPage() {
     router.back();
   };
 
+  const close = () => {
+    if (typeof window !== "undefined" && window.history.length > 1) router.back();
+    else router.push("/");
+  };
+
   return (
     <div className="flex min-h-dvh flex-col bg-surface">
-      <PageHeader title="로그인" />
+      {/* ── 팝업 헤더: X 우측 정렬 ── */}
+      <header className="pt-safe sticky top-0 z-nav bg-surface">
+        <div className="flex h-14 items-center justify-end px-2">
+          <button
+            type="button"
+            aria-label="닫기"
+            onClick={close}
+            className="grid h-10 w-10 place-items-center text-ink-soft"
+          >
+            <X size={22} />
+          </button>
+        </div>
+      </header>
 
-      <div className="flex flex-1 flex-col px-5 pb-8 pt-6">
+      <div className="flex flex-1 flex-col px-5 pb-8 pt-2">
         <div className="mb-7">
           <p className="text-[22px] font-extrabold tracking-tight text-ink">
             clipart<span className="text-brand">korea</span>
