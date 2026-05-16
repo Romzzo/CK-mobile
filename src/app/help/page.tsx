@@ -37,10 +37,24 @@ const MOCK_HISTORY: { id: number; subject: string; date: string; status: "처리
   },
 ];
 
-function Field({ label, children }: { label: string; children: React.ReactNode }) {
+function Field({
+  label,
+  required,
+  error,
+  children,
+}: {
+  label: string;
+  required?: boolean;
+  error?: string;
+  children: React.ReactNode;
+}) {
   return (
     <div>
-      <p className="text-[13px] font-semibold text-ink">{label}</p>
+      <p className="text-[13px] font-semibold text-ink">
+        {label}
+        {required ? <span className="ml-0.5 text-danger">*</span> : null}
+      </p>
+      {error ? <p className="mt-1 text-[12px] text-danger">{error}</p> : null}
       <div className="mt-2">{children}</div>
     </div>
   );
@@ -48,6 +62,8 @@ function Field({ label, children }: { label: string; children: React.ReactNode }
 
 const inputClass =
   "w-full rounded-xl border border-line bg-surface px-3.5 py-3 text-[14px] text-ink placeholder:text-ink-mute outline-none focus:border-[color:var(--brand)]";
+
+type FormErrors = Partial<Record<"name" | "phone" | "email" | "category" | "subject" | "content", string>>;
 
 export default function HelpPage() {
   const [tab, setTab] = useState<Tab>("form");
@@ -57,6 +73,7 @@ export default function HelpPage() {
   const [category, setCategory] = useState("");
   const [subject, setSubject] = useState("");
   const [content, setContent] = useState("");
+  const [errors, setErrors] = useState<FormErrors>({});
 
   const resetForm = () => {
     setName("");
@@ -65,12 +82,23 @@ export default function HelpPage() {
     setCategory("");
     setSubject("");
     setContent("");
+    setErrors({});
   };
+
+  const clearError = (key: keyof FormErrors) =>
+    setErrors((prev) => (prev[key] ? { ...prev, [key]: undefined } : prev));
 
   const onSubmit = (e: FormEvent) => {
     e.preventDefault();
-    if (!category) {
-      alert("문의항목을 선택해주세요.");
+    const next: FormErrors = {};
+    if (!name.trim()) next.name = "이름을 입력해주세요.";
+    if (!phone.trim()) next.phone = "연락처를 입력해주세요.";
+    if (!email.trim()) next.email = "이메일을 입력해주세요.";
+    if (!category) next.category = "문의항목을 선택해주세요.";
+    if (!subject.trim()) next.subject = "문의제목을 입력해주세요.";
+    if (!content.trim()) next.content = "문의내용을 입력해주세요.";
+    if (Object.keys(next).length > 0) {
+      setErrors(next);
       return;
     }
     // 프로토타입: 실제 백엔드 미연동 — 등록 안내 후 내역 탭으로 전환
@@ -109,41 +137,38 @@ export default function HelpPage() {
       </div>
 
       {tab === "form" ? (
-        <form onSubmit={onSubmit} className="flex flex-col gap-4 px-4 py-5">
-          <Field label="이름">
+        <form onSubmit={onSubmit} noValidate className="flex flex-col gap-4 px-4 py-5">
+          <Field label="이름" required error={errors.name}>
             <input
               type="text"
               value={name}
-              onChange={(e) => setName(e.target.value)}
+              onChange={(e) => { setName(e.target.value); clearError("name"); }}
               placeholder="이름을 입력하세요"
               className={inputClass}
-              required
             />
           </Field>
 
-          <Field label="연락처">
+          <Field label="연락처" required error={errors.phone}>
             <input
               type="tel"
               value={phone}
-              onChange={(e) => setPhone(e.target.value)}
+              onChange={(e) => { setPhone(e.target.value); clearError("phone"); }}
               placeholder="연락처를 입력하세요"
               className={inputClass}
-              required
             />
           </Field>
 
-          <Field label="이메일">
+          <Field label="이메일" required error={errors.email}>
             <input
               type="email"
               value={email}
-              onChange={(e) => setEmail(e.target.value)}
+              onChange={(e) => { setEmail(e.target.value); clearError("email"); }}
               placeholder="example@email.com"
               className={inputClass}
-              required
             />
           </Field>
 
-          <Field label="문의항목">
+          <Field label="문의항목" required error={errors.category}>
             <div className="grid grid-cols-2 gap-x-3 gap-y-2.5">
               {INQUIRY_CATEGORIES.map((c) => {
                 const active = category === c;
@@ -154,7 +179,7 @@ export default function HelpPage() {
                       name="inquiry-category"
                       value={c}
                       checked={active}
-                      onChange={() => setCategory(c)}
+                      onChange={() => { setCategory(c); clearError("category"); }}
                       className="sr-only"
                     />
                     <span
@@ -173,25 +198,23 @@ export default function HelpPage() {
             </div>
           </Field>
 
-          <Field label="문의제목">
+          <Field label="문의제목" required error={errors.subject}>
             <input
               type="text"
               value={subject}
-              onChange={(e) => setSubject(e.target.value)}
+              onChange={(e) => { setSubject(e.target.value); clearError("subject"); }}
               placeholder="제목을 입력하세요"
               className={inputClass}
-              required
             />
           </Field>
 
-          <Field label="문의내용">
+          <Field label="문의내용" required error={errors.content}>
             <textarea
               value={content}
-              onChange={(e) => setContent(e.target.value)}
+              onChange={(e) => { setContent(e.target.value); clearError("content"); }}
               placeholder="문의내용을 입력하세요"
               rows={6}
               className={`${inputClass} resize-none`}
-              required
             />
           </Field>
 
