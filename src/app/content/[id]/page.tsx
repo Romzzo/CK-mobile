@@ -2,6 +2,7 @@ import DetailHeader from "@/components/detail/DetailHeader";
 import DetailInfo from "@/components/detail/DetailInfo";
 import DetailActions from "@/components/detail/DetailActions";
 import DetailSwiper from "@/components/detail/DetailSwiper";
+import HeroImage from "@/components/detail/HeroImage";
 import { mockItems } from "@/lib/mockData";
 
 const dimensionsByRatio: Record<string, string> = {
@@ -104,10 +105,9 @@ export default async function ContentDetailPage({
       <DetailHeader pageCount={ids.length > 1 ? { current: idx + 1, total: ids.length } : undefined} />
 
       <DetailSwiper key={String(id)} ids={ids} idx={idx} dir={dir}>
-        {/* 풀블리드 이미지 */}
+        {/* 풀블리드 이미지 — Pexels CDN 실패 시 mockItem 으로 자동 폴백 */}
         <div className={`relative w-full ${aspectByRatio[aspectKey] ?? "aspect-square"} bg-surface-muted`}>
-          {/* eslint-disable-next-line @next/next/no-img-element */}
-          <img src={heroSrc} alt={heroAlt} className="h-full w-full object-cover" />
+          <HeroImage src={heroSrc} fallback={item.imageUrl} alt={heroAlt} />
         </div>
         <h1 className="sr-only">{heroAlt}</h1>
 
