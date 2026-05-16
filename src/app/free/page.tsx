@@ -14,7 +14,10 @@ const benefits = [
     desc: "매일 갱신되는 멤버십 전용 AI 이미지를 무료로",
     badge: "매일 1컷 무료",
     href: "/category/ai",
-    thumb: "https://picsum.photos/seed/free-ai/400/300",
+    gradFrom: "#7A3DEA",
+    gradTo: "#B07EFF",
+    badgeBg: "#F3EEFD",
+    badgeColor: "#7A3DEA",
   },
   {
     icon: Image,
@@ -22,7 +25,10 @@ const benefits = [
     desc: "포토·일러스트·PPT 등 5만+ 무료 전용 콘텐츠",
     badge: "매일 5컷 무료",
     href: "/category/illust",
-    thumb: "https://picsum.photos/seed/free-img/400/300",
+    gradFrom: "#2563EB",
+    gradTo: "#60A5FA",
+    badgeBg: "#EFF6FF",
+    badgeColor: "#2563EB",
   },
   {
     icon: Type,
@@ -30,7 +36,10 @@ const benefits = [
     desc: "저작권 클린 폰트, 상업적으로 안심하고 사용",
     badge: "무제한 무료",
     href: "/search?q=폰트",
-    thumb: "https://picsum.photos/seed/free-font/400/300",
+    gradFrom: "#059669",
+    gradTo: "#34D399",
+    badgeBg: "#ECFDF5",
+    badgeColor: "#059669",
   },
   {
     icon: MapPin,
@@ -38,7 +47,10 @@ const benefits = [
     desc: "한국관광공사 제공 공식 K-이미지 컬렉션",
     badge: "매일 20컷 무료",
     href: "/search?q=K-이미지",
-    thumb: "https://picsum.photos/seed/free-kimg/400/300",
+    gradFrom: "#DC2626",
+    gradTo: "#F97316",
+    badgeBg: "#FFF7ED",
+    badgeColor: "#C2410C",
   },
 ];
 
@@ -74,25 +86,18 @@ export default function FreeContentPage() {
                 href={b.href}
                 className="relative flex flex-col overflow-hidden rounded-2xl border border-line bg-surface"
               >
-                {/* eslint-disable-next-line @next/next/no-img-element */}
-                <img
-                  src={b.thumb}
-                  alt=""
-                  loading="lazy"
-                  className="h-[90px] w-full object-cover"
-                />
-                <div className="flex flex-1 flex-col p-4">
-                  <div
-                    className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-xl"
-                    style={{ backgroundColor: "#F3EEFD" }}
-                  >
-                    <Icon size={17} style={{ color: "#7A3DEA" }} />
-                  </div>
+                <div
+                  className="flex h-[88px] w-full items-center justify-center"
+                  style={{ background: `linear-gradient(135deg, ${b.gradFrom}, ${b.gradTo})` }}
+                >
+                  <Icon size={32} color="white" style={{ opacity: 0.92 }} />
+                </div>
+                <div className="flex flex-1 flex-col p-3.5">
                   <p className="text-[13px] font-bold leading-snug text-ink">{b.title}</p>
                   <p className="mt-1 text-[11px] leading-snug text-ink-soft">{b.desc}</p>
                   <span
-                    className="mt-3 inline-block self-start rounded-full px-2.5 py-1 text-[10px] font-bold"
-                    style={{ backgroundColor: "#F3EEFD", color: "#7A3DEA" }}
+                    className="mt-2.5 inline-block self-start rounded-full px-2.5 py-1 text-[10px] font-bold"
+                    style={{ backgroundColor: b.badgeBg, color: b.badgeColor }}
                   >
                     {b.badge}
                   </span>
