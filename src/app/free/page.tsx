@@ -12,19 +12,25 @@ const benefits = [
     icon: Sparkles,
     title: "AI 이미지",
     desc: "매일 갱신되는 멤버십 전용 AI 이미지를 무료로",
-    badge: "1컷 / 일",
+    badge: "매일 1컷 무료",
+    href: "/category/ai",
+    thumb: "https://picsum.photos/seed/free-ai/400/300",
   },
   {
     icon: Image,
     title: "무료 이미지",
     desc: "포토·일러스트·PPT 등 5만+ 무료 전용 콘텐츠",
-    badge: "5컷 / 일",
+    badge: "매일 5컷 무료",
+    href: "/category/illust",
+    thumb: "https://picsum.photos/seed/free-img/400/300",
   },
   {
     icon: MapPin,
     title: "K-이미지",
     desc: "한국관광공사 제공 공식 K-이미지 컬렉션",
-    badge: "20컷 / 일",
+    badge: "매일 20컷 무료",
+    href: "/search?q=K-이미지",
+    thumb: "https://picsum.photos/seed/free-kimg/400/300",
   },
 ];
 
@@ -36,52 +42,58 @@ const notices = [
 ];
 
 export default function FreeContentPage() {
-  const [openNotice, setOpenNotice] = useState(false);
+  const [openNotice, setOpenNotice] = useState(true);
   const { isLoggedIn, mounted } = useAuth();
 
   return (
     <div className="min-h-dvh bg-surface-muted pb-28">
       <PageHeader title="무료 콘텐츠" subtitle="가입만 해도 매일 무료" fallbackHref="/" />
 
-      {/* ── PC 안내 배너 ── */}
-      <div className="mx-4 mt-4 flex items-start gap-2.5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
-        <AlertTriangle size={15} className="mt-0.5 shrink-0 text-amber-500" />
-        <p className="text-[12px] leading-relaxed text-amber-800">
-          무료 콘텐츠 다운로드는 <strong>PC 웹</strong>에서 가능합니다. 모바일에서는 콘텐츠를 찜하고 PC에서 다운로드하세요.
-        </p>
-      </div>
-
-      {/* ── 무료회원 혜택 4종 ── */}
-      <section className="px-4 pt-6">
+      {/* ── 무료회원 혜택 ── */}
+      <section className="px-4 pt-5">
         <div className="mb-1 flex items-center justify-between">
           <h2 className="text-[16px] font-bold text-ink">무료회원 혜택</h2>
-          <span className="text-[12px] text-ink-mute">가입만 해도 평생 무료</span>
+          <span className="text-[12px] text-ink-mute">평생 무료, 매일 충전</span>
         </div>
-        <p className="mb-3.5 text-[12px] text-ink-mute">매일 초기화, 상업적 이용 가능</p>
+        <p className="mb-3.5 text-[12px] text-ink-mute">매일 자정 충전 · 상업적 이용 가능</p>
 
         <div className="grid grid-cols-2 gap-2.5">
           {benefits.map((b) => {
             const Icon = b.icon;
             return (
-              <div
+              <Link
                 key={b.title}
-                className="flex flex-col rounded-2xl border border-line bg-surface p-4"
+                href={b.href}
+                className="relative flex flex-col overflow-hidden rounded-2xl border border-line bg-surface"
               >
-                <div
-                  className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-xl"
-                  style={{ backgroundColor: "#F3EEFD" }}
-                >
-                  <Icon size={17} style={{ color: "#7A3DEA" }} />
+                {/* eslint-disable-next-line @next/next/no-img-element */}
+                <img
+                  src={b.thumb}
+                  alt=""
+                  loading="lazy"
+                  className="h-[90px] w-full object-cover"
+                />
+                <div className="flex flex-1 flex-col p-4">
+                  <div
+                    className="mb-2.5 flex h-9 w-9 items-center justify-center rounded-xl"
+                    style={{ backgroundColor: "#F3EEFD" }}
+                  >
+                    <Icon size={17} style={{ color: "#7A3DEA" }} />
+                  </div>
+                  <p className="text-[13px] font-bold leading-snug text-ink">{b.title}</p>
+                  <p className="mt-1 text-[11px] leading-snug text-ink-soft">{b.desc}</p>
+                  <span
+                    className="mt-3 inline-block self-start rounded-full px-2.5 py-1 text-[10px] font-bold"
+                    style={{ backgroundColor: "#F3EEFD", color: "#7A3DEA" }}
+                  >
+                    {b.badge}
+                  </span>
                 </div>
-                <p className="text-[13px] font-bold leading-snug text-ink">{b.title}</p>
-                <p className="mt-1 text-[11px] leading-snug text-ink-soft">{b.desc}</p>
-                <span
-                  className="mt-3 inline-block self-start rounded-full px-2.5 py-1 text-[10px] font-bold"
-                  style={{ backgroundColor: "#F3EEFD", color: "#7A3DEA" }}
-                >
-                  {b.badge}
-                </span>
-              </div>
+                <ChevronRight
+                  size={12}
+                  className="absolute bottom-3 right-3 text-ink-mute"
+                />
+              </Link>
             );
           })}
         </div>
@@ -120,7 +132,15 @@ export default function FreeContentPage() {
         </Link>
       )}
 
-      {/* ── 이용 안내 아코디언 ── */}
+      {/* ── PC 안내 배너 (이용 안내 위로 이동) ── */}
+      <div className="mx-4 mt-4 flex items-start gap-2.5 rounded-2xl border border-amber-200 bg-amber-50 px-4 py-3">
+        <AlertTriangle size={15} className="mt-0.5 shrink-0 text-amber-500" />
+        <p className="text-[12px] leading-relaxed text-amber-800">
+          무료 콘텐츠 다운로드는 <strong>PC 웹</strong>에서 가능합니다. 모바일에서는 콘텐츠를 찜하고 PC에서 다운로드하세요.
+        </p>
+      </div>
+
+      {/* ── 이용 안내 아코디언 (기본 열림) ── */}
       <div className="mx-4 mt-4">
         <button
           onClick={() => setOpenNotice((v) => !v)}
