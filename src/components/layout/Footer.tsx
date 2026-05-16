@@ -127,6 +127,15 @@ export default function Footer() {
       <p className="mt-4 text-center text-[10px] text-ink-mute">
         Copyright © TongRo Images Inc. All Rights Reserved.
       </p>
+
+      <div className="mt-3 flex justify-center">
+        <a
+          href="https://www.clipartkorea.co.kr"
+          className="inline-flex items-center gap-1 rounded-full border border-line bg-surface px-4 py-2 text-[12px] font-semibold text-ink-soft"
+        >
+          PC 버전으로 보기
+        </a>
+      </div>
     </footer>
   );
 }
