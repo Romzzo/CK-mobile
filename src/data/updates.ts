@@ -1,4 +1,4 @@
-// 주차별 업데이트 — PC 웹 m.clipartkorea.co.kr/update 의 주차 아카이브 모사.
+// 주차별 업데이트 — PC 웹 www.clipartkorea.co.kr/update 의 주차 아카이브 모사.
 // 메인 /update 는 세로 리스트(월별 sticky 헤더), /update/[weekId] 가 상세.
 //
 // 데이터는 2023.01.01(일) ~ 2026.05.10(일) 까지 일요일 단위로 주차를 모두 생성.
