@@ -5,8 +5,8 @@
 const CATEGORY_THUMBS: Record<string, string> = {
   ai:        "/category/ai.jpg",
   illust:    "/category/illust.jpg",
-  photo:     "/category/photo.jpg",
-  icon:      "/category/icon.jpg",
+  // photo:     "/category/photo.jpg",
+  // icon:      "/category/icon.jpg",
   // ppt:       "/category/ppt.jpg",
   // composite: "/category/composite.jpg",
   // "3d":      "/category/3d.jpg",

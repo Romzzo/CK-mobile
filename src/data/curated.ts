@@ -15,8 +15,8 @@ export type Category = {
 export const CATEGORIES: Category[] = [
   { label: "업데이트",  type: "update",    image: "https://picsum.photos/seed/cat-update/400/500" },
   { label: "일러스트", type: "illust",    image: "/category/illust.jpg" },
-  { label: "사진",     type: "photo",     image: "https://picsum.photos/seed/cat-photo/400/500" },
-  { label: "아이콘",   type: "icon",      image: "https://picsum.photos/seed/cat-icon/400/500" },
+  { label: "사진",     type: "photo",     image: "/category/photo.jpg" },
+  { label: "아이콘",   type: "icon",      image: "/category/icon.jpg" },
   { label: "AI 이미지", type: "ai",        image: "/category/ai.jpg" },
   { label: "PPT", type: "ppt",      image: "https://picsum.photos/seed/cat-ppt/400/500" },
   { label: "합성·웹",  type: "composite", image: "https://picsum.photos/seed/cat-composite/400/500" },
