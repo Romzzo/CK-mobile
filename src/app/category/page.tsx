@@ -9,6 +9,7 @@ import BottomNav from "@/components/layout/BottomNav";
 // 로컬 이미지가 있는 카테고리는 Pexels 대신 우선 사용
 const LOCAL_THUMBS: Record<string, string> = {
   ai: "/category/ai.jpg",
+  illust: "/category/illust.jpg",
 };
 
 const CATEGORIES: { type: string; label: string; desc: string; count?: string; badge?: string }[] = [
