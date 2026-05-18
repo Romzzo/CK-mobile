@@ -30,13 +30,12 @@ type AIPlan = {
   custom?: boolean;
 };
 
-// ─── 탭 ────────────────────────────────────────────────────────────────────
-const MAIN_TABS = [
+// ─── 라이선스 탭 (2종) ───────────────────────────────────────────────────────
+const LICENSE_TABS = [
   { id: "standard", label: "스탠다드" },
   { id: "special",  label: "스페셜" },
-  { id: "ai",       label: "AI 스튜디오" },
 ] as const;
-type MainTab = (typeof MAIN_TABS)[number]["id"];
+type LicenseTab = (typeof LICENSE_TABS)[number]["id"];
 
 const USAGE_TYPES = [
   { id: "own",   label: "자사용" },
@@ -223,7 +222,7 @@ function PlanCard({ plan, selected, onSelect }: { plan: Plan; selected: boolean;
 
 // ─── 메인 컴포넌트 ─────────────────────────────────────────────────────────
 export default function MembershipPage() {
-  const [mainTab, setMainTab] = useState<MainTab>("standard");
+  const [licenseTab, setLicenseTab] = useState<LicenseTab>("standard");
   const [usage, setUsage] = useState<UsageType>("own");
   const [scale, setScale] = useState<Scale>("regular");
   const [stdSelected, setStdSelected] = useState("std55");
@@ -232,7 +231,6 @@ export default function MembershipPage() {
 
   const stdPlans = STANDARD_PLANS[`${usage}_${scale}`];
 
-  // 탭 변경 시 기본 선택 초기화
   function switchUsage(u: UsageType) {
     setUsage(u);
     const plans = STANDARD_PLANS[`${u}_${scale}`];
@@ -244,23 +242,21 @@ export default function MembershipPage() {
     setStdSelected((plans.find(p => p.recommended) ?? plans[0]).id);
   }
 
-  // CTA용 현재 선택 정보
+  // 하단 CTA는 라이선스 탭 기준
   const ctaName =
-    mainTab === "ai"       ? (AI_PLANS.find(p => p.id === aiSelected)?.name ?? "AI 스튜디오") :
-    mainTab === "special"  ? (SPECIAL_PLANS.find(p => p.id === spSelected)?.name ?? "멤버십") :
-    (stdPlans.find(p => p.id === stdSelected)?.name ?? "멤버십");
+    licenseTab === "special"
+      ? (SPECIAL_PLANS.find(p => p.id === spSelected)?.name ?? "멤버십")
+      : (stdPlans.find(p => p.id === stdSelected)?.name ?? "멤버십");
 
   const ctaPrice =
-    mainTab === "ai"       ? AI_PLANS.find(p => p.id === aiSelected)?.price :
-    mainTab === "special"  ? SPECIAL_PLANS.find(p => p.id === spSelected)?.price :
-    stdPlans.find(p => p.id === stdSelected)?.price;
+    licenseTab === "special"
+      ? SPECIAL_PLANS.find(p => p.id === spSelected)?.price
+      : stdPlans.find(p => p.id === stdSelected)?.price;
 
   const ctaPeriod =
-    mainTab === "ai"       ? AI_PLANS.find(p => p.id === aiSelected)?.period :
-    mainTab === "special"  ? SPECIAL_PLANS.find(p => p.id === spSelected)?.period :
-    stdPlans.find(p => p.id === stdSelected)?.period;
-
-  const isCustom = mainTab === "ai" && aiSelected === "custom";
+    licenseTab === "special"
+      ? SPECIAL_PLANS.find(p => p.id === spSelected)?.period
+      : stdPlans.find(p => p.id === stdSelected)?.period;
 
   return (
     <div className="flex min-h-dvh flex-col bg-surface-muted">
@@ -307,16 +303,19 @@ export default function MembershipPage() {
           </div>
         </div>
 
-        {/* 유료 라이선스 */}
-        <div className="mt-7 px-4">
-          {/* 메인 탭 */}
+        {/* ─── 유료 라이선스 섹션 ─────────────────────────────────────────── */}
+        <div className="mt-8 px-4">
+          <p className="mb-1 text-[18px] font-bold text-ink">유료 라이선스</p>
+          <p className="mb-4 text-[12px] text-ink-mute">이미지·영상·음원을 상업적으로 사용할 수 있는 구독 라이선스</p>
+
+          {/* 라이선스 탭 */}
           <div className="mb-4 flex gap-1.5 rounded-2xl border border-line bg-surface p-1.5">
-            {MAIN_TABS.map((t) => (
+            {LICENSE_TABS.map((t) => (
               <button
                 key={t.id}
-                onClick={() => setMainTab(t.id)}
+                onClick={() => setLicenseTab(t.id)}
                 className="flex-1 rounded-xl py-2 text-[12px] font-semibold transition-colors"
-                style={mainTab === t.id
+                style={licenseTab === t.id
                   ? { backgroundColor: "var(--brand)", color: "white" }
                   : { color: "var(--ink-mute)" }}
               >
@@ -326,9 +325,8 @@ export default function MembershipPage() {
           </div>
 
           {/* ── 스탠다드 ── */}
-          {mainTab === "standard" && (
+          {licenseTab === "standard" && (
             <div className="flex flex-col gap-3">
-              {/* 자사 / 타사납품 토글 */}
               <div className="flex gap-2 rounded-xl border border-line bg-surface p-1">
                 {USAGE_TYPES.map((u) => (
                   <button
@@ -344,7 +342,6 @@ export default function MembershipPage() {
                 ))}
               </div>
 
-              {/* 엔드유저 규모 */}
               <div>
                 <p className="mb-2 text-[11px] font-semibold text-ink-mute">기관 유형</p>
                 <div className="flex gap-2">
@@ -363,7 +360,6 @@ export default function MembershipPage() {
                 </div>
               </div>
 
-              {/* 자사/타사 설명 */}
               <div className="rounded-xl border border-line bg-surface px-4 py-3">
                 {usage === "own" ? (
                   <p className="text-[11px] leading-relaxed text-ink-mute">
@@ -376,7 +372,6 @@ export default function MembershipPage() {
                 )}
               </div>
 
-              {/* 플랜 카드 */}
               {stdPlans.map((plan) => (
                 <PlanCard
                   key={plan.id}
@@ -386,7 +381,6 @@ export default function MembershipPage() {
                 />
               ))}
 
-              {/* 특약 라이선스 */}
               <div className="flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3.5">
                 <div>
                   <p className="text-[13px] font-bold text-ink">특약 라이선스</p>
@@ -404,7 +398,7 @@ export default function MembershipPage() {
           )}
 
           {/* ── 스페셜 ── */}
-          {mainTab === "special" && (
+          {licenseTab === "special" && (
             <div className="flex flex-col gap-2.5">
               {SPECIAL_PLANS.map((plan) => (
                 <PlanCard
@@ -417,87 +411,8 @@ export default function MembershipPage() {
             </div>
           )}
 
-          {/* ── AI 스튜디오 ── */}
-          {mainTab === "ai" && (
-            <div className="flex flex-col gap-2.5">
-              <div className="rounded-xl border border-line bg-surface px-4 py-3">
-                <div className="flex items-center gap-2">
-                  <Bot size={13} style={{ color: "var(--brand)" }} />
-                  <p className="text-[11px] leading-relaxed text-ink-mute">
-                    크레딧으로 AI 이미지를 생성·편집합니다. 유료 멤버십 구독 시 매월 자동 지급됩니다.
-                  </p>
-                </div>
-              </div>
-
-              {AI_PLANS.map((plan) =>
-                plan.custom ? (
-                  <div
-                    key={plan.id}
-                    className="flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3.5"
-                  >
-                    <div>
-                      <p className="text-[13px] font-bold text-ink">{plan.name}</p>
-                      <p className="mt-0.5 text-[11px] text-ink-mute">크레딧·금액·기간 맞춤 협의</p>
-                    </div>
-                    <a
-                      href="tel:02-2270-1730"
-                      className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-2 text-[12px] font-bold"
-                      style={{ backgroundColor: "var(--brand-soft)", color: "var(--brand)" }}
-                    >
-                      문의 <ChevronRight size={12} />
-                    </a>
-                  </div>
-                ) : (
-                  <button
-                    key={plan.id}
-                    onClick={() => setAiSelected(plan.id)}
-                    className="relative rounded-2xl border-2 bg-surface p-4 text-left transition-colors"
-                    style={{ borderColor: aiSelected === plan.id ? "var(--brand)" : "var(--line)" }}
-                  >
-                    {plan.recommended && (
-                      <span
-                        className="absolute -top-2.5 left-4 rounded-full px-2.5 py-0.5 text-[10px] font-bold text-white"
-                        style={{ backgroundColor: "var(--brand)" }}
-                      >
-                        추천
-                      </span>
-                    )}
-                    <div className="flex items-center justify-between">
-                      <div className="flex items-center gap-2">
-                        <div
-                          className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors"
-                          style={{
-                            borderColor: aiSelected === plan.id ? "var(--brand)" : "var(--line)",
-                            backgroundColor: aiSelected === plan.id ? "var(--brand)" : "transparent",
-                          }}
-                        >
-                          {aiSelected === plan.id && <Check size={11} className="text-white" strokeWidth={3} />}
-                        </div>
-                        <div>
-                          <p className="text-[14px] font-bold text-ink">{plan.name}</p>
-                          <p className="text-[11px] text-ink-mute">{plan.period} 사용 가능</p>
-                        </div>
-                      </div>
-                      <div className="text-right">
-                        <p
-                          className="text-[20px] font-bold leading-tight"
-                          style={{ color: "var(--brand)" }}
-                        >
-                          {plan.credits}
-                        </p>
-                        <p className="text-[12px] font-semibold text-ink">{plan.price}원</p>
-                      </div>
-                    </div>
-                  </button>
-                )
-              )}
-            </div>
-          )}
-        </div>
-
-        {/* 유료 공통 혜택 (AI 탭 제외) */}
-        {mainTab !== "ai" && (
-          <div className="mx-4 mt-5 rounded-2xl border border-line bg-surface p-4">
+          {/* 공통 혜택 */}
+          <div className="mt-5 rounded-2xl border border-line bg-surface p-4">
             <div className="mb-3 flex items-center gap-2">
               <Sparkles size={14} style={{ color: "var(--brand)" }} />
               <span className="text-[13px] font-bold text-ink">유료 공통 혜택</span>
@@ -509,10 +424,93 @@ export default function MembershipPage() {
               </div>
             ))}
           </div>
-        )}
+        </div>
+
+        {/* ─── AI 스튜디오 크레딧 섹션 ────────────────────────────────────── */}
+        <div className="mt-8 px-4">
+          <div className="mb-1 flex items-center gap-2">
+            <Bot size={18} style={{ color: "var(--brand)" }} />
+            <p className="text-[18px] font-bold text-ink">AI 스튜디오 크레딧</p>
+          </div>
+          <p className="mb-4 text-[12px] text-ink-mute">멤버십과 별도로 구매 가능한 AI 이미지 생성·편집 크레딧</p>
+
+          <div className="flex flex-col gap-2.5">
+            {AI_PLANS.map((plan) =>
+              plan.custom ? (
+                <div
+                  key={plan.id}
+                  className="flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3.5"
+                >
+                  <div>
+                    <p className="text-[13px] font-bold text-ink">{plan.name}</p>
+                    <p className="mt-0.5 text-[11px] text-ink-mute">크레딧·금액·기간 맞춤 협의</p>
+                  </div>
+                  <a
+                    href="tel:02-2270-1730"
+                    className="flex shrink-0 items-center gap-1 rounded-xl px-3 py-2 text-[12px] font-bold"
+                    style={{ backgroundColor: "var(--brand-soft)", color: "var(--brand)" }}
+                  >
+                    문의 <ChevronRight size={12} />
+                  </a>
+                </div>
+              ) : (
+                <button
+                  key={plan.id}
+                  onClick={() => setAiSelected(plan.id)}
+                  className="relative rounded-2xl border-2 bg-surface p-4 text-left transition-colors"
+                  style={{ borderColor: aiSelected === plan.id ? "var(--brand)" : "var(--line)" }}
+                >
+                  {plan.recommended && (
+                    <span
+                      className="absolute -top-2.5 left-4 rounded-full px-2.5 py-0.5 text-[10px] font-bold text-white"
+                      style={{ backgroundColor: "var(--brand)" }}
+                    >
+                      추천
+                    </span>
+                  )}
+                  <div className="flex items-center justify-between">
+                    <div className="flex items-center gap-2">
+                      <div
+                        className="flex h-5 w-5 shrink-0 items-center justify-center rounded-full border-2 transition-colors"
+                        style={{
+                          borderColor: aiSelected === plan.id ? "var(--brand)" : "var(--line)",
+                          backgroundColor: aiSelected === plan.id ? "var(--brand)" : "transparent",
+                        }}
+                      >
+                        {aiSelected === plan.id && <Check size={11} className="text-white" strokeWidth={3} />}
+                      </div>
+                      <div>
+                        <p className="text-[14px] font-bold text-ink">{plan.name}</p>
+                        <p className="text-[11px] text-ink-mute">{plan.period} 사용 가능</p>
+                      </div>
+                    </div>
+                    <div className="text-right">
+                      <p className="text-[20px] font-bold leading-tight" style={{ color: "var(--brand)" }}>
+                        {plan.credits}
+                      </p>
+                      <p className="text-[12px] font-semibold text-ink">{plan.price}원</p>
+                    </div>
+                  </div>
+                </button>
+              )
+            )}
+          </div>
+
+          <a
+            href={PC_MEMBERSHIP_URL}
+            target="_blank"
+            rel="noopener noreferrer"
+            className="mt-3 flex w-full items-center justify-center gap-1.5 rounded-2xl border border-line bg-surface py-3.5 text-[13px] font-semibold"
+            style={{ color: "var(--brand)" }}
+          >
+            <Bot size={14} style={{ color: "var(--brand)" }} />
+            AI 스튜디오 크레딧 PC에서 구매
+            <ChevronRight size={13} />
+          </a>
+        </div>
 
         {/* 구매 문의 */}
-        <div className="mx-4 mt-4 flex items-center justify-between rounded-2xl border border-line bg-surface p-4">
+        <div className="mx-4 mt-6 flex items-center justify-between rounded-2xl border border-line bg-surface p-4">
           <div>
             <p className="text-[12px] font-semibold text-ink">구매 문의</p>
             <p className="mt-0.5 text-[12px] text-ink-mute">평일 09:00–18:00 (점심 12–13시)</p>
@@ -523,32 +521,22 @@ export default function MembershipPage() {
         </div>
       </div>
 
-      {/* 하단 CTA */}
+      {/* 하단 CTA — 라이선스 선택 기준 */}
       <div
         className="fixed bottom-0 left-1/2 w-full max-w-[480px] -translate-x-1/2 border-t border-line bg-surface px-4 py-3"
         style={{ paddingBottom: "calc(env(safe-area-inset-bottom) + 0.75rem)" }}
       >
-        {isCustom ? (
-          <a
-            href="tel:02-2270-1730"
-            className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[15px] font-semibold text-white"
-            style={{ backgroundColor: "var(--brand)" }}
-          >
-            CUSTOM PACK 전화 문의
-          </a>
-        ) : (
-          <a
-            href={PC_MEMBERSHIP_URL}
-            target="_blank"
-            rel="noopener noreferrer"
-            className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[15px] font-semibold text-white"
-            style={{ backgroundColor: "var(--brand)" }}
-          >
-            <Crown size={15} fill="white" />
-            PC에서 {ctaName} 신청
-          </a>
-        )}
-        {!isCustom && ctaPrice && (
+        <a
+          href={PC_MEMBERSHIP_URL}
+          target="_blank"
+          rel="noopener noreferrer"
+          className="flex w-full items-center justify-center gap-2 rounded-xl py-3.5 text-[15px] font-semibold text-white"
+          style={{ backgroundColor: "var(--brand)" }}
+        >
+          <Crown size={15} fill="white" />
+          PC에서 {ctaName} 신청
+        </a>
+        {ctaPrice && (
           <p className="mt-1.5 text-center text-[11px] text-ink-mute">
             {ctaPrice}원 · {ctaPeriod} · 결제는 PC 웹에서 진행됩니다
           </p>
