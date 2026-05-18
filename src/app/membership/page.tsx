@@ -11,6 +11,7 @@ type Plan = {
   id: string;
   name: string;
   tag: string;
+  scaleLabel?: string;
   period: string;
   price: string;
   originalPrice?: string;
@@ -43,69 +44,66 @@ const USAGE_TYPES = [
 ] as const;
 type UsageType = (typeof USAGE_TYPES)[number]["id"];
 
-const SCALES = [
-  { id: "regular", label: "개인·중소기업" },
-  { id: "public",  label: "관공서·공공기관" },
-] as const;
-type Scale = (typeof SCALES)[number]["id"];
-
-type StdKey = `${UsageType}_${Scale}`;
-
-// ─── 스탠다드 플랜 ──────────────────────────────────────────────────────────
-const STANDARD_PLANS: Record<StdKey, Plan[]> = {
-  own_regular: [
+// ─── 스탠다드 플랜 (자사/타사 기준 flat list) ────────────────────────────────
+const STANDARD_PLANS: Record<UsageType, Plan[]> = {
+  own: [
     {
       id: "std33", name: "스탠다드 33", tag: "이미지 50컷/일 제한형",
+      scaleLabel: "개인·중소기업",
       period: "6/12개월", price: "330,000",
       features: ["이미지 50컷/일", "영상·음원 150개/월", "에디터 무제한"],
     },
     {
       id: "std55", name: "스탠다드 55", tag: "이미지·영상·음원 무제한",
+      scaleLabel: "개인·중소기업",
       period: "12개월", price: "412,500", originalPrice: "550,000",
       discount: "25%", recommended: true,
       features: ["이미지·영상·음원 무제한", "AI 스튜디오 3,000C/월", "에디터 무제한"],
     },
     {
       id: "std55plus", name: "스탠다드 55+", tag: "무제한 + SNS·입점몰 허용",
+      scaleLabel: "개인·중소기업",
       period: "12개월", price: "550,000", originalPrice: "990,000",
       discount: "44%",
       features: ["이미지·영상·음원 무제한", "SNS·블로그·유튜브 허용", "입점몰 상세페이지 허용", "에디터 무제한"],
     },
-  ],
-  own_public: [
     {
       id: "std132", name: "스탠다드 132", tag: "이미지 50컷/일 제한형",
+      scaleLabel: "관공서·공공기관",
       period: "12개월", price: "990,000",
       features: ["이미지 50컷/일", "영상·음원 150개/월", "관공서·공공기관 자사 사용"],
     },
     {
       id: "std132plus", name: "스탠다드 132+", tag: "무제한 + SNS·입점몰 허용",
+      scaleLabel: "관공서·공공기관",
       period: "12개월", price: "1,320,000", recommended: true,
       features: ["이미지·영상·음원 무제한", "SNS·블로그·유튜브 허용", "관공서·공공기관 자사 사용"],
     },
   ],
-  third_regular: [
+  third: [
     {
       id: "std88", name: "스탠다드 88", tag: "타사 납품 기본형",
+      scaleLabel: "개인·중소기업",
       period: "12개월", price: "660,000", originalPrice: "880,000",
       discount: "25%",
       features: ["타사 납품 허용", "이미지·영상·음원 무제한", "에디터 무제한"],
     },
     {
       id: "std88plus", name: "스탠다드 88+", tag: "납품 + 입점몰 상세페이지",
+      scaleLabel: "개인·중소기업",
       period: "12개월", price: "880,000", originalPrice: "1,650,000",
       discount: "47%", recommended: true,
       features: ["타사 납품 + 입점몰 상세페이지", "이미지·영상·음원 무제한", "에디터 무제한"],
     },
-  ],
-  third_public: [
     {
       id: "std165", name: "스탠다드 165", tag: "납품 기본형",
+      scaleLabel: "관공서·공공기관",
       period: "12개월", price: "1,237,500",
       features: ["타사 납품 허용", "이미지·영상·음원 무제한", "관공서·공공기관 납품"],
     },
     {
       id: "std165plus", name: "스탠다드 165+", tag: "납품 + 입점몰 상세페이지",
+      scaleLabel: "관공서·공공기관",
       period: "12개월", price: "1,650,000", recommended: true,
       features: ["납품 + 입점몰 상세페이지", "이미지·영상·음원 무제한"],
     },
@@ -184,7 +182,17 @@ function PlanCard({ plan, selected, onSelect }: { plan: Plan; selected: boolean;
             {selected && <Check size={11} className="text-white" strokeWidth={3} />}
           </div>
           <div>
-            <p className="text-[14px] font-bold text-ink">{plan.name}</p>
+            <div className="flex items-center gap-1.5">
+              <p className="text-[14px] font-bold text-ink">{plan.name}</p>
+              {plan.scaleLabel && (
+                <span
+                  className="rounded-full px-1.5 py-0.5 text-[9px] font-semibold"
+                  style={{ backgroundColor: "var(--brand-soft)", color: "var(--brand)" }}
+                >
+                  {plan.scaleLabel}
+                </span>
+              )}
+            </div>
             <p className="text-[10px] text-ink-mute">{plan.tag}</p>
           </div>
         </div>
@@ -224,21 +232,15 @@ function PlanCard({ plan, selected, onSelect }: { plan: Plan; selected: boolean;
 export default function MembershipPage() {
   const [licenseTab, setLicenseTab] = useState<LicenseTab>("standard");
   const [usage, setUsage] = useState<UsageType>("own");
-  const [scale, setScale] = useState<Scale>("regular");
   const [stdSelected, setStdSelected] = useState("std55");
   const [spSelected,  setSpSelected]  = useState("creator");
   const [aiSelected,  setAiSelected]  = useState("plus");
 
-  const stdPlans = STANDARD_PLANS[`${usage}_${scale}`];
+  const stdPlans = STANDARD_PLANS[usage];
 
   function switchUsage(u: UsageType) {
     setUsage(u);
-    const plans = STANDARD_PLANS[`${u}_${scale}`];
-    setStdSelected((plans.find(p => p.recommended) ?? plans[0]).id);
-  }
-  function switchScale(s: Scale) {
-    setScale(s);
-    const plans = STANDARD_PLANS[`${usage}_${s}`];
+    const plans = STANDARD_PLANS[u];
     setStdSelected((plans.find(p => p.recommended) ?? plans[0]).id);
   }
 
@@ -340,24 +342,6 @@ export default function MembershipPage() {
                     {u.label}
                   </button>
                 ))}
-              </div>
-
-              <div>
-                <p className="mb-2 text-[11px] font-semibold text-ink-mute">기관 유형</p>
-                <div className="flex gap-2">
-                  {SCALES.map((s) => (
-                    <button
-                      key={s.id}
-                      onClick={() => switchScale(s.id)}
-                      className="flex-1 rounded-xl border py-2.5 text-[11px] font-semibold transition-colors"
-                      style={scale === s.id
-                        ? { borderColor: "var(--brand)", backgroundColor: "var(--brand-soft)", color: "var(--brand)" }
-                        : { borderColor: "var(--line)", color: "var(--ink-mute)" }}
-                    >
-                      {s.label}
-                    </button>
-                  ))}
-                </div>
               </div>
 
               <div className="rounded-xl border border-line bg-surface px-4 py-3">
