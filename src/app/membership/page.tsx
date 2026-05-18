@@ -45,9 +45,8 @@ const USAGE_TYPES = [
 type UsageType = (typeof USAGE_TYPES)[number]["id"];
 
 const SCALES = [
-  { id: "personal", label: "개인" },
-  { id: "sme",      label: "중소·관공서" },
-  { id: "large",    label: "공공·대기업" },
+  { id: "regular", label: "개인·중소기업" },
+  { id: "public",  label: "관공서·공공기관" },
 ] as const;
 type Scale = (typeof SCALES)[number]["id"];
 
@@ -55,7 +54,7 @@ type StdKey = `${UsageType}_${Scale}`;
 
 // ─── 스탠다드 플랜 ──────────────────────────────────────────────────────────
 const STANDARD_PLANS: Record<StdKey, Plan[]> = {
-  own_personal: [
+  own_regular: [
     {
       id: "std33", name: "스탠다드 33", tag: "이미지 50컷/일 제한형",
       period: "6/12개월", price: "330,000",
@@ -64,37 +63,29 @@ const STANDARD_PLANS: Record<StdKey, Plan[]> = {
     {
       id: "std55", name: "스탠다드 55", tag: "이미지·영상·음원 무제한",
       period: "12개월", price: "412,500", originalPrice: "550,000",
-      perMonth: "34,375", discount: "25%", recommended: true,
-      features: ["이미지·영상·음원 무제한", "AI 스튜디오 3,000C/월", "에디터 무제한"],
-    },
-  ],
-  own_sme: [
-    {
-      id: "std55", name: "스탠다드 55", tag: "이미지·영상·음원 무제한",
-      period: "12개월", price: "412,500", originalPrice: "550,000",
-      discount: "25%",
+      discount: "25%", recommended: true,
       features: ["이미지·영상·음원 무제한", "AI 스튜디오 3,000C/월", "에디터 무제한"],
     },
     {
       id: "std55plus", name: "스탠다드 55+", tag: "무제한 + SNS·입점몰 허용",
       period: "12개월", price: "550,000", originalPrice: "990,000",
-      discount: "44%", recommended: true,
+      discount: "44%",
       features: ["이미지·영상·음원 무제한", "SNS·블로그·유튜브 허용", "입점몰 상세페이지 허용", "에디터 무제한"],
     },
   ],
-  own_large: [
+  own_public: [
     {
       id: "std132", name: "스탠다드 132", tag: "이미지 50컷/일 제한형",
       period: "12개월", price: "990,000",
-      features: ["이미지 50컷/일", "영상·음원 150개/월", "공공기관·대기업 자사 사용"],
+      features: ["이미지 50컷/일", "영상·음원 150개/월", "관공서·공공기관 자사 사용"],
     },
     {
       id: "std132plus", name: "스탠다드 132+", tag: "무제한 + SNS·입점몰 허용",
       period: "12개월", price: "1,320,000", recommended: true,
-      features: ["이미지·영상·음원 무제한", "SNS·블로그·유튜브 허용", "공공기관·대기업 자사 사용"],
+      features: ["이미지·영상·음원 무제한", "SNS·블로그·유튜브 허용", "관공서·공공기관 자사 사용"],
     },
   ],
-  third_personal: [
+  third_regular: [
     {
       id: "std88", name: "스탠다드 88", tag: "타사 납품 기본형",
       period: "12개월", price: "660,000", originalPrice: "880,000",
@@ -108,25 +99,11 @@ const STANDARD_PLANS: Record<StdKey, Plan[]> = {
       features: ["타사 납품 + 입점몰 상세페이지", "이미지·영상·음원 무제한", "에디터 무제한"],
     },
   ],
-  third_sme: [
+  third_public: [
     {
-      id: "std88", name: "스탠다드 88", tag: "타사 납품 기본형",
-      period: "12개월", price: "660,000", originalPrice: "880,000",
-      discount: "25%",
-      features: ["타사 납품 허용", "이미지·영상·음원 무제한", "에디터 무제한"],
-    },
-    {
-      id: "std88plus", name: "스탠다드 88+", tag: "납품 + 입점몰 상세페이지",
-      period: "12개월", price: "880,000", originalPrice: "1,650,000",
-      discount: "47%", recommended: true,
-      features: ["타사 납품 + 입점몰 상세페이지", "이미지·영상·음원 무제한", "에디터 무제한"],
-    },
-  ],
-  third_large: [
-    {
-      id: "std165", name: "스탠다드 165", tag: "공공기관·대기업 납품 기본형",
+      id: "std165", name: "스탠다드 165", tag: "납품 기본형",
       period: "12개월", price: "1,237,500",
-      features: ["타사 납품 허용", "이미지·영상·음원 무제한", "공공기관·대기업 납품"],
+      features: ["타사 납품 허용", "이미지·영상·음원 무제한", "관공서·공공기관 납품"],
     },
     {
       id: "std165plus", name: "스탠다드 165+", tag: "납품 + 입점몰 상세페이지",
@@ -248,7 +225,7 @@ function PlanCard({ plan, selected, onSelect }: { plan: Plan; selected: boolean;
 export default function MembershipPage() {
   const [mainTab, setMainTab] = useState<MainTab>("standard");
   const [usage, setUsage] = useState<UsageType>("own");
-  const [scale, setScale] = useState<Scale>("personal");
+  const [scale, setScale] = useState<Scale>("regular");
   const [stdSelected, setStdSelected] = useState("std55");
   const [spSelected,  setSpSelected]  = useState("creator");
   const [aiSelected,  setAiSelected]  = useState("plus");
@@ -369,7 +346,7 @@ export default function MembershipPage() {
 
               {/* 엔드유저 규모 */}
               <div>
-                <p className="mb-2 text-[11px] font-semibold text-ink-mute">내 사업 규모</p>
+                <p className="mb-2 text-[11px] font-semibold text-ink-mute">기관 유형</p>
                 <div className="flex gap-2">
                   {SCALES.map((s) => (
                     <button
@@ -390,7 +367,7 @@ export default function MembershipPage() {
               <div className="rounded-xl border border-line bg-surface px-4 py-3">
                 {usage === "own" ? (
                   <p className="text-[11px] leading-relaxed text-ink-mute">
-                    <span className="font-semibold text-ink">자사용</span> — 내 사이트·채널에 직접 게시하는 경우. SNS·입점몰 업로드는 <span className="font-semibold text-ink">55+·132+</span> 이상 필요.
+                    <span className="font-semibold text-ink">자사용</span> — 내 사이트·채널에 직접 게시하는 경우. SNS·입점몰 업로드는 <span className="font-semibold text-ink">+ 플랜</span> 필요.
                   </p>
                 ) : (
                   <p className="text-[11px] leading-relaxed text-ink-mute">
@@ -413,7 +390,7 @@ export default function MembershipPage() {
               <div className="flex items-center justify-between rounded-2xl border border-line bg-surface px-4 py-3.5">
                 <div>
                   <p className="text-[13px] font-bold text-ink">특약 라이선스</p>
-                  <p className="mt-0.5 text-[11px] text-ink-mute">대기업·프랜차이즈·출판·제품패키지 — 협의</p>
+                  <p className="mt-0.5 text-[11px] text-ink-mute">대기업·프랜차이즈·출판·제품패키지</p>
                 </div>
                 <a
                   href="tel:02-2270-1730"
