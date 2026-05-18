@@ -5,12 +5,7 @@ import { useState, useEffect } from "react";
 import { ChevronRight } from "lucide-react";
 import PageHeader from "@/components/layout/PageHeader";
 import BottomNav from "@/components/layout/BottomNav";
-
-// 로컬 이미지가 있는 카테고리는 Pexels 대신 우선 사용
-const LOCAL_THUMBS: Record<string, string> = {
-  ai: "/category/ai.jpg",
-  illust: "/category/illust.jpg",
-};
+import CATEGORY_THUMBS from "@/data/categoryThumbs";
 
 const CATEGORIES: { type: string; label: string; desc: string; count?: string; badge?: string }[] = [
   { type: "update", label: "업데이트", desc: "이번 주 새로 올라온 콘텐츠", badge: "NEW" },
@@ -46,9 +41,9 @@ export default function CategoryIndexPage() {
               href={c.type === "update" ? "/update" : `/category/${c.type}`}
               className="relative block h-[100px] overflow-hidden rounded-2xl bg-surface-muted"
             >
-              {LOCAL_THUMBS[c.type] ?? imgs[c.type] ? (
+              {CATEGORY_THUMBS[c.type] ?? imgs[c.type] ? (
                 // eslint-disable-next-line @next/next/no-img-element
-                <img src={LOCAL_THUMBS[c.type] ?? imgs[c.type]!} alt="" className="absolute inset-0 h-full w-full object-cover" />
+                <img src={CATEGORY_THUMBS[c.type] ?? imgs[c.type]!} alt="" className="absolute inset-0 h-full w-full object-cover" />
               ) : (
                 <div className="absolute inset-0 animate-pulse bg-surface-muted" />
               )}
